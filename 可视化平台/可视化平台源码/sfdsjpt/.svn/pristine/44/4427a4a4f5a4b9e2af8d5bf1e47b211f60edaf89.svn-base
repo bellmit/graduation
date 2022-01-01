@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.WcnfzMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value" jdbcType="INTEGER" property="value"></result>
+    </resultMap>
+    <resultMap id="K2vModel" type="com.software.model.K2vModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value1" jdbcType="INTEGER" property="value1"></result>
+        <result column="value2" jdbcType="INTEGER" property="value2"></result>
+    </resultMap>
+    <resultMap id="K3vModel" type="com.software.model.K3vModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value1" jdbcType="INTEGER" property="value1"></result>
+        <result column="value2" jdbcType="INTEGER" property="value2"></result>
+        <result column="value3" jdbcType="INTEGER" property="value3"></result>
+    </resultMap>
+    <resultMap id="TimeModel" type="com.software.model.TimeModel">
+        <result column="year" jdbcType="VARCHAR" property="year"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+        <result column="JARQ" jdbcType="TIMESTAMP" property="jarq"/>
+    </resultMap>
+    <!--以下是未成年人专用接口-->
+    <!--未成年人罪名分布-->
+    <select id="getMinorZmfb" resultMap="KvModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select DMMS as name,count(DMMS) as value from PUB_AYDMB PA,(select l.AY,p.FYDM from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                and p.AJXH=l.AJXH and p.FYDM=l.FYDM
+                ) T where T.AY=PA.DMBH and T.FYDM=PA.FYDM group by DMMS order by count(DMMS) desc
+            </when>
+            <otherwise>
+                select DMMS as name,count(DMMS) as value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                and p.AJXH=l.AJXH
+                ) T where T.AY=PA.DMBH group by DMMS order by count(DMMS) desc
+            </otherwise>
+        </choose>
+
+    </select>
+    <!--未成年人已结案件数-->
+    <select id="getMinorYjajCount" resultType="Integer">
+        select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d
+        where
+        <choose>
+        <!--滨海的pgsql要手动转换日期并加上fydm-->
+        <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+        <when test="fydm == '120242 22A' ">
+            <if test="beginTime!=null and beginTime!='' ">
+                JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+            </if>
+            and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+            and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+            and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+        </when>
+        <otherwise>
+            <if test="beginTime!=null and beginTime!='' ">
+                JARQ <![CDATA[>=]]> #{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                AND JARQ <![CDATA[<]]> #{endTime}
+            </if>
+            and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+            and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+            and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+        </otherwise>
+    </choose>
+
+    </select>
+    <!--未成年人新收案件数-->
+    <select id="getMinorXsajCount" resultType="Integer">
+        select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH
+                and char_length(SFZHM)=18
+                and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getMinorBgrxb" resultMap="KvModel">
+        select d.XB as name,count(d.XB) as value from PUB_AJ_JB p,DSR_GR d  where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+
+        group by d.XB
+    </select>
+    <!--未成年人外来案件-->
+    <select id="getMinorWlaj" resultMap="KvModel">
+        select substring(d.SFZHM,1,2) as name,count(substring(d.SFZHM,1,2)) as value from PUB_AJ_JB p,DSR_GR d
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                group by substring(d.SFZHM,1,2)
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH
+                and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                group by substring(d.SFZHM,1,2)
+            </otherwise>
+        </choose>
+
+    </select>
+    <!-- 未成年犯罪 传入时间和案由 得到该案由对应的案件量-->
+    <select id="getMinorajCountByAy" resultType="Integer">
+        select count(*) from PUB_LA_AY pl,DSR_GR d,PUB_AJ_JB p where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and AY in (select DMBH from PUB_AYDMB where DMMS=#{ay}) 
+                and d.AJXH=pl.AJXH and  d.FYDM=pl.FYDM and p.AJXH=pl.AJXH and p.FYDM=pl.FYDM and  char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and AY in (select DMBH from PUB_AYDMB where
+                DMMS=#{ay}) and d.AJXH=pl.AJXH and  p.AJXH=pl.AJXH and  char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+
+    </select>
+    <!--未成年人年龄分布-->
+    <select id="getMinorBgrAge" resultMap="KvModel">
+
+        <choose>
+        <!--滨海的pgsql要手动转换日期并加上fydm-->
+        <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+        <when test="fydm == '120242 22A' ">
+            select
+            cast(to_char(jarq,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) as name,
+            count(*) as value
+            from PUB_AJ_JB p,DSR_GR d  where
+            <if test="beginTime!=null and beginTime!='' ">
+                JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+            </if>
+            and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+            and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+            and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            group by cast(to_char(jarq,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)
+        </when>
+        <otherwise>
+            select
+            year(p.LARQ)-convert(int,substring(SFZHM,7,4)) as name,
+            count(*) as value
+            from PUB_AJ_JB p,DSR_GR d  where
+            <if test="beginTime!=null and beginTime!='' ">
+                JARQ <![CDATA[>=]]> #{beginTime}
+            </if>
+            <if test="endTime!=null and endTime!='' ">
+                AND JARQ <![CDATA[<]]> #{endTime}
+            </if>
+            and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18
+            and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+            and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            group by year(p.LARQ)-convert(int,substring(SFZHM,7,4))
+        </otherwise>
+    </choose>
+        
+    </select>
+
+    <!--未成年人14-15周岁涉诉罪名 -->
+    <select id="getMinorSszmRange1" resultMap="KvModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select DMMS as name,count(DMMS) as value from PUB_AYDMB PA,(select l.AY,p.FYDM from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and  p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and p.AJXH=l.AJXH and p.FYDM=l.FYDM
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<=]]> 15
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>=]]> 14
+                )
+                T where T.AY=PA.DMBH and T.FYDM=PA.FYDM group by DMMS
+            </when>
+            <otherwise>
+                select DMMS as name,count(DMMS) as value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and  p.AJXH=d.AJXH and char_length(SFZHM)=18
+                and p.AJXH=l.AJXH 
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]>15
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>=]]>14
+                )
+                T where T.AY=PA.DMBH group by DMMS
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <!--未成年人16-17周岁涉诉罪名 -->
+    <select id="getMinorSszmRange2" resultMap="KvModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select DMMS as name,count(DMMS) as value from PUB_AYDMB PA,(select l.AY,p.FYDM from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and  p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and p.AJXH=l.AJXH and p.FYDM=l.FYDM
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<=]]> 16
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>=]]> 17
+                ) T
+                where T.AY=PA.DMBH and T.FYDM=PA.FYDM group by DMMS
+            </when>
+            <otherwise>
+                select DMMS as name,count(DMMS) as value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and  p.AJXH=d.AJXH and char_length(SFZHM)=18
+                and p.AJXH=l.AJXH
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>=]]> 16
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 17
+                ) T
+                where T.AY=PA.DMBH group by DMMS
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <!--未成年人文化程度-->
+    <select id="getMinorWhcd" resultMap="KvModel">
+        select d.WHCD_WS as name,count(d.WHCD_WS) as value from PUB_AJ_JB p,DSR_GR d
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+        and d.WHCD_WS is not null
+        group by d.WHCD_WS
+    </select>
+    <!--未成年人外来人口-->
+    <select id="getMinorWlrk" resultMap="K2vModel">
+        select sum(case when DZ like '%天津%' then 1 else 0 end) as value1,sum(case when DZ not like '%天津%' then 1 else 0 end) as value2 from PUB_AJ_JB p,DSR_GR d
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+        and d.DZ is not null
+    </select>
+    <select id="getAjslJa" resultType="int">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getAjslLa" resultType="int">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getAjslAvg" resultMap="TimeModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select 'year' as year,LARQ,JARQ from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+            </when>
+            <otherwise>
+                select 'year' as year,LARQ,JARQ from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getBmajslLa" resultMap="KvModel">
+        select b.DMMS as name,count(distinct p.AJXH) as value from PUB_AJ_JB p, DSR_GR d,PUB_DMB b where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                and b.LBBH='USR206-99'
+                and p.BASPT=b.DMBH
+                and p.FYDM=b.FYDM
+                group by b.DMMS
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                and b.LBBH='USR206-99'
+                and p.BASPT=b.DMBH
+                group by b.DMMS
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getBmajslJa" resultMap="KvModel">
+        select b.DMMS as name,count(distinct p.AJXH) as value from PUB_AJ_JB p, DSR_GR d,PUB_DMB b where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                and b.LBBH='USR206-99'
+                and p.BASPT=b.DMBH
+                and p.FYDM=b.FYDM
+                group by b.DMMS
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                and b.LBBH='USR206-99'
+                and p.BASPT=b.DMBH
+                group by b.DMMS
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getBmajslavg" resultMap="TimeModel">
+        select b.DMMS as year,p.LARQ,p.JARQ from PUB_AJ_JB p, DSR_GR d,PUB_DMB b where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                and b.LBBH='USR206-99'
+                and p.BASPT=b.DMBH
+                and p.FYDM=b.FYDM
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                and b.LBBH='USR206-99'
+                and p.BASPT=b.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="yqtx" resultMap="K3vModel">
+        select SXZXNS_WS as value1,SXZXYS_WS as value2,count(*) as value3 from PUB_AJ_JB p,DSR_GR d,DSR_BGFJ_WS w
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-dd')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-dd')
+                </if>
+                and AJXZ='1' and w.SXZX_WS='有期徒刑' and p.AJXH=d.AJXH and p.FYDM=d.FYDM
+                and p.AJXH=w.AJXH and p.FYDM=w.FYDM
+                and d.DSRBH=w.DSRBH
+                and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                group by (SXZXNS_WS,SXZXYS_WS)
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and w.SXZX_WS='有期徒刑' and p.AJXH=d.AJXH
+                and p.AJXH=w.AJXH
+                and d.DSRBH=w.DSRBH
+                and char_length(SFZHM)=18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                group by SXZXNS_WS,SXZXYS_WS
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getYjCount" resultMap="KvModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select extract(year from JARQ) as name,count(*) as value from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                group by extract(year from JARQ)
+            </when>
+            <otherwise>
+                select year(JARQ) as name,count(*) as value from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                group by year(JARQ)
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getSjCount" resultMap="KvModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select extract(year from LARQ) as name,count(*) as value from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and p.FYDM=d.FYDM and char_length(SFZHM)=18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER)<![CDATA[<]]> 18
+                and cast(to_char(LARQ,'yyyy') as INTEGER)-cast(substring(SFZHM,7,4) as INTEGER) <![CDATA[>]]> 0
+                group by extract(year from LARQ)
+            </when>
+            <otherwise>
+                select year(LARQ) as name,count(*) as value from PUB_AJ_JB p,DSR_GR d where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+                and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>]]> 0
+                group by year(LARQ)
+            </otherwise>
+        </choose>
+
+    </select>
+</mapper>

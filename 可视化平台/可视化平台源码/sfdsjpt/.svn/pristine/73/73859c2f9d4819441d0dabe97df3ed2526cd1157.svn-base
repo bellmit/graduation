@@ -1,0 +1,14 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface WxjszService {
+
+    /**
+     * 机动车类型
+     */
+    List<KvModel> getTypeOfVehicle();
+
+}

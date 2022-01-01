@@ -1,0 +1,41 @@
+package com.software.service.impl;
+
+import com.software.service.LhjfService;
+import com.software.mapper.LhjfMapper;
+import com.software.model.ForDmmsModel;
+import com.software.model.KvModel;
+import com.software.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class LhjfServiceImpl implements LhjfService {
+    @Autowired
+    private LhjfMapper lhjfMapper;
+
+    @Override
+    public List<KvModel> getLhjfPjjg(String beginTime, String endTime){
+        List<ForDmmsModel> forDmmsModels=lhjfMapper.getForDmms(beginTime,endTime,"离婚");
+        String sjxx=lhjfMapper.getSjxx("PUB_AJ_JB","JAFS").getName();
+        List<KvModel> jafsKv=new ArrayList<>();
+        for (ForDmmsModel a:forDmmsModels){
+            String ajxz=a.getAjxz();
+            String spcx=a.getSpcx();
+            String jafs=a.getName();
+            String spcxdz=a.getSpcxdz();
+            //通过案件性质 审判程序 审计信息得到类别编号
+            String lbbh=StringUtils.jxLbbh(ajxz,spcx,spcxdz,sjxx);
+            //根据类别编号和代码编号可以得到代码描述
+            String dmms=lhjfMapper.getDmms(lbbh,jafs);
+            if (dmms==null) continue;
+            KvModel k=new KvModel();
+            k.setName(dmms);
+            k.setValue(a.getValue());
+            jafsKv.add(k);
+        }
+        return jafsKv;
+    }
+}

@@ -1,0 +1,217 @@
+package com.software.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class PubDmb implements Serializable {
+    private String lbbh;
+
+    private String dmbh;
+
+    private String dmms;
+
+    private String xgdm;
+
+    private String bz;
+
+    private String modflag;
+
+    private String transflag;
+
+    private Date xgsj;
+
+    private Double xssx;
+
+    private String dqbs;
+
+    private Integer fybh;
+
+    private String fysx;
+
+    private String fylbdm;
+
+    private Integer xzqdmbh;
+
+    private Integer dmbbh;
+
+    private String spbm;
+
+    private String bmzt;
+
+    private String xgdm2;
+
+    private static final long serialVersionUID = 1L;
+
+    public String getLbbh() {
+        return lbbh;
+    }
+
+    public void setLbbh(String lbbh) {
+        this.lbbh = lbbh == null ? null : lbbh.trim();
+    }
+
+    public String getDmbh() {
+        return dmbh;
+    }
+
+    public void setDmbh(String dmbh) {
+        this.dmbh = dmbh == null ? null : dmbh.trim();
+    }
+
+    public String getDmms() {
+        return dmms;
+    }
+
+    public void setDmms(String dmms) {
+        this.dmms = dmms == null ? null : dmms.trim();
+    }
+
+    public String getXgdm() {
+        return xgdm;
+    }
+
+    public void setXgdm(String xgdm) {
+        this.xgdm = xgdm == null ? null : xgdm.trim();
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz == null ? null : bz.trim();
+    }
+
+    public String getModflag() {
+        return modflag;
+    }
+
+    public void setModflag(String modflag) {
+        this.modflag = modflag == null ? null : modflag.trim();
+    }
+
+    public String getTransflag() {
+        return transflag;
+    }
+
+    public void setTransflag(String transflag) {
+        this.transflag = transflag == null ? null : transflag.trim();
+    }
+
+    public Date getXgsj() {
+        return xgsj;
+    }
+
+    public void setXgsj(Date xgsj) {
+        this.xgsj = xgsj;
+    }
+
+    public Double getXssx() {
+        return xssx;
+    }
+
+    public void setXssx(Double xssx) {
+        this.xssx = xssx;
+    }
+
+    public String getDqbs() {
+        return dqbs;
+    }
+
+    public void setDqbs(String dqbs) {
+        this.dqbs = dqbs == null ? null : dqbs.trim();
+    }
+
+    public Integer getFybh() {
+        return fybh;
+    }
+
+    public void setFybh(Integer fybh) {
+        this.fybh = fybh;
+    }
+
+    public String getFysx() {
+        return fysx;
+    }
+
+    public void setFysx(String fysx) {
+        this.fysx = fysx == null ? null : fysx.trim();
+    }
+
+    public String getFylbdm() {
+        return fylbdm;
+    }
+
+    public void setFylbdm(String fylbdm) {
+        this.fylbdm = fylbdm == null ? null : fylbdm.trim();
+    }
+
+    public Integer getXzqdmbh() {
+        return xzqdmbh;
+    }
+
+    public void setXzqdmbh(Integer xzqdmbh) {
+        this.xzqdmbh = xzqdmbh;
+    }
+
+    public Integer getDmbbh() {
+        return dmbbh;
+    }
+
+    public void setDmbbh(Integer dmbbh) {
+        this.dmbbh = dmbbh;
+    }
+
+    public String getSpbm() {
+        return spbm;
+    }
+
+    public void setSpbm(String spbm) {
+        this.spbm = spbm == null ? null : spbm.trim();
+    }
+
+    public String getBmzt() {
+        return bmzt;
+    }
+
+    public void setBmzt(String bmzt) {
+        this.bmzt = bmzt == null ? null : bmzt.trim();
+    }
+
+    public String getXgdm2() {
+        return xgdm2;
+    }
+
+    public void setXgdm2(String xgdm2) {
+        this.xgdm2 = xgdm2 == null ? null : xgdm2.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", lbbh=").append(lbbh);
+        sb.append(", dmbh=").append(dmbh);
+        sb.append(", dmms=").append(dmms);
+        sb.append(", xgdm=").append(xgdm);
+        sb.append(", bz=").append(bz);
+        sb.append(", modflag=").append(modflag);
+        sb.append(", transflag=").append(transflag);
+        sb.append(", xgsj=").append(xgsj);
+        sb.append(", xssx=").append(xssx);
+        sb.append(", dqbs=").append(dqbs);
+        sb.append(", fybh=").append(fybh);
+        sb.append(", fysx=").append(fysx);
+        sb.append(", fylbdm=").append(fylbdm);
+        sb.append(", xzqdmbh=").append(xzqdmbh);
+        sb.append(", dmbbh=").append(dmbbh);
+        sb.append(", spbm=").append(spbm);
+        sb.append(", bmzt=").append(bmzt);
+        sb.append(", xgdm2=").append(xgdm2);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

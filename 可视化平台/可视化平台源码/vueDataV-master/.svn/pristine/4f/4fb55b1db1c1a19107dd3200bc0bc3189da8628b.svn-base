@@ -1,0 +1,140 @@
+<!--
+ 描述: 危险驾驶罪
+-->
+
+<template>
+  <div class="home-container">
+    <div class="wrap" ref="editor">
+      <div class="top">
+        <div class="date">
+          <div><label>开始时间：</label><input type="date" v-model="beginTime"></div>
+          <div><label>结束时间：</label><input type="date" v-model="endTime"></div>
+        </div>
+      </div>
+      <div class="content">
+        <item>
+          <template v-slot:title>案件审结情况</template>
+          <template v-slot:chart>
+            <bar api="/wxjsz/getAjCount" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件地区分布</template>
+          <template v-slot:chart>
+            <tianjin-map api="/wxjsz/getAreaDistribution" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <pie api="/wxjsz/getBgrWhcd" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <pie api="/wxjsz/getBgrsf" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <pie api="/wxjsz/getBgrxb" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <ring api="/wxjsz/getBgrAge" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件特征</template>
+          <template v-slot:chart>
+            <bar api="/wxjsz/getYqtxlx" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件特征</template>
+          <template v-slot:chart>
+            <area-pie api="/wxjsz/getTypeOfVehicle" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {getCurTime, screenSize} from '@/assets/js/utils'
+
+export default {
+  name: 'Home',
+  components: {},
+  data() {
+    return {
+      beginTime:new Date().getFullYear()+'-01-01',
+      endTime:getCurTime(),
+    }
+  },
+  computed: {
+
+  },
+  created() {
+  },
+  mounted() {
+    screenSize(this.$refs.editor);
+  },
+  methods: {
+
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.home-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  .wrap {
+    .date{
+      height: 50px;
+      margin-top: 15px;
+      float: right;
+      div{
+        height: 25px;
+        padding: 2px;
+        label{
+          color: #00aeef;
+          font-size: 15px;
+        }
+      }
+    }
+    transform-origin: 0px 0px 0px;
+    background: url(../assets/img/bj.jpg) no-repeat;
+    background-size: contain;
+    background-position: 50% 0;
+    background-color: rgb(0, 0, 0);
+    min-width: auto;
+    width: 1920px;
+    min-height: auto;
+    height: 1080px;
+    overflow: auto;
+    .top {
+      width: 100%;
+      height: 80px;
+      background-color: transparent;
+      background: url(../assets/img/top_nav.png) no-repeat;
+      background-position: 65% 0;
+      border: none;
+      overflow: hidden;
+    }
+    .content{
+      overflow: hidden;
+      padding-bottom: 60px;
+    }
+  }
+}
+</style>

@@ -1,0 +1,44 @@
+package com.software.Service.impl;
+
+import com.software.Service.MinorFzService;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.K2vModel;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+
+public class MinorFzServiceImpl implements MinorFzService {
+    @Autowired
+    AjjbDao ajjbDao;
+    //
+    @Override
+    public List<KvModel> getMinorZmfb(String beginTime, String endTime){
+        return null;
+    }
+    //返回的是最近三年的
+    public List<K2vModel> getMinorYearAjCount(){
+        /*int year=DateUtils.getCurYear();
+        List<K2vModel> list=new ArrayList<>();
+        for(int i=year-2;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            String fristday=DateUtils.formatDate(first);
+            kvModel.setValue(ajjbDao.getAjCount(fristday,lastday));
+            list.add(k2vModel);
+        }
+        return list;
+        int a1=ajjbDao.getMinorXsajCount();
+        int b1=ajjbDao.getMinorYjajCount();
+*/
+        return null;
+
+    }
+}

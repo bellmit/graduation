@@ -1,0 +1,106 @@
+package com.software.service.impl;
+
+import com.software.model.KvModel;
+import com.software.service.AjDescriptionService;
+import com.software.utils.DescriptionUtils;
+import org.springframework.stereotype.Service;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class AjDescServiceImpl implements AjDescriptionService {
+    public List<String> getAjCountDesc(List<KvModel> kvModels){
+        List<String> res=new ArrayList<>();
+
+        int len=kvModels.size();
+        String curYear="",preYear="";
+        int curCount=0,preCount=0;
+        for(int i=1;i<len;i++) {
+            StringBuffer desc=new StringBuffer("");
+            KvModel curDate = kvModels.get(i);
+            KvModel preDate = kvModels.get(i - 1);
+            curYear = curDate.getName();
+            preYear = preDate.getName();
+            curCount = curDate.getValue();
+            preCount = preDate.getValue();
+            double d=Math.abs(curCount-preCount)/(double)preCount;
+            DecimalFormat df=new DecimalFormat("0.00%");
+            String flag="";
+            if (curCount>=preCount){
+                flag="上升";
+            }else{
+                flag="下降";
+            }
+            desc.append(curYear).append("年比").append(preYear).append("年").append(flag).append(df.format(d));
+            res.add(desc.toString());
+        }
+        return res;
+    }
+
+    public List<String> getAreaDistributionDesc(List<KvModel> kvModels){
+
+        List<String> res=new ArrayList<>();
+        int len=kvModels.size();
+        String curArea="";
+        int curCount=0;
+        for(int i=0;i<len;i++) {
+            StringBuffer desc=new StringBuffer("");
+            KvModel curData = kvModels.get(i);
+            curArea = curData.getName();
+            curCount = curData.getValue();
+            desc.append(curArea).append(":").append(curCount);
+            res.add(desc.toString());
+        }
+        return res;
+    }
+
+    public List<String> getBgrxbDesc(List<KvModel> kvModels){
+
+        List<String> res=new ArrayList<>();
+        int boyCount=0,girlCount=0;
+
+        for (KvModel kvModel:kvModels){
+            if (kvModel.getName().equals("男性")){
+                    boyCount=kvModel.getValue();
+            }else if (kvModel.getName().equals("女性")){
+                    girlCount=kvModel.getValue();
+            }
+        }
+        if (boyCount>girlCount){
+            res.add("男性被告人多于女性被告人");
+        }else if (boyCount<girlCount){
+            res.add("女性被告人多于男性被告人");
+        }else{
+            res.add("男女被告人人数相等");
+        }
+        return res;
+    }
+
+    public List<String> getBgrsfDesc(List<KvModel> kvModels){
+        List<String> res=DescriptionUtils.getMaxBlDesc(kvModels,"身份");
+        return res;
+    }
+
+    public List<String> getBgrWhcdDesc(List<KvModel> kvModels){
+        List<String> res=DescriptionUtils.getMaxBlDesc(kvModels,"文化程度");
+        return res;
+    }
+
+    public List<String> getBgrAgeDesc(List<KvModel> kvModels){
+
+        List<String> res=DescriptionUtils.getMaxBlDesc(kvModels,"年龄段");
+        return res;
+    }
+
+    /**
+     * 有期徒刑量刑
+     */
+    public List<String> getYqtxlxDesc(List<KvModel> kvModels){
+
+        List<String> res=DescriptionUtils.getMaxBlDesc(kvModels,"有期徒刑量刑");
+        return res;
+    }
+
+}

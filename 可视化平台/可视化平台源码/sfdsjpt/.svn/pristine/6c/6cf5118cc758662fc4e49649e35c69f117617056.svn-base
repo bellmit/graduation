@@ -1,0 +1,50 @@
+package com.software.utils;
+
+
+/**
+ * code 0表示成功, 1表示失败
+ * message 提示语
+ * data 返回给前端的数据
+ *
+ *
+ * */
+public class ResultModelUtil {
+
+
+    public static ResultModel success(String message){
+        ResultModel rm=new ResultModel(0,message,"");
+        return rm;
+    }
+    public static ResultModel success(Object data){
+        ResultModel rm=new ResultModel(0,"",data);
+        return rm;
+    }
+    public static ResultModel success(String message,Object data){
+        ResultModel rm=new ResultModel(0,message,data);
+        return rm;
+    }
+
+
+    public static ResultModel success(String message,Object result,int count){
+        ResultModel rm=new ResultModel(0,message,result);
+        return rm;
+    }
+    public static ResultModel success(Object result,int count){
+        ResultModel rm=new ResultModel(0,"success",result);
+
+        return rm;
+    }
+
+    public static ResultModel failed(String message){
+        ResultModel rm=new ResultModel(1,message,"");
+        return rm;
+    }
+
+    public static ResultModel failed(String message,Object result){
+        ResultModel rm=new ResultModel(1,message,result);
+        return rm;
+    }
+
+
+
+}

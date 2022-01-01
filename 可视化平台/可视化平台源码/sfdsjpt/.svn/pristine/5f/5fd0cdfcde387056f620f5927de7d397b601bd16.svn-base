@@ -1,0 +1,19 @@
+package com.software.Service;
+
+import com.software.model.KvModel;
+import com.software.utils.ResultModel;
+
+import java.util.List;
+
+public interface XykzpService {
+
+    List<KvModel> getAjCount();
+
+    List<KvModel> getBrgage(String beginTime,String endTime);
+
+    List<KvModel> getBgrxb(String beginTime,String endTime);
+
+    List<KvModel> getBgrsf(String beginTime,String endTime);
+
+    List<KvModel> getBgrWhcd(String beginTime,String endTime);
+}

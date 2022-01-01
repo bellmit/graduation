@@ -1,0 +1,80 @@
+package com.software.controller;
+
+import com.software.Service.XykzpService;
+import com.software.model.KvModel;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+/**
+ * 信用卡诈骗罪接口
+ */
+@RestController
+@RequestMapping("/xykzp")
+public class XykzpController {
+    @Autowired
+    XykzpService xykzpService;
+    /**
+     * 各年案件量(近五年)
+     * @return
+     */
+    @RequestMapping("/getAjCount")
+    public ResultModel getAjCount(){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        try{
+            return ResultModelUtil.success(xykzpService.getAjCount());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    @RequestMapping("/getBgrWhcd")
+    public ResultModel getBgrWhcd() {
+        List<KvModel> kvModels=xykzpService.getBgrWhcd("2021-01-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    @RequestMapping("/getBgrsf")
+    public ResultModel getBgrsf() {
+        List<KvModel> kvModels=xykzpService.getBgrsf("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    @RequestMapping("/getBgrxb")
+    public ResultModel getBgrxb() {
+        List<KvModel> kvModels=xykzpService.getBgrxb("2021-01-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    @RequestMapping("/getBgrAge")
+    public ResultModel getBgrAge() {
+        List<KvModel> kvModels=xykzpService.getBrgage("2021-01-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+
+    /**
+     * 获得犯罪金额信息
+     */
+    @RequestMapping("/getCrimeAmount")
+    public ResultModel getCrimeAmount(){
+        List<KvModel> kvModels=xykzpService.getCrimeAmount("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    /**
+     * 获得诈骗方式信息
+     */
+    @RequestMapping("/getFraudMethod")
+    public ResultModel getFraudMethod(){
+        List<KvModel> kvModels=xykzpService.getFraudMethod("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    /**
+     * 获得受害银行信息
+     */
+    @RequestMapping("/getVictimBank")
+    public ResultModel getVictimBank(){
+        List<KvModel> kvModels=xykzpService.getVictimBank("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+}

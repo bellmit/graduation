@@ -1,0 +1,19 @@
+package com.software.service.impl;
+
+import com.software.model.KvModel;
+import com.software.service.LhjfDescService;
+import com.software.utils.DescriptionUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class LhjfDescServiceImpl implements LhjfDescService {
+
+    @Override
+    public List<String> getLhjfPjjg(List<KvModel> kvModels) {
+        if (kvModels==null) return null;
+        List<String> res=DescriptionUtils.getMaxBlDesc(kvModels,"判决结果");
+        return res;
+    }
+}

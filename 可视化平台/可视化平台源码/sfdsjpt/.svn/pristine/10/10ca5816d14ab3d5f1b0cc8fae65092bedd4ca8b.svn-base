@@ -1,0 +1,21 @@
+package com.software.mapper;
+
+import com.software.model.AyModel;
+import com.software.model.DsrModel;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+@Mapper
+public interface ZscqqqMapper extends AjMapper{
+    List<DsrModel> getDsrType(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+
+    List<AyModel> getAyType();
+
+    Integer getAjCountByAy(@Param("beginTime")String beginTime, @Param("endTime")String endTime, @Param("dmbh")String dmbh);
+
+    Integer getAjAvgDayByAy(@Param("beginTime")String beginTime, @Param("endTime")String endTime,@Param("dmbh") String dmbh);
+
+    List<Integer> getBgCount(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+}

@@ -1,0 +1,27 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface CommonService {
+    /**
+     * 各年案件量
+     */
+    List<KvModel> getAjCount(String fydm);
+
+    List<KvModel> getAreaDistribution(String beginTime,String endTime,String fydm);
+
+    List<KvModel> getBgrxb(String beginTime,String endTime,String fydm);
+
+    List<KvModel> getBgrsf(String beginTime,String endTime,String fydm);
+
+    List<KvModel> getBgrWhcd(String beginTime,String endTime,String fydm);
+
+    List<KvModel> getBrgage(String beginTime,String endTime,String fydm);
+
+    /**
+     * 有期徒刑量刑
+     */
+    List<KvModel> getYqtxlx(String beginTime,String endTime,String fydm);
+}

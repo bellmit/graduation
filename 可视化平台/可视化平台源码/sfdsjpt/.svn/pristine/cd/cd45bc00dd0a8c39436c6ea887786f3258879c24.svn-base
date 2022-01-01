@@ -1,0 +1,11 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface ShfzDescService {
+    List<String> getBgrGlzm(List<KvModel> kvModels);
+
+    List<String> getBrgage(List<KvModel> kvModels);
+}

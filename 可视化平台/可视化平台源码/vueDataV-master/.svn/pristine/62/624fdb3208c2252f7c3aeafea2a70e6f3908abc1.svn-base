@@ -1,0 +1,83 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
+    meta: {
+      title: '登录界面'
+    }
+  },
+  {
+    path: '/login',
+    redirect: '/'
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/views/Home.vue'),
+    meta: {
+      title: '大数据资源服务平台'
+    }
+  },
+  {
+    path: '/wxjsz',
+    name: 'Wxjsz',
+    component: () => import('@/views/Wxjsz.vue'),
+    meta: {
+      title: '危险驾驶罪'
+    }
+  },
+  {
+    path: '/zscqqq',
+    name: 'Zscqqq',
+    component: () => import('@/views/Zscqqq.vue'),
+    meta: {
+      title: '知识产权侵权'
+    }
+  },
+  {
+    path: '/xykzp',
+    name: 'Xykzp',
+    component: () => import('@/views/Xykzp.vue'),
+    meta: {
+      title: '危险驾驶罪'
+    }
+  },
+  {
+    path: '/brand',
+    name: 'Brand',
+    component: () => import('@/views/Brand.vue'),
+    meta: {
+      title: '公司品牌介绍'
+    }
+  },
+    {
+        path: '/shfz',
+        name: 'Shfz',
+        component: () => import('@/views/shfz.vue'),
+        meta: {
+            title: '涉黑犯罪'
+        }
+    },
+    {
+        path: '/wcnfz',
+        name: 'Wcnfz',
+        component: () => import('@/views/wcnfz.vue'),
+        meta: {
+            title: '未成年犯罪'
+        }
+    },
+]
+
+const router = new VueRouter({
+  mode: 'hash',
+  base: process.env.BASE_URL,
+  routes
+})
+
+export default router

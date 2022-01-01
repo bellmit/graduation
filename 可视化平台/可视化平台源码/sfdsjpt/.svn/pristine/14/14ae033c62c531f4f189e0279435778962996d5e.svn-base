@@ -1,0 +1,94 @@
+package com.software.controller;
+
+import com.software.model.KvModel;
+import com.software.service.AjDescriptionService;
+import com.software.service.WxjszDescService;
+import com.software.service.WxjszService;
+import com.software.model.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+
+/**
+ * 危险驾驶罪接口
+ */
+@RestController
+@RequestMapping("/wxjsz")
+public class WxjszController {
+    @Autowired
+    WxjszService wxjszService;
+    @Autowired
+    AjDescriptionService ads;
+
+    @Autowired
+    WxjszDescService wxd;
+
+    /**
+     * 各年案件量(近五年)
+     */
+    @RequestMapping("/getAjCount")
+    public ResultModel getAjCount(HttpServletRequest request,String beginTime,String endTime){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        List<KvModel> kvModels=wxjszService.getAjCount();
+        List<String> description=ads.getAjCountDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"年案件量",description);
+    }
+
+    @RequestMapping("/getBgrWhcd")
+    public ResultModel getBgrWhcd(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=wxjszService.getBgrWhcd(beginTime,endTime);
+        List<String> description=ads.getBgrWhcdDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"文化程度",description);
+    }
+    @RequestMapping("/getBgrsf")
+    public ResultModel getBgrsf(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=wxjszService.getBgrsf(beginTime,endTime);
+        List<String> description=ads.getBgrsfDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人身份",description);
+    }
+    @RequestMapping("/getBgrxb")
+    public ResultModel getBgrxb(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=wxjszService.getBgrxb(beginTime,endTime);
+        List<String> description=ads.getBgrxbDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人性别",description);
+    }
+    @RequestMapping("/getBgrAge")
+    public ResultModel getBgrAge(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=wxjszService.getBrgage(beginTime,endTime);
+        List<String> description=ads.getBgrAgeDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人年龄",description);
+    }
+    /**
+     * 案件地域分布（天津地区）
+     */
+    @RequestMapping("/getAreaDistribution")
+    public ResultModel getAreaDistribution(HttpServletRequest request,String beginTime,String endTime){
+        String fydm= (String) request.getSession().getAttribute("fydm");
+        return ResultModelUtil.success(wxjszService.getAreaDistribution(beginTime,endTime,fydm),"","");
+    }
+    /**
+     * 有期徒刑量刑
+     */
+    @RequestMapping("/getYqtxlx")
+    public ResultModel getYqtxlx(HttpServletRequest request,String beginTime,String endTime){
+        List<KvModel> kvModels=wxjszService.getYqtxlx(beginTime,endTime);
+        List<String> description=ads.getYqtxlxDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"有期徒刑量刑",description);
+    }
+
+    /**
+     * 机动车类型
+     */
+    @RequestMapping("/getTypeOfVehicle")
+    public ResultModel getTypeOfVehicle(HttpServletRequest request,String beginTime,String endTime){
+        List<KvModel> kvModels=wxjszService.getTypeOfVehicle(beginTime,endTime);
+        List<String> description=wxd.getTypeOfVehicle(kvModels);
+        return ResultModelUtil.success(kvModels,"机动车类型",description);
+    }
+}

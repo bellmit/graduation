@@ -1,0 +1,49 @@
+package com.software.service.impl;
+
+import com.software.model.KvModel;
+import com.software.service.ShfzDescService;
+import com.software.utils.DescriptionUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ShfzDescServiceImpl implements ShfzDescService {
+
+    @Override
+    public List<String> getBgrGlzm(List<KvModel> kvModels){
+        List<String> res=new ArrayList<>();
+        int len=kvModels.size();
+        String curZm="";
+        int curCount=0;
+        StringBuffer desc=new StringBuffer("被告人罪名主要罪名分别为：");
+        int max=0,sum=0;
+        for(int i=0;i<len;i++) {
+
+            KvModel curData = kvModels.get(i);
+            curCount = curData.getValue();
+            sum+=curCount;
+
+            if (curData.getName().equals("其他")){
+                continue;
+            }
+            if(curCount>max){
+                max=curCount;
+                curZm=curData.getName();
+            }
+            max=Math.max(curCount,max);
+            desc.append(curData.getName()).append(",");
+        }
+        res.add(desc.toString());
+      //  double d=(double)max/(double)sum;
+        res.add("最多的罪名是"+curZm);
+
+        return res;
+    }
+    @Override
+    public List<String> getBrgage(List<KvModel> kvModels){
+        List<String> list=DescriptionUtils.getMaxBlDesc(kvModels,"年龄段");
+        return list;
+    }
+}

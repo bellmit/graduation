@@ -1,0 +1,59 @@
+package com.software.mapper.dao;
+
+import com.software.mapper.PubAjJbMapper;
+import com.software.model.*;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Primary
+public interface AjjbDao extends PubAjJbMapper {
+    AjjbModel selectByAjxh(@Param("fydm") String fydm, @Param("ajxh") Integer ajxh);
+    //首页的业务审判庭数据排名
+    List<K2vModel> getYwtsj(String beginTime,String endTime);
+    //首页的实时立案数据 当天的
+    List<AjjbModel> getAjxxIntime(String beginTime,String endTime);
+    //获取被告人性别 传入案由代码列表 可以得到不同案件类型的被告人性别
+    List<KvModel> getBgrxb(String beginTime,String endTime);
+    //得到某个时期的案件数 比如年案件数
+    Integer getAjCount(String beginTime,String endTime);
+
+    //被告人年龄分析 身份证按格式才有效
+    List<BgrxxModel> getBgrAge(String beginTime, String endTime);
+
+    //被告人身份
+    List<KvModel> getBgrsf(String beginTime,String endTime);
+
+    //被告人关联罪名
+    List<KvModel> getBgrGlzm(String beginTime,String endTime);
+
+    //被告人文化程度
+    List<KvModel> getBgrWhcd(String beginTime,String endTime);
+
+    //判决结果
+    List<KvModel> getPjjg(String beginTime,String endTime);
+
+    //有期徒刑年数
+    List<BgrxxModel> getYqtx(String beginTime,String endTime);
+    //未成年人罪名分布
+    List<KvModel> getMinorZmfb(String beginTime,String endTime);
+
+    //未成年人年新收案件量
+    int getMinorXsajCount(String beginTime,String endTime );
+
+    //未成年人已结案件量。这个也可以用于计算辖区内未成年人犯罪情况对应省案件量分布
+    int getMinorYjajCount(String beginTime,String endTime );
+
+    //未成年人被告性别
+    List<KvModel> getMinorBgrxb(String beginTime,String endTime);
+
+    //未成年人犯罪各省外来案件
+    List<KvModel> getMinorWlaj(String beginTime,String endTime);
+
+
+
+}
+

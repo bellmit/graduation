@@ -1,0 +1,30 @@
+package com.software.mapper;
+
+import com.software.entity.PubLaAy;
+import com.software.entity.PubLaAyExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface PubLaAyMapper {
+    int countByExample(PubLaAyExample example);
+
+    int deleteByExample(PubLaAyExample example);
+
+    int deleteByPrimaryKey(@Param("ajxh") Integer ajxh, @Param("laaybh") Integer laaybh);
+
+    int insert(PubLaAy record);
+
+    int insertSelective(PubLaAy record);
+
+    List<PubLaAy> selectByExample(PubLaAyExample example);
+
+    PubLaAy selectByPrimaryKey(@Param("ajxh") Integer ajxh, @Param("laaybh") Integer laaybh);
+
+    int updateByExampleSelective(@Param("record") PubLaAy record, @Param("example") PubLaAyExample example);
+
+    int updateByExample(@Param("record") PubLaAy record, @Param("example") PubLaAyExample example);
+
+    int updateByPrimaryKeySelective(PubLaAy record);
+
+    int updateByPrimaryKey(PubLaAy record);
+}

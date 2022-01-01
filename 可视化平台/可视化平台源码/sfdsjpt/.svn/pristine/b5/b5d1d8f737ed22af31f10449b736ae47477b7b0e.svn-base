@@ -1,0 +1,360 @@
+package com.software.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class PubXtglYhb implements Serializable {
+    private Integer yhbh;
+
+    private String yhdm;
+
+    private String yhmc;
+
+    private String yhkl;
+
+    private String yhbm;
+
+    private String klts;
+
+    private String klda;
+
+    private String yhsf;
+
+    private Date klszsj;
+
+    private Date qjkssj;
+
+    private Date qjjssj;
+
+    private String qjyy;
+
+    private Integer grnzb;
+
+    private Integer qtnzb;
+
+    private String phone;
+
+    private String jbxxjCode;
+
+    private Integer fybh;
+
+    private Integer yhzt;
+
+    private String xfqx;
+
+    private String ssfwzxqx;
+
+    private Integer fasl;
+
+    private Integer fazt;
+
+    private Integer grbajs;
+
+    private Date dzqmscsj;
+
+    private String cocall;
+
+    private String sfz;
+
+    private String tel;
+
+    private String gzz;
+
+    private String zwurl;
+
+    private String sfptdl;
+
+    private String sfjagly;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getYhbh() {
+        return yhbh;
+    }
+
+    public void setYhbh(Integer yhbh) {
+        this.yhbh = yhbh;
+    }
+
+    public String getYhdm() {
+        return yhdm;
+    }
+
+    public void setYhdm(String yhdm) {
+        this.yhdm = yhdm == null ? null : yhdm.trim();
+    }
+
+    public String getYhmc() {
+        return yhmc;
+    }
+
+    public void setYhmc(String yhmc) {
+        this.yhmc = yhmc == null ? null : yhmc.trim();
+    }
+
+    public String getYhkl() {
+        return yhkl;
+    }
+
+    public void setYhkl(String yhkl) {
+        this.yhkl = yhkl == null ? null : yhkl.trim();
+    }
+
+    public String getYhbm() {
+        return yhbm;
+    }
+
+    public void setYhbm(String yhbm) {
+        this.yhbm = yhbm == null ? null : yhbm.trim();
+    }
+
+    public String getKlts() {
+        return klts;
+    }
+
+    public void setKlts(String klts) {
+        this.klts = klts == null ? null : klts.trim();
+    }
+
+    public String getKlda() {
+        return klda;
+    }
+
+    public void setKlda(String klda) {
+        this.klda = klda == null ? null : klda.trim();
+    }
+
+    public String getYhsf() {
+        return yhsf;
+    }
+
+    public void setYhsf(String yhsf) {
+        this.yhsf = yhsf == null ? null : yhsf.trim();
+    }
+
+    public Date getKlszsj() {
+        return klszsj;
+    }
+
+    public void setKlszsj(Date klszsj) {
+        this.klszsj = klszsj;
+    }
+
+    public Date getQjkssj() {
+        return qjkssj;
+    }
+
+    public void setQjkssj(Date qjkssj) {
+        this.qjkssj = qjkssj;
+    }
+
+    public Date getQjjssj() {
+        return qjjssj;
+    }
+
+    public void setQjjssj(Date qjjssj) {
+        this.qjjssj = qjjssj;
+    }
+
+    public String getQjyy() {
+        return qjyy;
+    }
+
+    public void setQjyy(String qjyy) {
+        this.qjyy = qjyy == null ? null : qjyy.trim();
+    }
+
+    public Integer getGrnzb() {
+        return grnzb;
+    }
+
+    public void setGrnzb(Integer grnzb) {
+        this.grnzb = grnzb;
+    }
+
+    public Integer getQtnzb() {
+        return qtnzb;
+    }
+
+    public void setQtnzb(Integer qtnzb) {
+        this.qtnzb = qtnzb;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    public String getJbxxjCode() {
+        return jbxxjCode;
+    }
+
+    public void setJbxxjCode(String jbxxjCode) {
+        this.jbxxjCode = jbxxjCode == null ? null : jbxxjCode.trim();
+    }
+
+    public Integer getFybh() {
+        return fybh;
+    }
+
+    public void setFybh(Integer fybh) {
+        this.fybh = fybh;
+    }
+
+    public Integer getYhzt() {
+        return yhzt;
+    }
+
+    public void setYhzt(Integer yhzt) {
+        this.yhzt = yhzt;
+    }
+
+    public String getXfqx() {
+        return xfqx;
+    }
+
+    public void setXfqx(String xfqx) {
+        this.xfqx = xfqx == null ? null : xfqx.trim();
+    }
+
+    public String getSsfwzxqx() {
+        return ssfwzxqx;
+    }
+
+    public void setSsfwzxqx(String ssfwzxqx) {
+        this.ssfwzxqx = ssfwzxqx == null ? null : ssfwzxqx.trim();
+    }
+
+    public Integer getFasl() {
+        return fasl;
+    }
+
+    public void setFasl(Integer fasl) {
+        this.fasl = fasl;
+    }
+
+    public Integer getFazt() {
+        return fazt;
+    }
+
+    public void setFazt(Integer fazt) {
+        this.fazt = fazt;
+    }
+
+    public Integer getGrbajs() {
+        return grbajs;
+    }
+
+    public void setGrbajs(Integer grbajs) {
+        this.grbajs = grbajs;
+    }
+
+    public Date getDzqmscsj() {
+        return dzqmscsj;
+    }
+
+    public void setDzqmscsj(Date dzqmscsj) {
+        this.dzqmscsj = dzqmscsj;
+    }
+
+    public String getCocall() {
+        return cocall;
+    }
+
+    public void setCocall(String cocall) {
+        this.cocall = cocall == null ? null : cocall.trim();
+    }
+
+    public String getSfz() {
+        return sfz;
+    }
+
+    public void setSfz(String sfz) {
+        this.sfz = sfz == null ? null : sfz.trim();
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel == null ? null : tel.trim();
+    }
+
+    public String getGzz() {
+        return gzz;
+    }
+
+    public void setGzz(String gzz) {
+        this.gzz = gzz == null ? null : gzz.trim();
+    }
+
+    public String getZwurl() {
+        return zwurl;
+    }
+
+    public void setZwurl(String zwurl) {
+        this.zwurl = zwurl == null ? null : zwurl.trim();
+    }
+
+    public String getSfptdl() {
+        return sfptdl;
+    }
+
+    public void setSfptdl(String sfptdl) {
+        this.sfptdl = sfptdl == null ? null : sfptdl.trim();
+    }
+
+    public String getSfjagly() {
+        return sfjagly;
+    }
+
+    public void setSfjagly(String sfjagly) {
+        this.sfjagly = sfjagly == null ? null : sfjagly.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", yhbh=").append(yhbh);
+        sb.append(", yhdm=").append(yhdm);
+        sb.append(", yhmc=").append(yhmc);
+        sb.append(", yhkl=").append(yhkl);
+        sb.append(", yhbm=").append(yhbm);
+        sb.append(", klts=").append(klts);
+        sb.append(", klda=").append(klda);
+        sb.append(", yhsf=").append(yhsf);
+        sb.append(", klszsj=").append(klszsj);
+        sb.append(", qjkssj=").append(qjkssj);
+        sb.append(", qjjssj=").append(qjjssj);
+        sb.append(", qjyy=").append(qjyy);
+        sb.append(", grnzb=").append(grnzb);
+        sb.append(", qtnzb=").append(qtnzb);
+        sb.append(", phone=").append(phone);
+        sb.append(", jbxxjCode=").append(jbxxjCode);
+        sb.append(", fybh=").append(fybh);
+        sb.append(", yhzt=").append(yhzt);
+        sb.append(", xfqx=").append(xfqx);
+        sb.append(", ssfwzxqx=").append(ssfwzxqx);
+        sb.append(", fasl=").append(fasl);
+        sb.append(", fazt=").append(fazt);
+        sb.append(", grbajs=").append(grbajs);
+        sb.append(", dzqmscsj=").append(dzqmscsj);
+        sb.append(", cocall=").append(cocall);
+        sb.append(", sfz=").append(sfz);
+        sb.append(", tel=").append(tel);
+        sb.append(", gzz=").append(gzz);
+        sb.append(", zwurl=").append(zwurl);
+        sb.append(", sfptdl=").append(sfptdl);
+        sb.append(", sfjagly=").append(sfjagly);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

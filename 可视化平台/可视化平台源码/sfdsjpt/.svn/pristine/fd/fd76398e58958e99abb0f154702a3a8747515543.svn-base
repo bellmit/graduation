@@ -1,0 +1,21 @@
+server.port=8082
+fy-datasource=test
+#mybatis
+mybatis.mapper-locations=classpath:mapper/**/*.xml
+mybatis.type-aliases-package=com.software.entity
+mybatis.config-location=classpath:mybatis.xml
+spring-devtools-restart-enabled=true
+mybatis.type-handlers-package=com.software.customTypeHandler
+
+jdbc.sybaseDriverClassName=com.sybase.jdbc3.jdbc.SybDataSource
+#jdbc.mysqlDriverClassName=com.mysql.jdbc.Driver
+jdbc.mysqlDriverClassName=com.mysql.jdbc.Driver
+jdbc.pgsqlDriverClassName=org.postgresql.Driver
+logging.config=classpath:log4j2.xml
+logging.level.com.software.mapper = DEBUG
+spring.thymeleaf.cache=false
+#spring.datasource.hikari.transaction-isolation=TRANSACTION_REPEATABLE_READ
+# Single file max size
+multipart.maxFileSize=50Mb
+# All files max size
+multipart.maxRequestSize=150Mb

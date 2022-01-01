@@ -1,0 +1,30 @@
+package com.software.mapper;
+
+import com.software.entity.DsrGr;
+import com.software.entity.DsrGrExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface DsrGrMapper {
+    int countByExample(DsrGrExample example);
+
+    int deleteByExample(DsrGrExample example);
+
+    int deleteByPrimaryKey(@Param("ajxh") Integer ajxh, @Param("dsrbh") Integer dsrbh);
+
+    int insert(DsrGr record);
+
+    int insertSelective(DsrGr record);
+
+    List<DsrGr> selectByExample(DsrGrExample example);
+
+    DsrGr selectByPrimaryKey(@Param("ajxh") Integer ajxh, @Param("dsrbh") Integer dsrbh);
+
+    int updateByExampleSelective(@Param("record") DsrGr record, @Param("example") DsrGrExample example);
+
+    int updateByExample(@Param("record") DsrGr record, @Param("example") DsrGrExample example);
+
+    int updateByPrimaryKeySelective(DsrGr record);
+
+    int updateByPrimaryKey(DsrGr record);
+}

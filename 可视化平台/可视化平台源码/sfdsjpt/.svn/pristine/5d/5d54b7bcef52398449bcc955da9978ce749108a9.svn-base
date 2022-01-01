@@ -1,0 +1,137 @@
+package com.software.controller;
+
+
+import com.software.Service.IndexService;
+import com.software.Service.ShfzService;
+import com.software.datasource.DataSourceRouter;
+import com.software.entity.PubAjJb;
+import com.software.mapper.PubAjJbMapper;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.*;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+@CrossOrigin(origins = {"*"},allowCredentials = "true")
+public class TestController {
+    @Autowired
+    PubAjJbMapper pubAjJbMapper;
+    @Autowired
+    AjjbDao ajjbDao;
+    @Autowired
+    ShfzService shfzService;
+    @Autowired
+    IndexService indexService;
+    @ResponseBody
+    @GetMapping("/test")
+    public AjjbModel wsCount(String ajxh) {
+        DataSourceRouter.routerTo("120108 216");
+        AjjbModel pubAjJb= ajjbDao.selectByAjxh("",159262);
+        System.out.println(pubAjJb.toString());
+        return pubAjJb;
+    }
+    @ResponseBody
+    @RequestMapping("/getAjCount")
+    public ResultModel count() {
+        DataSourceRouter.routerTo("120000 200");
+        //List<K2vModel> ywtpmModels=ajjbDao.getYwtpm("2021-01-01","2021-06-01");
+        List<KvModel> r=shfzService.getYearAjs();
+        return ResultModelUtil.success(r);
+    }
+    @ResponseBody
+    @RequestMapping("/getYwtpm")
+    public ResultModel wytpm() {
+        DataSourceRouter.routerTo("120000 200");
+        List<K2vModel> list=indexService.getYwtpm("2021-01-01","2021-06-01");
+        return ResultModelUtil.success(list);
+    }
+    //得到收案实时信息
+    @ResponseBody
+    @RequestMapping("/getAjxxIntime")
+    public ResultModel ajxxIntime() {
+        DataSourceRouter.routerTo("120000 200");
+        List<K2vModel> list=indexService.getYwtpm("2021-01-01","2021-06-01");
+        List<AjjbModel> ajjbModels=indexService.getAjxxIntime();
+        return ResultModelUtil.success(ajjbModels);
+    }
+    @ResponseBody
+    @RequestMapping("/getBgrxb")
+    public ResultModel bgrxb() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> ywtpmModels=shfzService.getBgrxb("2021-01-01","2021-06-22");
+        return ResultModelUtil.success(ywtpmModels);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getBgrsf")
+    public ResultModel bgrsf() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> ywtpmModels=ajjbDao.getBgrsf("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(ywtpmModels);
+    }
+    @ResponseBody
+    @RequestMapping("/getGlzm")
+    public ResultModel glzm() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> ywtpmModels=ajjbDao.getBgrGlzm("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(ywtpmModels);
+    }
+    //
+    @ResponseBody
+    @RequestMapping("/getBgrAge")
+    public ResultModel glBrgage() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> kvModels=shfzService.getBrgage("2021-01-01","2021-06-22");
+        //List<BgrxxModel> ywtpmModels=ajjbDao.getBgrAge("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getMinorZmfb")
+    public List<KvModel> getMinorZmfb() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> kvModels=ajjbDao.getMinorZmfb("2021-06-01","2021-06-22");
+        return kvModels;
+    }
+    @ResponseBody
+    @RequestMapping("/getMinorAjCount")
+    public List<KvModel>  getMinorAjCount() {
+        DataSourceRouter.routerTo("120000 200");
+        int yjaj=ajjbDao.getMinorYjajCount("2021-06-01","2021-06-22");
+        int xsaj=ajjbDao.getMinorXsajCount("2021-06-01","2021-06-22");
+        List<KvModel> kvModels=new ArrayList<>();
+        KvModel kvModel=new KvModel();
+        kvModel.setName("已结案件数");
+        kvModel.setValue(yjaj);
+        kvModels.add(kvModel);
+        KvModel kvModel2=new KvModel();
+        kvModel2.setName("新收案件数");
+        kvModel2.setValue(xsaj);
+        kvModels.add(kvModel2);
+        return kvModels;
+    }
+    @ResponseBody
+    @RequestMapping("/getMinorBgrxb")
+    public List<KvModel> getMinorBgrxb() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> kvModels=ajjbDao.getMinorBgrxb("2021-06-01","2021-06-22");
+        return kvModels;
+    }
+    @ResponseBody
+    @RequestMapping("/getMinorWlaj")
+    public List<KvModel> getMinorWlaj() {
+        DataSourceRouter.routerTo("120000 200");
+        List<KvModel> kvModels=ajjbDao.getMinorWlaj("2021-06-01","2021-06-22");
+        return kvModels;
+    }
+
+}

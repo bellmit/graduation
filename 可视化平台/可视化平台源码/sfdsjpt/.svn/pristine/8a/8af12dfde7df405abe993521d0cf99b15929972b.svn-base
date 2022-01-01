@@ -1,0 +1,14 @@
+package com.software.service;
+
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+//涉黑犯罪
+public interface ShfzService {
+
+    List<KvModel>  getBgrGlzm(String beginTime,String endTime);
+
+    List<KvModel> getBrgage(String beginTime, String endTime);
+}

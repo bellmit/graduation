@@ -1,0 +1,65 @@
+package com.software.wyhtxt.config;
+
+ import com.software.wyhtxt.datasource.DataSourceRouter;
+ import com.software.wyhtxt.utils.StringUtil;
+import com.software.wyhtxt.web.UserContextModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+ import org.springframework.web.servlet.ModelAndView;
+
+ import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * 拦截器
+ */
+@Component
+public class AccessInterceptor implements HandlerInterceptor {
+    private final static Logger logger = LoggerFactory.getLogger(AccessInterceptor.class);
+    private final static String USER_CONTEXT_NAME = "userContext";
+    private static final String[] ACCESS_URLS = {"/","/index","/login","/logout","/loginJudge",
+            "/mjjdxt","/wyhtxt","/mmhtxt","/rzzpxt","/jrjdxt","/ldzygslxt"};
+    /**
+     * @param request
+     * @param response
+     * @param handler
+     * @throws Exception
+     */
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        String requestURI = request.getRequestURI();
+        //放行url
+        for (String url : ACCESS_URLS) {
+            if (StringUtil.equals(requestURI, url)) {
+                return true;
+            }
+        }
+        /*这里的时间单位是s 登录俩小时有效*/
+        session.setMaxInactiveInterval(60*60*2);
+        //后期自行定制
+        if (session.getAttribute(USER_CONTEXT_NAME) != null) {
+            UserContextModel userContext = (UserContextModel) session.getAttribute(USER_CONTEXT_NAME);
+            //选择数据源
+            DataSourceRouter.routerTo(userContext.getFydm());
+            return true;
+        }
+        // todo 跳转登录
+        return false;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+    }
+
+
+}

@@ -1,0 +1,114 @@
+package com.software.controller;
+
+import com.software.service.AjDescriptionService;
+import com.software.service.MinorFzService;
+import com.software.model.K2vModel;
+import com.software.model.KvModel;
+import com.software.model.TwoBarModel;
+import com.software.service.WcnfzDescService;
+import com.software.utils.DateUtils;
+import com.software.model.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
+@RestController
+@RequestMapping("/wcnfz")
+public class MinorfzController {
+    @Autowired
+    MinorFzService minorFzService;
+
+    @Autowired
+    WcnfzDescService wcnfzDescService;
+    @Autowired
+    AjDescriptionService ads;
+
+    @RequestMapping("/minorYearAjCount")
+    public ResultModel minorYearAjCount() {
+        List<K2vModel> list=minorFzService.getMinorYearAjCount();
+        TwoBarModel barModel=new TwoBarModel();
+        barModel.setName1("年新收案件量");
+        barModel.setName2("年审结案件量");
+        barModel.setK2vModelList(list);
+        List<String> description=wcnfzDescService.getMinorYearAjCount(list);
+        return ResultModelUtil.success(barModel,"年案件量",description);
+    }
+    //最近两年的涉案罪名
+
+    @RequestMapping("/minorSszm")
+    public ResultModel minorSszm() {
+        List<K2vModel> list=minorFzService.getMinorSszm();
+        TwoBarModel barModel=new TwoBarModel();
+        int year=DateUtils.getCurYear();
+        int lastyear=year-1;
+        barModel.setName1(String.valueOf(lastyear));
+        barModel.setName2(String.valueOf(year));
+        barModel.setK2vModelList(list);
+        return ResultModelUtil.success(barModel,"","");
+    }
+    //罪名分布
+
+    @RequestMapping("/minorZmfb")
+    public ResultModel minorZmfb() {
+        List<KvModel> list=minorFzService.getMinorZmfb("2021-01-01","2021-06-30");
+        List<String> description=wcnfzDescService.getMinorSszm(list);
+        return ResultModelUtil.success(list,"涉诉罪名",description);
+    }
+    //地域分布
+    @RequestMapping("/minorDyfb")
+    public ResultModel minorDyfb(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        /*这里的时间单位是s 登录俩小时有效*/
+        String fydm=(String) session.getAttribute("fydm");
+        List<KvModel> list=minorFzService.getMinorDyfb(fydm,"2021-01-01","2021-06-30");
+        return ResultModelUtil.success(list,"地域分布","");
+    }
+
+    //被告人性别
+
+    @RequestMapping("/minorBgrxb")
+    public ResultModel minorBgrxb() {
+        List<KvModel> list=minorFzService.getMinorBgrxb("2021-01-01","2021-06-30");
+        List<String> description=ads.getBgrxbDesc(list);
+        return ResultModelUtil.success(list,"被告人性别",description);
+    }
+    //各省外来未成年人犯罪情况
+
+    @RequestMapping("/minorWlaj")
+    public ResultModel minorWlaj() {
+        List<KvModel> list=minorFzService.getMinorWlaj("2021-01-01","2021-06-30");
+        return ResultModelUtil.success(list,"","");
+    }
+    //年龄分布
+    @RequestMapping("/minorBgrAge")
+    public ResultModel minorBgrAge() {
+        List<KvModel> list=minorFzService.getMinorBgrAge("2021-01-01","2021-06-30");
+        List<String> description=ads.getBgrAgeDesc(list);
+        return ResultModelUtil.success(list,"年龄分布",description);
+    }
+    //14-15周岁
+    @RequestMapping("/minorSszmRange1")
+    public ResultModel minorSszmRange1() {
+        List<KvModel> list=minorFzService.getMinorSszmRange1("2021-01-01","2021-06-30");
+        return ResultModelUtil.success(list,"14-15周岁犯罪情况","");
+    }
+    //16-17周岁
+    @RequestMapping("/minorSszmRange2")
+    public ResultModel minorSszmRange2() {
+        List<KvModel> list=minorFzService.getMinorSszmRange2("2021-01-01","2021-06-30");
+        return ResultModelUtil.success(list,"16-17周岁犯罪情况","");
+    }
+    //文化程度
+
+    @RequestMapping("/minorWhcd")
+    public ResultModel minorSszmWhcd() {
+        List<KvModel> list=minorFzService.getMinorWhcd("2021-01-01","2021-06-30");
+        List<String> description=ads.getBgrAgeDesc(list);
+        return ResultModelUtil.success(list,"文化程度",description);
+    }
+}

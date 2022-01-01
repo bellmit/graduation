@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.WcnfzMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value" jdbcType="INTEGER" property="value"></result>
+    </resultMap>
+    <!--以下是未成年人专用接口-->
+    <!--未成年人罪名分布-->
+    <select id="getMinorZmfb" resultMap="KvModel">
+        select DMMS name,Count(DMMS) value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18 and p.AJXH=l.AJXH and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 18 and p.AJXH=l.AJXH
+        ) T where T.AY=PA.DMBH group by DMMS order by count(DMMS) desc
+    </select>
+    <!--未成年人已结案件数-->
+    <select id="getMinorYjajCount" resultType="Integer">
+        select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+    </select>
+    <!--未成年人新收案件数-->
+    <select id="getMinorXsajCount" resultType="Integer">
+        select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d  where LARQ <![CDATA[>=]]> #{beginTime} and LARQ <![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+    </select>
+
+    <select id="getMinorBgrxb" resultMap="KvModel">
+        select d.XB name,count(d.XB) value from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 18
+        group by d.XB
+    </select>
+    <!--未成年人外来案件-->
+    <select id="getMinorWlaj" resultMap="KvModel">
+        select substring(d.SFZHM,1,2) name,count(substring(d.SFZHM,1,2)) value from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime}
+          and JARQ <![CDATA[<=]]> #{endTime} and AJXZ='1' and
+            p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 18
+        group by substring(d.SFZHM,1,2)
+    </select>
+    <!-- 未成年犯罪 传入时间和案由 得到该案由对应的案件量-->
+    <select id="getMinorajCountByAy" resultType="Integer">
+        select count(*) from PUB_LA_AY pl,DSR_GR d,PUB_AJ_JB p where JARQ <![CDATA[>=]]>#{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+         and AJXZ='1' and AY in (select DMBH from PUB_AYDMB where
+         DMMS=#{ay}) and d.AJXH=pl.AJXH and  p.AJXH=pl.AJXH and  char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+         and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+    </select>
+    <!--未成年人年龄分布-->
+    <select id="getMinorBgrAge" resultMap="KvModel">
+        select year(p.LARQ)-convert(int,substring(SFZHM,7,4)) name,count(year(p.LARQ)-convert(int,substring(SFZHM,7,4))) value
+        from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]>#{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+        group by year(p.LARQ)-convert(int,substring(SFZHM,7,4))
+    </select>
+
+    <!--未成年人14-15周岁涉诉罪名 -->
+    <select id="getMinorSszmRange1" resultMap="KvModel">
+        select DMMS name,Count(DMMS) value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l where JARQ <![CDATA[>=]]>#{beginTime}  and JARQ<![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and  p.AJXH=d.AJXH and char_length(SFZHM)=18 and p.AJXH=l.AJXH and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]>15
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>=]]>14 and p.AJXH=l.AJXH ) T where T.AY=PA.DMBH group by DMMS
+    </select>
+
+    <!--未成年人16-17周岁涉诉罪名 -->
+    <select id="getMinorSszmRange2" resultMap="KvModel">
+        select DMMS name,Count(DMMS) value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l where JARQ <![CDATA[>=]]> #{beginTime}  and JARQ<![CDATA[<=]]> #{endTime}
+        and AJXZ='1' and  p.AJXH=d.AJXH and char_length(SFZHM)=18 and p.AJXH=l.AJXH and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 17                                                                                                         and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>=]]>16 and p.AJXH=l.AJXH
+        ) T where T.AY=PA.DMBH group by DMMS
+    </select>
+    <!--未成年人文化程度-->
+    <select id="getMinorWhcd" resultMap="KvModel">
+        select d.WHCD_WS name,count(d.WHCD_WS) value from PUB_AJ_JB p,DSR_GR d  where JARQ<![CDATA[>=]]>#{beginTime} and JARQ<![CDATA[<=]]> #{endTime}
+         and AJXZ='1' and p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18 and d.WHCD_WS is not null
+        group by d.WHCD_WS
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+package com.software.controller;
+
+
+import com.software.datasource.DataSourceRouter;
+import com.software.entity.PubXtglYhb;
+import com.software.mapper.PubAjJbMapper;
+import com.software.mapper.PubXtglYhbMapper;
+import com.software.model.AjjbModel;
+import com.software.model.YhInfoModel;
+import com.software.utils.JsonResult;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+
+@Controller
+@CrossOrigin(origins = {"*"},allowCredentials = "true")
+public class LoginController {
+    @Autowired
+    PubAjJbMapper pubAjJbMapper;
+    @Autowired
+    PubXtglYhbMapper yhbMapper;
+
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    @ResponseBody
+    public ResultModel login(HttpServletRequest request, @Param("fydm") String fydm, @Param("yhdm") String yhdm, @Param("yhkl")String yhkl) {
+        System.out.println("fydm"+fydm+" "+yhdm+" "+yhkl);
+        // todo 如果是滨海就把fydm传进去
+        if (fydm==null||yhdm==null||yhkl==null||fydm.trim().length()==0||
+                yhdm.trim().length()==0||yhkl.trim().length()==0||fydm.equals("test")){
+            return ResultModelUtil.failed("法院 用户名 密码均不能为空！");
+          //  return JsonResult.useDefault(false,"不能为空");
+        }
+        DataSourceRouter.routerTo(fydm);
+        YhInfoModel yhInfoModel= yhbMapper.selectByYhkl("",yhdm,yhkl);
+        if (yhInfoModel!=null){
+            request.getSession().setAttribute("fydm",fydm);
+            return ResultModelUtil.success("登陆成功");
+        }
+        return ResultModelUtil.failed("用户名或密码错误！");
+    }
+}

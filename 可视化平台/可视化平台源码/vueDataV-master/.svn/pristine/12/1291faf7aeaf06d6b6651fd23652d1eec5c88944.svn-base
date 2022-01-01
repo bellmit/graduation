@@ -1,0 +1,85 @@
+<!--
+ 描述: 动态轮播折线图
+ 作者: Jack Chen
+ 日期: 2020-04-18
+-->
+
+<template>
+  <div class="container" style="height: 500px;">
+    <!--    图表显示-->
+    <div class="mychart" ref="line">
+      <!--      饼图需要向里面传递数据-->
+    </div>
+    <!--    文字描述-->
+    <div class='describe'>
+      <!--      这里数据是后台查询生成的-->
+      <ul>
+        <li v-for="item in description">
+          {{item}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+import { getLine } from '@/assets/js/utils'
+export default {
+  name: "dynamicLine",
+  props:[
+      'chartApi',
+    'describeApi',
+  ],
+  data() {
+    return {
+      xData:["0h","1h","2h","3h","4h","5h","6h","7h","8h","9h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","24h"],
+      yData:[1000,544, 355, 154, 159, 699, 445,  658, 777,555,  666,1445,   646,  552,  478,665,545,544,1445,   646,  552,  478,665,545,544,544],
+      description:["2015年危险驾驶罪刑事一审较之2014年同比上升48.9","2016年危险驾驶罪刑事一审较之2015年同比上升25.9"]
+    }
+  },
+  mounted() {
+    // axios.get(this.chartApi).then(function (response){
+    //   if (response.data.code==0){
+    //     // getBar(this.title,this.xData,this.yData,this.$refs.chart_bp);
+    //   } else{
+    //     //
+    //   }
+    // }).catch(function (error){
+    //   //
+    // });
+    // axios.get(this.describeApi).then(function (response) {
+    //   if (response.data.code==0){
+    //     // getBar(this.title,this.xData,this.yData,this.$refs.chart_bp);
+    //   } else{
+    //     //
+    //   }
+    // }).catch(function () {
+    //
+    // })
+    getLine(this.xData,this.yData,this.$refs.line)
+  },
+  methods: {
+
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.mychart{
+  width: 67%;
+  height:500px;
+  margin-top: 40px;
+  float: left
+}
+.describe{
+  width: 33%;
+  float: left;
+  margin-top: 100px;
+  padding-bottom: 25%;
+  font-size: 16px;
+  color: #00c2ff;
+  line-height: 26px;
+}
+</style>

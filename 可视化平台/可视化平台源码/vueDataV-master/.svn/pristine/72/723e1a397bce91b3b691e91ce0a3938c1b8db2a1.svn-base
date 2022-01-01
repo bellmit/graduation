@@ -1,0 +1,118 @@
+<!--
+ 描述: 柱状图
+ 作者: Jack Chen
+ 日期: 2020-04-30
+-->
+<template>
+  <div class="container" style="height: 500px;">
+    <div class="chart" style="width: 67%;height:400px;margin-top: 100px;float: left" ref="chart_bp"></div>
+    <div style="width: 33%;float: left">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "cakeLinkage",
+  data() {
+    return {
+      option: null,
+      dataMap: {},
+
+    }
+  },
+  mounted() {
+    this.getEchart();
+  },
+  methods: {
+    getEchart() {
+      let myChart = echarts.init(this.$refs.chart_bp);
+      let itemStyle = {
+        barBorderRadius: [15, 0],
+        color: '#0084ff'
+      };
+      let option = {
+        color:'#01d8ff',
+        calculable: true,
+        grid: {
+          top: '10%',
+          bottom: '25%'
+        },
+        xAxis: [{
+          type: 'category',
+          axisLabel: {
+            interval: 0
+          },
+          data: ['长沙','湘潭','株洲','岳阳','邵阳','衡阳','益阳'],
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#2867a8',
+            }
+          },
+        }],
+        yAxis: [{
+          type: 'value',
+          name: '家',
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#2867a8'
+            }
+          }
+        }],
+        lineStyle: {
+          color: '#179bf1'
+        },
+        label: {
+          color: '#fff'
+        },
+        checkpointStyle: {
+          color: '#01d8ff',
+          symbolSize: 10,
+          borderColor: 'rgba(1, 216, 255, 0.5)',
+          borderWidth: 5,
+        },
+        series: [{
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar',
+          itemStyle: itemStyle,
+          barWidth: 15,
+          legendHoverLink: true,
+          label: {
+            show: true,
+            position: 'top',
+            color: '#fff'
+          }
+        }]
+      };
+
+      myChart.setOption(option, true);
+
+      window.addEventListener('resize', () => {
+        myChart.resize();
+      });
+    }
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+
+</style>

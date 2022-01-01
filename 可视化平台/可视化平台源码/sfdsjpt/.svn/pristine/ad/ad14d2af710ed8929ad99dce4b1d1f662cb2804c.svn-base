@@ -1,0 +1,25 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+//通用案件描述
+public interface AjDescriptionService {
+    List<String> getAjCountDesc(List<KvModel> kvModels);
+
+    List<String> getAreaDistributionDesc(List<KvModel> kvModels);
+
+    List<String> getBgrxbDesc(List<KvModel> kvModels);
+
+    List<String> getBgrsfDesc(List<KvModel> kvModels);
+
+    List<String> getBgrWhcdDesc(List<KvModel> kvModels);
+
+    List<String> getBrgageDesc(List<KvModel> kvModels);
+
+    /**
+     * 有期徒刑量刑
+     */
+    List<String> getYqtxlxDesc(List<KvModel> kvModels);
+}

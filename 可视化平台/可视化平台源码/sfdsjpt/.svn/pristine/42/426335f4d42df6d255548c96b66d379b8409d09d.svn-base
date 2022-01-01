@@ -1,0 +1,51 @@
+package com.software.controller;
+
+import com.software.service.AjDescriptionService;
+import com.software.service.LhjfDescService;
+import com.software.service.LhjfService;
+import com.software.model.KvModel;
+import com.software.model.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@RestController
+@RequestMapping("/lhjf")
+public class LhjfController {
+
+    @Autowired
+    private LhjfService lhjfService;
+
+    @Autowired
+    private LhjfDescService lhjfDescService;
+    @Autowired
+    private AjDescriptionService ads;
+
+    @RequestMapping("/getAjCount")
+    public ResultModel getLhjfAjCount() {
+        List<KvModel> list=lhjfService.getAjCount();
+        List<String> description=ads.getAjCountDesc(list);
+        return ResultModelUtil.success(list,"年案件量",description);
+    }
+    @RequestMapping("/getAreaDistribution")
+    public ResultModel getLhjfTjdqAjCount(HttpServletRequest request) {
+        String fydm= (String) request.getSession().getAttribute("fydm");
+        List<KvModel> list=lhjfService.getAreaDistribution("2021-01-01","2021-06-01",fydm);
+        return ResultModelUtil.success(list,"地域分布","");
+    }
+    @RequestMapping("/getPjjg")
+    public ResultModel getLhjfPjjg() {
+        List<KvModel> list=lhjfService.getLhjfPjjg("2021-01-01","2021-06-01");
+        List<String> description=lhjfDescService.getLhjfPjjg(list);
+        return ResultModelUtil.success(list,"判决结果",description);
+    }
+    @RequestMapping("/getWhcd")
+    public ResultModel getLhjfWhcd() {
+        List<KvModel> list=lhjfService.getBgrWhcd("2021-01-01","2021-06-01");
+        return ResultModelUtil.success(list,"文化程度","");
+    }
+}

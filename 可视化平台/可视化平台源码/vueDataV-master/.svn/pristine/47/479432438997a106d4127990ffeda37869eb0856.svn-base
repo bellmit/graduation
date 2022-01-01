@@ -1,0 +1,115 @@
+<!--
+ 描述: 涉黑犯罪
+-->
+
+<template>
+  <div class="home-container">
+    <div class="wrap" ref="editor">
+      <div class="top"></div>
+      <div class="content">
+        <item>
+          <template v-slot:title>案件审结情况</template>
+          <template v-slot:chart>
+            <!--最近五年案件量 柱状图-->
+            <bar chart-api="/getAjCount" describe-api="/getAjCountByYear"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <!--被告人性别-->
+            <pie chart-api="/getBgrxb" describe-api="/shfz/getBgrxb"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <!--被告人年龄-->
+            <pie chart-api="/getBgrAge" describe-api="/shfz/getBgrAge"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>被告人特征</template>
+          <template v-slot:chart>
+            <!--被告人身份-->
+            <pie chart-api="/getBgrsf" describe-api="/shfz/getBgrsf"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件特征</template>
+          <template v-slot:chart>
+            <!--关联罪名-->
+            <bar chart-api="/getGlzm" describe-api="/shfz/getGlzm"/>
+          </template>
+        </item>
+        <item>
+        <template v-slot:title>案件特征</template>
+        <template v-slot:chart>
+          <!--有期徒刑量刑分析-->
+          <dynamic-line chart-api="/shfz/getChsjData" describe-api="/shfz/getChsjDescribe"/>
+        </template>
+      </item>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { screenSize } from '@/assets/js/utils'
+
+export default {
+  name: 'Home',
+  components: {},
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+
+  },
+  created() {
+  },
+  mounted() {
+    screenSize(this.$refs.editor);
+  },
+  methods: {
+
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.home-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  .wrap {
+    transform-origin: 0px 0px 0px;
+    background: url(../assets/img/bj.jpg) no-repeat;
+    background-size: contain;
+    background-position: 50% 0;
+    background-color: rgb(0, 0, 0);
+    min-width: auto;
+    width: 1920px;
+    min-height: auto;
+    height: 1080px;
+    overflow: auto;
+    .top {
+      width: 100%;
+      height: 80px;
+      background-color: transparent;
+      background: url(../assets/img/top_nav.png) no-repeat;
+      background-position: 65% 0;
+      border: none;
+      overflow: hidden;
+    }
+    .content{
+        overflow: hidden;
+      padding-bottom: 60px;
+    }
+  }
+}
+</style>

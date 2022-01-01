@@ -1,0 +1,172 @@
+package com.software.service.impl;
+
+import com.software.model.AyModel;
+import com.software.model.DsrModel;
+import com.software.service.AjService;
+import com.software.service.ZscqqqService;
+import com.software.mapper.ZscqqqMapper;
+import com.software.model.KvModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+public class ZscqqqServiceImpl implements ZscqqqService {
+    @Autowired
+    ZscqqqMapper zscqqqMapper;
+    @Autowired
+    AjService ajService;
+
+    @Override
+    public List<KvModel> getAjCount() {
+        return ajService.getAjCount(zscqqqMapper);
+    }
+
+    @Override
+    public List<KvModel> getAreaDistribution(String beginTime, String endTime, String fydm) {
+        return ajService.getAreaDistribution(beginTime,endTime,fydm,zscqqqMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrxb(String beginTime, String endTime) {
+        return ajService.getBgrxb(beginTime,endTime,zscqqqMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime) {
+        return ajService.getBgrsf(beginTime,endTime,zscqqqMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrWhcd(String beginTime, String endTime) {
+        return ajService.getBgrWhcd(beginTime,endTime,zscqqqMapper);
+    }
+
+    @Override
+    public List<KvModel> getBrgage(String beginTime, String endTime) {
+        return ajService.getBrgage(beginTime,endTime,zscqqqMapper);
+    }
+
+    @Override
+    public List<KvModel> getYqtxlx(String beginTime, String endTime) {
+        return ajService.getYqtxlx(beginTime,endTime,zscqqqMapper);
+    }
+
+    /**
+     * 知识产权侵权各个子案由的案件数
+     */
+    @Override
+    public List<KvModel> getAyDistribution(String beginTime, String endTime) {
+        List<KvModel> kvModels=new ArrayList<>();
+        // 获取知识产权下的各个子案由编号和描述
+        List<AyModel> list=zscqqqMapper.getAyType();
+        // 分别查询案由对应的案件数
+        for(AyModel ayModel:list){
+            if("1113070000".equals(ayModel.getDmbh())){
+                continue;
+            }
+            int ajs=zscqqqMapper.getAjCountByAy(beginTime, endTime,ayModel.getDmbh());
+            KvModel kvModel=new KvModel(ayModel.getDmms(),ajs);
+            kvModels.add(kvModel);
+        }
+        // 案由分布
+        return kvModels;
+    }
+
+    @Override
+    public int[][] getDsrType(String beginTime, String endTime) {
+        // 当事人分为被告和原告
+        // 当事人类别为法人、个人、行政机关
+        List<DsrModel> dsrModels=zscqqqMapper.getDsrType(beginTime,endTime);
+        // 根据原被告分组
+        Map<String,List<DsrModel>> bgMap=dsrModels.stream().collect(Collectors.groupingBy(DsrModel::getDsrSsdw));
+        //          原告 被告
+        // 法人
+        // 个人
+        // 行政机关
+        int[][] res=new int[3][2];
+        // 原告
+        List<DsrModel> ygList=bgMap.get("11");
+        if(ygList!=null){
+            ygList.forEach((bg)->{
+                if("法人".equals(bg.getDsrLb())){
+                    res[0][0]=bg.getValue();
+                }else if("行政机关".equals(bg.getDsrLb())){
+                    res[2][0]=bg.getValue();
+                }else if("个人".equals(bg.getDsrLb())) {
+                    res[1][0]=bg.getValue();
+                }
+            });
+        }
+
+        // 被告
+        List<DsrModel> bgList=bgMap.get("12");
+        if(bgList!=null){
+            bgList.forEach((yg)->{
+                if("法人".equals(yg.getDsrLb())){
+                    res[0][1]=yg.getValue();
+                }else if("行政机关".equals(yg.getDsrLb())){
+                    res[2][1]=yg.getValue();
+                }else if("个人".equals(yg.getDsrLb())) {
+                    res[1][1]=yg.getValue();
+                }
+            });
+        }
+        return res;
+    }
+
+    @Override
+    public List<KvModel> getDwNature(String beginTime, String endTime) {
+        // 单位分为机关单位dsr_xp_jg和普通单位dsr_dw，需要分别查询
+        return  null;
+    }
+
+    @Override
+    public List<KvModel> getBgCount(String beginTime, String endTime) {
+        // 查询每个案件和该案件被告人数
+        List<Integer> bgCountList=zscqqqMapper.getBgCount(beginTime,endTime);
+        List<KvModel> kvModels=new ArrayList<>();
+        kvModels.add(new KvModel("1个",0));
+        kvModels.add(new KvModel("2个",0));
+        kvModels.add(new KvModel("3个（含）至五个（不含）",0));
+        kvModels.add(new KvModel("5个（含）以上",0));
+        if(bgCountList!=null){
+            bgCountList.forEach((count)->{
+                if(count==1){
+                    kvModels.get(0).addValue(1);
+                }else if(count==2){
+                    kvModels.get(1).addValue(1);
+                }else if(count>=3&&count<5){
+                    kvModels.get(2).addValue(1);
+                }else if(count>=5){
+                    kvModels.get(3).addValue(1);
+                }
+            });
+        }
+        return kvModels;
+    }
+
+    /**
+     * 各个子案由对应的案件的审理周期
+     */
+    @Override
+    public List<KvModel> getProcessingCycle(String beginTime, String endTime) {
+        List<KvModel> kvModels=new ArrayList<>();
+        // 获取知识产权下的各个子案由编号和描述
+        List<AyModel> list=zscqqqMapper.getAyType();
+        // 分别查询案由对应的案件数
+        for(AyModel ayModel:list){
+            if("1113070000".equals(ayModel.getDmbh())){
+                continue;
+            }
+            Integer  avg=zscqqqMapper.getAjAvgDayByAy(beginTime,endTime,ayModel.getDmbh());
+            KvModel kvModel=new KvModel(ayModel.getDmms(),avg==null?0:avg.intValue());
+            kvModels.add(kvModel);
+        }
+        // 案由分布
+        return kvModels;
+    }
+
+}

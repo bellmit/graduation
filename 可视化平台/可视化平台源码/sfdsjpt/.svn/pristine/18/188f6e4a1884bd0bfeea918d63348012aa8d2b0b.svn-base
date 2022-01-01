@@ -1,0 +1,91 @@
+package com.software.controller;
+
+import com.software.service.AjDescriptionService;
+import com.software.service.XykzpDescService;
+import com.software.service.XykzpService;
+import com.software.model.KvModel;
+import com.software.model.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 信用卡诈骗罪接口
+ */
+@RestController
+@RequestMapping("/xykzp")
+public class XykzpController {
+    @Autowired
+    XykzpService xykzpService;
+    @Autowired
+    AjDescriptionService ads;
+
+    @Autowired
+    XykzpDescService xkd;
+
+    /**
+     * 各年案件量(近五年)
+     */
+    @RequestMapping("/getAjCount")
+    public ResultModel getAjCount(HttpServletRequest request){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+
+        List<KvModel> kvModels=xykzpService.getAjCount();
+        List<String> description=ads.getAjCountDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"年案件量",description);
+    }
+    /**
+     * 当年各月的案件量
+     */
+    @RequestMapping("/getAjMonthCount")
+    public ResultModel getAjMonthCount(HttpServletRequest request,String beginTime,String endTime){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        List<KvModel> kvModels=xykzpService.getAjMonthCount();
+        List<String> description=xkd.getAjMonthCount(kvModels);
+        return ResultModelUtil.success(kvModels,"月案件量",description);
+    }
+    /**
+     * 案件地域分布（天津地区）
+     */
+    @RequestMapping("/getAreaDistribution")
+    public ResultModel getAreaDistribution(HttpServletRequest request,String beginTime,String endTime){
+        String fydm= (String) request.getSession().getAttribute("fydm");
+        return ResultModelUtil.success(xykzpService.getAreaDistribution(beginTime,endTime,fydm),"","");
+    }
+    @RequestMapping("/getBgrWhcd")
+    public ResultModel getBgrWhcd(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=xykzpService.getBgrWhcd(beginTime,endTime);
+        List<String> description=ads.getBgrWhcdDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人文化程度",description);
+    }
+    @RequestMapping("/getBgrsf")
+    public ResultModel getBgrsf(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=xykzpService.getBgrsf(beginTime,endTime);
+        List<String> description=ads.getBgrsfDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人身份",description);
+    }
+    @RequestMapping("/getBgrxb")
+    public ResultModel getBgrxb(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=xykzpService.getBgrxb(beginTime,endTime);
+        List<String> description=ads.getBgrxbDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人性别",description);
+    }
+    @RequestMapping("/getBgrAge")
+    public ResultModel getBgrAge(HttpServletRequest request,String beginTime,String endTime) {
+        List<KvModel> kvModels=xykzpService.getBrgage(beginTime,endTime);
+        List<String> description=ads.getBgrAgeDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"年龄分布",description);
+    }
+    @RequestMapping("/getYqtxlx")
+    public ResultModel getYqtxlx(HttpServletRequest request,String beginTime,String endTime){
+        List<KvModel> kvModels=xykzpService.getYqtxlx(beginTime,endTime);
+        List<String> description=ads.getAjCountDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"有期徒刑量刑",description);
+    }
+}

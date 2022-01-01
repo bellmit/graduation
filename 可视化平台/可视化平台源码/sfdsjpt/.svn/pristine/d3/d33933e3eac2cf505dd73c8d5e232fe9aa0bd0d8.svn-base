@@ -1,0 +1,16 @@
+package com.software.Service;
+
+import com.software.model.KvModel;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+public interface LhjfService {
+    List<KvModel> getLhjfAjCount(String beginTime, String endTime);
+
+    List<KvModel> getLhjfTjdqAjCount(String fydm,String beginTime, String endTime);
+
+    List<KvModel> getLhjfPjjg(String beginTime,String endTime);
+
+    List<KvModel> getLhjfWhcd(String beginTime,String endTime);
+}

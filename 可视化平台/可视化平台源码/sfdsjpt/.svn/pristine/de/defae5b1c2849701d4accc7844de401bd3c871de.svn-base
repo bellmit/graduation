@@ -1,0 +1,21 @@
+package com.software.Service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface ZscqqqService {
+    /**
+     * 各年案件量
+     * @return
+     */
+     List<KvModel> getAjCount();
+
+    List<KvModel> getBrgage(String beginTime,String endTime);
+
+    List<KvModel> getBgrxb(String beginTime,String endTime);
+
+    List<KvModel> getBgrsf(String beginTime,String endTime);
+
+
+}

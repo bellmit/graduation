@@ -1,0 +1,117 @@
+package com.software.entity;
+
+import java.io.Serializable;
+
+public class PubXtglXxxgl implements Serializable {
+    private Integer xxxbh;
+
+    private Integer fybh;
+
+    private String name;
+
+    private String szb;
+
+    private String szl;
+
+    private String datatype;
+
+    private String xxxjc;
+
+    private String sjxx;
+
+    private String sjxx2016;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getXxxbh() {
+        return xxxbh;
+    }
+
+    public void setXxxbh(Integer xxxbh) {
+        this.xxxbh = xxxbh;
+    }
+
+    public Integer getFybh() {
+        return fybh;
+    }
+
+    public void setFybh(Integer fybh) {
+        this.fybh = fybh;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getSzb() {
+        return szb;
+    }
+
+    public void setSzb(String szb) {
+        this.szb = szb == null ? null : szb.trim();
+    }
+
+    public String getSzl() {
+        return szl;
+    }
+
+    public void setSzl(String szl) {
+        this.szl = szl == null ? null : szl.trim();
+    }
+
+    public String getDatatype() {
+        return datatype;
+    }
+
+    public void setDatatype(String datatype) {
+        this.datatype = datatype == null ? null : datatype.trim();
+    }
+
+    public String getXxxjc() {
+        return xxxjc;
+    }
+
+    public void setXxxjc(String xxxjc) {
+        this.xxxjc = xxxjc == null ? null : xxxjc.trim();
+    }
+
+    public String getSjxx() {
+        return sjxx;
+    }
+
+    public void setSjxx(String sjxx) {
+        this.sjxx = sjxx == null ? null : sjxx.trim();
+    }
+
+    public String getSjxx2016() {
+        return sjxx2016;
+    }
+
+    public void setSjxx2016(String sjxx2016) {
+        this.sjxx2016 = sjxx2016 == null ? null : sjxx2016.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", xxxbh=").append(xxxbh);
+        sb.append(", fybh=").append(fybh);
+        sb.append(", name=").append(name);
+        sb.append(", szb=").append(szb);
+        sb.append(", szl=").append(szl);
+        sb.append(", datatype=").append(datatype);
+        sb.append(", xxxjc=").append(xxxjc);
+        sb.append(", sjxx=").append(sjxx);
+        sb.append(", sjxx2016=").append(sjxx2016);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

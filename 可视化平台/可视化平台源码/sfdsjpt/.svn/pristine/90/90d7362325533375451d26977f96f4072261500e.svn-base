@@ -1,0 +1,74 @@
+package com.software.Service.impl;
+
+import com.software.Service.ZscqqqService;
+import com.software.mapper.ZscqqqMapper;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class ZscqqqServiceImpl implements ZscqqqService {
+    @Autowired
+    ZscqqqMapper zscqqqMapper;
+
+    /**
+     * 获取五年内案件量
+     */
+    @Override
+    public List<KvModel> getAjCount() {
+        int year= DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(i +"年");
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastDay=DateUtils.formatDate(last);
+            String firstDay=DateUtils.formatDate(first);
+            kvModel.setValue(zscqqqMapper.getAjCount(firstDay,lastDay));
+            list.add(kvModel);
+        }
+        return list;
+    }
+
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime){
+        return zscqqqMapper.getBgrsf(beginTime,endTime);
+    }
+
+    @Override
+    public List<KvModel> getAyDistribution(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getDsrType(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getDwNature(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getBgCount(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getSupportForLitigation(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getProcessingCycle(String beginTime, String endTime) {
+        return null;
+    }
+
+}

@@ -1,0 +1,124 @@
+<!--
+ 描述: 案件审结情况饼图
+-->
+
+<template>
+  <div class="container" style="height: 500px;">
+    <!--    图表显示-->
+    <div class="mychart" ref="pies">
+      <!--      饼图需要向里面传递数据-->
+    </div>
+    <!--    文字描述-->
+    <div class='describe'>
+      <div class='title'>{{descriptionTitle}}</div>
+      <ul>
+        <li v-for="(item,index) in description">
+          （{{index+1}}）{{item}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import {getPies, showLoading} from '@/assets/js/utils'
+export default {
+  props:[
+    'api',
+    'beginTime',
+    'endTime',
+    'title'
+  ],
+  name: "pies",
+  data() {
+    return {
+      // 异步获取需要的格式
+      dim:['当事人诉讼地位','原告','被告'],
+      descriptionTitle:'',
+      description:[]
+    }
+  },
+  watch:{
+    beginTime:function (newValue,oldValue){
+      // 监听到变化需要重新发起请求
+      this.getData(this.beginTime,this.endTime);
+    },
+    endTime:function (newValue,oldValue){
+      this.getData(this.beginTime,this.endTime);
+    }
+  },
+  mounted() {
+    this.getData(this.beginTime,this.endTime);
+  },
+  methods: {
+    getData(beginTime,endTime){
+      let endDate=new Date(endTime)
+      let time=new Date(endDate.getTime()+86400000)
+      let day=("0"+time.getDate()).slice(-2);
+      let month=("0"+(time.getMonth()+1)).slice(-2);
+      let endTime1=time.getFullYear()+'-'+month+'-'+day
+      let that=this;
+      let myChart = echarts.init(that.$refs.pies);
+      myChart.showLoading(showLoading);
+      this.axios.get(this.api,{
+        params:{
+          beginTime:beginTime,
+          endTime:endTime1
+        }
+      }).then(function (response){
+        if (response.data.code==0){
+          let data=response.data.chartData;
+          var download=window.localStorage.getItem('download')
+          download=download+that.title+'\n'
+          let pieData=[['法人'], ['个人'], ['行政机关']];
+          for (let i=0;i<data.length;i++){
+            for(let j=0;j<data[i].length;j++){
+              pieData[i].push(data[i][j]);
+            }
+          }
+          getPies(that.dim,pieData,myChart);
+          that.description=response.data.description;
+          for(let i=0;i<response.data.description.length;i++){
+            download=download+'   '+(i+1)+'.'+response.data.description[i]+'\n'
+          }
+          download=download+'\n\n'
+          window.localStorage.setItem('download',download)
+          that.descriptionTitle=response.data.title;
+        } else{
+          that.$Toast({
+            content: response.data.message,
+            type: 'error',
+          })
+        }
+      })
+    }
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.mychart{
+  width: 67%;
+  height:400px;
+  float: left;
+  margin-top: 40px
+}
+.describe{
+  .title{
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #489de2;
+    line-height: 30px;
+  }
+  width: 33%;
+  float: left;
+  margin-top: 100px;
+  padding-bottom: 25%;
+  font-size: 16px;
+  color: #00c2ff;
+  line-height: 26px;
+}
+</style>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.LhjfMapper">
+
+    <resultMap id="ForDmmsModel" type="com.software.model.ForDmmsModel">
+        <result column="AJXZ" jdbcType="VARCHAR" property="ajxz"></result>
+        <result column="SPCX" jdbcType="VARCHAR" property="spcx"></result>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="SPCXDZ" jdbcType="VARCHAR" property="spcxdz"></result>
+        <result column="value" jdbcType="INTEGER" property="value"></result>
+    </resultMap>
+    <resultMap id="ResultMapWithBlobs" type="com.software.model.ResultMapWithBlobs">
+        <result column="SJXX2016" jdbcType="LONGNVARCHAR" property="name" typeHandler="com.software.customTypeHandler.StringCustomTypeHandler"></result>
+    </resultMap>
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <!--判决结果-->
+    <select id="getLhjfPjjg" resultMap="KvModel">
+        select JAFS name,count(JAFS) value  from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%离婚%')) group by JAFS
+    </select>
+    <select id="getForDmms" resultMap="ForDmmsModel">
+        select AJXZ,SPCX,SPCXDZ,JAFS name,COUNT(*) value from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%'+ #{ay}+'%')) group by AJXZ,SPCX,JAFS,SPCXDZ
+    </select>
+
+
+    <select id="getSjxx" resultMap="ResultMapWithBlobs">
+        select SJXX2016 from PUB_XTGL_XXXGL where SZB= #{szb} and SZL= #{szl}
+    </select>
+
+    <select id="getDmms" resultType="String">
+        select DMMS from PUB_DMB where LBBH= #{lbbh} and DMBH= #{dmbh}
+    </select>
+</mapper>

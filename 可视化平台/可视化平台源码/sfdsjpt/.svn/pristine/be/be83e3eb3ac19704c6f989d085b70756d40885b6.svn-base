@@ -1,0 +1,127 @@
+package com.software.controller;
+
+import com.software.Service.AjService;
+import com.software.Service.WxjszService;
+import com.software.model.KvModelDouble;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * 危险驾驶罪接口
+ */
+@RestController
+@RequestMapping("/wxjsz")
+public class WxjszController {
+    @Autowired
+    WxjszService wxjszService;
+    @Autowired
+    AjService ajService;
+    /**
+     * 各年案件量(近五年)
+     */
+    @RequestMapping("/getAjCount")
+    public ResultModel getAjCount(HttpServletRequest request){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        try{
+            return ResultModelUtil.success(ajService.getAjCount("危险驾驶"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 危险驾驶罪中行为整体分布比
+     */
+    @RequestMapping("/getBehaviorProportion")
+    public ResultModel getBehaviorProportion(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(wxjszService.getBehaviorProportion());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 被告人特征，要处理好百分比
+     */
+    @RequestMapping("/getAccusedFeature")
+    public ResultModel getAccusedFeature(HttpServletRequest request){
+        List<KvModelDouble> accusedFeature=new ArrayList<>(4);
+        try{
+            // 被告人男性比例
+            double ration=wxjszService.getBgrxb("2021-01-01","2021-06-22");
+            KvModelDouble xbRation=new KvModelDouble("男性", ration);
+            accusedFeature.add(xbRation);
+            // 被告人年龄25-55岁比列
+            ration=wxjszService.getBgrAge("2021-01-01","2021-06-22");
+            KvModelDouble ageRation=new KvModelDouble("25岁至55岁",ration);
+            accusedFeature.add(ageRation);
+            // 被告人低学历比列
+            ration=wxjszService.getBgrWhcd("2021-01-01","2021-06-22");
+            KvModelDouble whcdRation=new KvModelDouble("低学历",ration);
+            accusedFeature.add(whcdRation);
+            // 被告人农业和无职业占比
+            ration=wxjszService.getBgrSf("2021-01-01","2021-06-22");
+            KvModelDouble jobRation=new KvModelDouble("农业和无职业",ration);
+            accusedFeature.add(jobRation);
+            return ResultModelUtil.success(accusedFeature);
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 案件地域分布（天津地区）
+     */
+    @RequestMapping("/getAreaDistribution")
+    public ResultModel getAreaDistribution(HttpServletRequest request){
+        String fydm= (String) request.getSession().getAttribute("fydm");
+        try{
+            return ResultModelUtil.success(ajService.getAreaDistribution("2021-01-01","2021-06-22",fydm,"危险驾驶"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 酒驾酒精含量分布
+     */
+    @RequestMapping("/getVol")
+    public ResultModel getVol(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(wxjszService.getVol());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 查获时间
+     */
+    @RequestMapping("/getTimeOfSeizure")
+    public ResultModel getTimeOfSeizure(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(wxjszService.getTimeOfSeizure());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 机动车类型
+     */
+    @RequestMapping("/getTypeOfVehicle")
+    public ResultModel getTypeOfVehicle(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(wxjszService.getTypeOfVehicle());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+}

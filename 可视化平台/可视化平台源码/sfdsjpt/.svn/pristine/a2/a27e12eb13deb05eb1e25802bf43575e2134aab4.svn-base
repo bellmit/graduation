@@ -1,0 +1,27 @@
+package com.software.mapper;
+
+import com.software.model.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Primary;
+
+import java.util.List;
+
+@Mapper
+public interface LhjfMapper extends AjMapper{
+    //离婚纠纷判决结果
+    List<KvModel> getLhjfPjjg(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    List<ForDmmsModel> getForDmms(@Param("beginTime")String beginTime,@Param("endTime")String endTime,@Param("ay") String ay);
+
+    String getDmms(@Param("lbbh") String lbbh,@Param("dmbh")String dmbh);
+
+    ResultMapWithBlobs getSjxx(@Param("szb") String szb,@Param("szl")String szl);
+
+    ResultMapWithBlobs getSjxx2016(@Param("szb") String szb,@Param("szl")String szl);
+
+    List<ResultMapWithBlobs> getSjxxList(@Param("szb") String szb, @Param("szl")String szl);
+
+    List<ResultMapWithBlobs> getSjxx2016List(@Param("szb") String szb,@Param("szl")String szl);
+}
+

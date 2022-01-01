@@ -1,0 +1,33 @@
+package com.software.Service;
+
+import com.software.model.K2vModel;
+import com.software.model.KvModel;
+
+import java.util.List;
+
+//未成年人犯罪service
+public interface MinorFzService {
+    //未成年人罪名分布
+    List<KvModel> getMinorZmfb(String beginTime,String endTime);
+    //返回的是最近三年的 包括年新收案件量 年审结案件量
+    List<K2vModel> getMinorYearAjCount();
+    //案件地域分布
+    List<KvModel> getMinorDyfb(String beginTime,String endTime);
+
+    //被告人性别
+    List<KvModel> getMinorBgrxb(String beginTime,String endTime);
+    //各省未成年犯罪情况
+    List<KvModel> getMinorWlaj(String beginTime,String endTime);
+    //未成年人年龄分布 一个年龄一个段
+    List<KvModel> getMinorBgrAge(String beginTime,String endTime);
+    //未成年人文化程度
+    List<KvModel> getMinorWhcd(String beginTime,String endTime);
+    //涉诉罪名情况 最近两年
+    List<K2vModel> getMinorSszm();
+    //14到15周岁涉诉罪名
+    List<KvModel> getMinorSszmRange1(String beginTime,String endTime);
+    //16-17周岁涉诉罪名
+    List<KvModel> getMinorSszmRange2(String beginTime,String endTime);
+
+
+}

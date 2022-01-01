@@ -1,0 +1,2201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.SplcjdMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="DycqjaModel" type="com.software.model.DycqjaModel">
+        <result column="SX" jdbcType="INTEGER" property="sx"/>
+        <result column="FJSX" jdbcType="INTEGER" property="fjsx"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+        <result column="JARQ" jdbcType="TIMESTAMP" property="jarq"/>
+    </resultMap>
+    <resultMap id="CqwgdModel" type="com.software.model.CqwgdModel">
+        <result column="AH" jdbcType="INTEGER" property="ah"/>
+        <result column="AJMC" jdbcType="INTEGER" property="ajmc"/>
+        <result column="JARQ" jdbcType="TIMESTAMP" property="jarq"/>
+    </resultMap>
+    <resultMap id="AjjbModel" type="com.software.model.AjjbModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"></result>
+        <result column="AH" jdbcType="VARCHAR" property="ah"></result>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"></result>
+        <result column="AJXZ" jdbcType="CHAR" property="ajxz"></result>
+        <result column="SPCX" jdbcType="CHAR" property="spcx"></result>
+        <result column="SPCXDZ" jdbcType="CHAR" property="spcxdz"></result>
+        <result column="BASPT" jdbcType="VARCHAR" property="baspt"></result>
+        <result column="LARQ" jdbcType="VARCHAR" property="larq"></result>
+        <result column="JARQ" jdbcType="VARCHAR" property="jarq"></result>
+        <result column="FYDM" jdbcType="VARCHAR" property="fydm"></result>
+        <result column="SX" jdbcType="INTEGER" property="sx"></result>
+        <result column="FJSX" jdbcType="INTEGER" property="fjsx"></result>
+    </resultMap>
+    <resultMap id="K2vModelBH" type="com.software.model.K2vModelBH">
+        <result column="name1" jdbcType="VARCHAR" property="name1"/>
+        <result column="name2" jdbcType="VARCHAR" property="name2"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <select id="getDrfa" resultMap="KvModel">
+        select AJXZ as name ,count(DISTINCT(PUB_AJ_JB.AJXH)) as value from PUB_SPRY_LOG, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and PUB_SPRY_LOG.AJXH = PUB_AJ_JB.AJXH
+                and PUB_SPRY_LOG.FYDM = PUB_AJ_JB.FYDM
+                group by AJXZ
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and convert(varchar(50),BGSM) = '首次分案'
+                and PUB_SPRY_LOG.AJXH = PUB_AJ_JB.AJXH
+                group by AJXZ
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrfaPC" resultType="int">
+        select count(DISTINCT(PUB_AJ_JB.AJXH)) from PUB_SPRY_LOG, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and PUB_SPRY_LOG.AJXH = PUB_AJ_JB.AJXH
+                and PUB_SPRY_LOG.FYDM = PUB_AJ_JB.FYDM
+                and AJXZ='7' and SPCX!='B'
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and convert(varchar(50),BGSM) = '首次分案'
+                and PUB_SPRY_LOG.AJXH = PUB_AJ_JB.AJXH
+                and AJXZ='7' and SPCX!='B'
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrkt" resultMap="KvModel">
+        select AJXZ as name ,count(DISTINCT(PUB_AJ_JB.AJXH)) as value from FTNQ_FTSYSQDJ, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and FTNQ_FTSYSQDJ.AJXH = PUB_AJ_JB.AJXH
+                and FTNQ_FTSYSQDJ.FYDM = PUB_AJ_JB.FYDM
+                group by PUB_AJ_JB.AJXZ
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and FTNQ_FTSYSQDJ.AJXH = PUB_AJ_JB.AJXH
+                group by PUB_AJ_JB.AJXZ
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrktPC" resultType="int">
+        select count(DISTINCT(PUB_AJ_JB.AJXH)) from FTNQ_FTSYSQDJ, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and PUB_AJ_JB.AJXZ='7' and SPCX!='B'
+                and FTNQ_FTSYSQDJ.AJXH = PUB_AJ_JB.AJXH
+                and FTNQ_FTSYSQDJ.FYDM = PUB_AJ_JB.FYDM
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and PUB_AJ_JB.AJXZ='7' and SPCX!='B'
+                and FTNQ_FTSYSQDJ.AJXH = PUB_AJ_JB.AJXH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrts" resultMap="KvModel">
+        select AJXZ as name ,count(DISTINCT(PUB_AJ_JB.AJXH)) as value from PUB_SL_SXYC, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and PUB_SL_SXYC.AJXH = PUB_AJ_JB.AJXH
+                and PUB_SL_SXYC.FYDM = PUB_AJ_JB.FYDM
+                group by PUB_AJ_JB.AJXZ
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and PUB_SL_SXYC.AJXH = PUB_AJ_JB.AJXH
+                group by PUB_AJ_JB.AJXZ
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrtsPC" resultType="int">
+        select count(DISTINCT(PUB_AJ_JB.AJXH)) from PUB_SL_SXYC, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and PUB_AJ_JB.AJXZ='7' and SPCX!='B'
+                and PUB_SL_SXYC.AJXH = PUB_AJ_JB.AJXH
+                and PUB_SL_SXYC.FYDM = PUB_AJ_JB.FYDM
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and PUB_AJ_JB.AJXZ='7' and SPCX!='B'
+                and PUB_SL_SXYC.AJXH = PUB_AJ_JB.AJXH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrsx" resultMap="KvModel">
+        select AJXZ as name ,count(DISTINCT(PUB_AJ_JB.AJXH)) as value from PUB_SL_SXZD, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and PUB_SL_SXZD.AJXH = PUB_AJ_JB.AJXH
+                and PUB_SL_SXZD.FYDM = PUB_AJ_JB.FYDM
+                group by PUB_AJ_JB.AJXZ
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and PUB_SL_SXZD.AJXH = PUB_AJ_JB.AJXH
+                group by PUB_AJ_JB.AJXZ
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrsxPC" resultType="int">
+        select count(DISTINCT(PUB_AJ_JB.AJXH)) from PUB_SL_SXZD, PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and PUB_AJ_JB.AJXZ='7' and SPCX!='B'
+                and PUB_SL_SXZD.AJXH = PUB_AJ_JB.AJXH
+                and PUB_SL_SXZD.FYDM = PUB_AJ_JB.FYDM
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and PUB_AJ_JB.AJXZ='7' and SPCX!='B'
+                and PUB_SL_SXZD.AJXH = PUB_AJ_JB.AJXH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDrbj" resultMap="KvModel">
+        select AJXZ as name ,count(DISTINCT(PUB_AJ_JB.AJXH)) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        group by AJXZ
+    </select>
+    <select id="getDrbjPC" resultType="int">
+        select count(DISTINCT(PUB_AJ_JB.AJXH)) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getDrja" resultMap="KvModel">
+        select AJXZ as name ,count(*) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        group by AJXZ
+    </select>
+    <select id="getDrjaPC" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getDrgd" resultMap="KvModel">
+        select AJXZ as name ,count(*) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        group by AJXZ
+    </select>
+    <select id="getDrgdPC" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getDycqja" resultMap="DycqjaModel">
+        select SX,FJSX,LARQ,JARQ from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        or JARQ is null
+    </select>
+    <select id="getDycqjaList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,SX,FJSX,DMMS as ajxz from
+                (
+                select AH,AJMC,LARQ,JARQ,SX,FJSX,AJXZ,FYDM from PUB_AJ_JB
+                where
+                JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                OR JARQ is null
+                ) A
+                left join (select * from PUB_DMB where LBBH='FBS0021-97') B
+                on A.AJXZ=B.DMBH AND A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,SX,FJSX,DMMS as ajxz from (select AH,AJMC,LARQ,JARQ,SX,FJSX,AJXZ from PUB_AJ_JB where
+                JARQ <![CDATA[>=]]> #{beginTime}
+                AND JARQ <![CDATA[<]]> #{endTime}
+                OR JARQ is null) A left join (select * from PUB_DMB where LBBH='FBS0021-97')
+                B on A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getDycqgd" resultMap="CqwgdModel">
+        select AH, AJMC, JARQ from PUB_AJ_JB where
+        GDRQ is null and JARQ is not null and AJXH not in (select AJXH from PUB_SSXX)
+    </select>
+
+    <select id="getBjXsList" resultMap="AjjbModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+        and AJXZ='1'
+    </select>
+    <select id="getBjMsList" resultMap="AjjbModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+        and AJXZ='2'
+    </select>
+    <select id="getBjZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+        and AJXZ='8'
+    </select>
+    <select id="getBjPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getBjXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz
+                from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+        and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+    </select>
+    <select id="getBjQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AJXH,AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    CBRBPRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and CBRBPRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+        and AJXZ NOT IN
+        ('1','2','6','7','8')
+    </select>
+
+    <select id="getFaXsList" resultMap="AjjbModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from
+                PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and A.FYDM = B.FYDM
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+                and A.FYDM=C.FYDM
+            </when>
+            <otherwise>
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+
+            </otherwise>
+        </choose>
+        and AJXZ='1'
+    </select>
+    <select id="getFaMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and A.FYDM = B.FYDM
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+                and A.FYDM=C.FYDM
+            </when>
+            <otherwise>
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+
+            </otherwise>
+        </choose>
+        and AJXZ='2'
+    </select>
+    <select id="getFaZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and A.FYDM = B.FYDM
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+                and A.FYDM=C.FYDM
+            </when>
+            <otherwise>
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+
+            </otherwise>
+        </choose>
+        and AJXZ='8'
+    </select>
+    <select id="getFaPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and A.FYDM = B.FYDM
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+                and A.FYDM=C.FYDM
+            </when>
+            <otherwise>
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getFaXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and A.FYDM = B.FYDM
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+                and A.FYDM=C.FYDM
+            </when>
+            <otherwise>
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+
+            </otherwise>
+        </choose>
+        and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+    </select>
+    <select id="getFaQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and A.FYDM = B.FYDM
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+                and A.FYDM=C.FYDM
+            </when>
+            <otherwise>
+                select distinct A.AJXH,A.AH,A.AJMC,A.LARQ,A.JARQ,C.DMMS as ajxz from PUB_AJ_JB A,PUB_SPRY_LOG B,PUB_DMB C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    BGSJ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and BGSJ <![CDATA[<]]> #{endTime}
+                </if>
+                and BGSM='首次分案'
+                and A.AJXH = B.AJXH
+                and C.LBBH='FBS0021-97'
+                and A.AJXZ=C.DMBH
+
+            </otherwise>
+        </choose>
+        and AJXZ NOT IN
+        ('1','2','6','7','8')
+    </select>
+
+    <select id="getKtXsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getKtMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXH=C.AJXH
+                and A.FYDM=C.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getKtZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getKtPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getKtXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getKtQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,FTNQ_FTSYSQDJ C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    RQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and RQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getTsXsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getTsMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getTsZxList" resultMap="AjjbModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getTsPcList" resultMap="AjjbModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getTsXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getTsQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXYC C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    SQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and SQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getSxXsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getSxMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getSxZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getSxPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getSxXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getSxQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+                and C.FYDM=A.FYDM
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B,PUB_SL_SXZD C where
+                <if test="beginTime!=null and beginTime!='' ">
+                    ZDSQRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and ZDSQRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and C.AJXH=A.AJXH
+
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getJaXsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getJaMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getJaZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getJaPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getJaXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getJaQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getGdXsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getGdMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getGdZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getGdPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getGdXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getGdQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select distinct AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    GDRQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and GDRQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getLaXsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='1'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getLaMsList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='2'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getLaZxList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='8'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getLaPcList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ='7' and SPCX!='B'
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getLaXzList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and (AJXZ='6' or (AJXZ='7' AND SPCX='B'))
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getLaQtList" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+                and A.FYDM=B.FYDM
+            </when>
+            <otherwise>
+                select AH,AJMC,LARQ,JARQ,B.DMMS as ajxz from PUB_AJ_JB A,PUB_DMB B where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXZ NOT IN
+                ('1','2','6','7','8')
+                and B.LBBH='FBS0021-97'
+                and A.AJXZ=B.DMBH
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <select id="getAjBH" resultMap="AjjbModel">
+        select D.AH,D.AJMC,D.LARQ,D.JARQ,D.AJXZ,B.DMMS as spcx,D.FYDM from PUB_AJ_JB D,PUB_DMB B where B.LBBH=#{lbbh} and
+        <foreach item="item" index="index" collection="ajList" open="(" separator="or" close=")">
+            (D.AJXH=#{item.value} and D.FYDM=#{item.name})
+        </foreach>
+        AND D.FYDM=B.FYDM
+        AND D.SPCX=B.DMBH
+    </select>
+    <select id="getAj" resultMap="AjjbModel">
+        select D.AH,D.AJMC,D.LARQ,D.JARQ,D.AJXZ,B.DMMS as spcx from PUB_AJ_JB D,PUB_DMB B where B.LBBH=#{lbbh} and
+        <foreach item="item" index="index" collection="ajList" open="(" separator="or" close=")">
+            (D.AJXH=#{item})
+        </foreach>
+        AND D.SPCX=B.DMBH
+    </select>
+    <select id="getAjxzBH" resultType="string">
+        select DMMS from PUB_DMB where LBBH='FBS0021-97' and DMBH=#{ajxz} and fydm=#{fydm}
+    </select>
+    <select id="getAjxz" resultType="string">
+        select DMMS from PUB_DMB where LBBH='FBS0021-97' and DMBH=#{ajxz}
+    </select>
+</mapper>

@@ -1,0 +1,80 @@
+package com.software.mapper.dao;
+
+import com.software.mapper.PubAjJbMapper;
+import com.software.model.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Primary;
+
+import java.sql.Clob;
+import java.util.List;
+
+@Mapper
+@Primary
+public interface AjjbDao extends PubAjJbMapper {
+    AjjbModel selectByAjxh(@Param("fydm") String fydm, @Param("ajxh") Integer ajxh);
+    //首页的业务审判庭数据排名
+    List<K2vModel> getYwtsj(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //首页的实时立案数据 当天的
+    List<AjjbModel> getAjxxIntime(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //获取被告人性别 传入案由代码列表 可以得到不同案件类型的被告人性别
+    List<KvModel> getBgrxb(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //得到某个时期的案件数 比如年案件数
+    Integer getAjCount(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    //被告人年龄分析 身份证按格式才有效
+    List<BgrxxModel> getBgrAge(@Param("beginTime")String beginTime,@Param("endTime") String endTime);
+
+    //被告人身份
+    List<KvModel> getBgrsf(@Param("beginTime") String beginTime,@Param("endTime")String endTime);
+
+    //被告人关联罪名
+    List<KvModel> getBgrGlzm(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    //被告人文化程度 返回值：文化程度代码 案件数
+    List<KvModel> getBgrWhcd(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+
+
+    //有期徒刑年数
+    List<BgrxxModel> getYqtx(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //未成年人罪名分布
+    List<KvModel> getMinorZmfb(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    //未成年人年新收案件量
+    int getMinorXsajCount(@Param("beginTime")String beginTime,@Param("endTime")String endTime );
+    //未成年人根据案由得到案件量
+    int getMinorajCountByAy(@Param("beginTime")String beginTime,@Param("endTime")String endTime,@Param("ay")String ay  );
+    //未成年人已结案件量。这个也可以用于计算辖区内未成年人犯罪情况对应省案件量分布
+    int getMinorYjajCount(@Param("beginTime")String beginTime,@Param("endTime")String endTime );
+
+    //未成年人被告性别
+    List<KvModel> getMinorBgrxb(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    //未成年人犯罪各省外来案件
+    List<KvModel> getMinorWlaj(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //未成年人犯罪各省外来案件
+    List<KvModel> getMinorBgrAge(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //14-15周岁案件分布
+    List<KvModel> getMinorSszmRange1(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //16-17周岁案件分布
+    List<KvModel> getMinorSszmRange2(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+    //未成年人文化程度
+    List<KvModel> getMinorWhcd(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    //离婚纠纷案件数  以及天津地区离婚案件数
+    Integer getLhjfAjCount(@Param("beginTime")String begin,@Param("endTime")String end);
+    //离婚纠纷文化程度
+    List<KvModel> getLhjfWhcd(@Param("beginTime")String begin,@Param("endTime")String end);
+    //离婚纠纷判决结果
+    List<KvModel> getLhjfPjjg(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    //离婚纠纷判决结果
+    List<ForDmmsModel> getForDmms(@Param("beginTime")String beginTime,@Param("endTime")String endTime,@Param("ay") String ay);
+
+
+    ResultMapWithBlobs getSjxx(@Param("szb")String szb, @Param("szl")String szl);
+
+    String getDmms(@Param("lbbh") String lbbh,@Param("dmbh")String dmbh);
+}
+

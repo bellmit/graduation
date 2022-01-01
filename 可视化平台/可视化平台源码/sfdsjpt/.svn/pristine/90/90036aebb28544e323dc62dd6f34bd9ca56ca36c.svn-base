@@ -1,0 +1,12 @@
+package com.software.mapper;
+
+import com.software.model.KvModel;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface XykzpMapper {
+
+    List<KvModel>  getAjMonthCount(String firstDay, String cur);
+}

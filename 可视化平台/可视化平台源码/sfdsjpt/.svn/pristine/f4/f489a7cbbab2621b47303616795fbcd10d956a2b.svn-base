@@ -1,0 +1,12 @@
+package com.software.model;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class KvAllModel {
+    private List<KvModel> kvModel;
+    private String titile;
+    private List<String> description;
+}

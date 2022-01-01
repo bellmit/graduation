@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.software.mapper.PubSpryMapper" >
+  <resultMap id="BaseResultMap" type="com.software.entity.PubSpry" >
+    <id column="AJXH" property="ajxh" jdbcType="INTEGER" />
+    <id column="SPRYBH" property="sprybh" jdbcType="INTEGER" />
+    <result column="FG" property="fg" jdbcType="VARCHAR" />
+    <result column="SFCBR" property="sfcbr" jdbcType="CHAR" />
+    <result column="SFSPZ" property="sfspz" jdbcType="CHAR" />
+    <result column="SFDLSPY" property="sfdlspy" jdbcType="CHAR" />
+    <result column="SFRMPSY" property="sfrmpsy" jdbcType="CHAR" />
+    <result column="XM" property="xm" jdbcType="VARCHAR" />
+    <result column="GH" property="gh" jdbcType="VARCHAR" />
+    <result column="BGYY" property="bgyy" jdbcType="VARCHAR" />
+    <result column="BGSJ" property="bgsj" jdbcType="TIMESTAMP" />
+    <result column="BGFS" property="bgfs" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    AJXH, SPRYBH, FG, SFCBR, SFSPZ, SFDLSPY, SFRMPSY, XM, GH, BGYY, BGSJ, BGFS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.software.entity.PubSpryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PUB_SPRY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from PUB_SPRY
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and SPRYBH = #{sprybh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from PUB_SPRY
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and SPRYBH = #{sprybh,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.software.entity.PubSpryExample" >
+    delete from PUB_SPRY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.software.entity.PubSpry" >
+    insert into PUB_SPRY (AJXH, SPRYBH, FG, 
+      SFCBR, SFSPZ, SFDLSPY, SFRMPSY, 
+      XM, GH, BGYY, BGSJ, 
+      BGFS)
+    values (#{ajxh,jdbcType=INTEGER}, #{sprybh,jdbcType=INTEGER}, #{fg,jdbcType=VARCHAR}, 
+      #{sfcbr,jdbcType=CHAR}, #{sfspz,jdbcType=CHAR}, #{sfdlspy,jdbcType=CHAR}, #{sfrmpsy,jdbcType=CHAR}, 
+      #{xm,jdbcType=VARCHAR}, #{gh,jdbcType=VARCHAR}, #{bgyy,jdbcType=VARCHAR}, #{bgsj,jdbcType=TIMESTAMP}, 
+      #{bgfs,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.software.entity.PubSpry" >
+    insert into PUB_SPRY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ajxh != null" >
+        AJXH,
+      </if>
+      <if test="sprybh != null" >
+        SPRYBH,
+      </if>
+      <if test="fg != null" >
+        FG,
+      </if>
+      <if test="sfcbr != null" >
+        SFCBR,
+      </if>
+      <if test="sfspz != null" >
+        SFSPZ,
+      </if>
+      <if test="sfdlspy != null" >
+        SFDLSPY,
+      </if>
+      <if test="sfrmpsy != null" >
+        SFRMPSY,
+      </if>
+      <if test="xm != null" >
+        XM,
+      </if>
+      <if test="gh != null" >
+        GH,
+      </if>
+      <if test="bgyy != null" >
+        BGYY,
+      </if>
+      <if test="bgsj != null" >
+        BGSJ,
+      </if>
+      <if test="bgfs != null" >
+        BGFS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ajxh != null" >
+        #{ajxh,jdbcType=INTEGER},
+      </if>
+      <if test="sprybh != null" >
+        #{sprybh,jdbcType=INTEGER},
+      </if>
+      <if test="fg != null" >
+        #{fg,jdbcType=VARCHAR},
+      </if>
+      <if test="sfcbr != null" >
+        #{sfcbr,jdbcType=CHAR},
+      </if>
+      <if test="sfspz != null" >
+        #{sfspz,jdbcType=CHAR},
+      </if>
+      <if test="sfdlspy != null" >
+        #{sfdlspy,jdbcType=CHAR},
+      </if>
+      <if test="sfrmpsy != null" >
+        #{sfrmpsy,jdbcType=CHAR},
+      </if>
+      <if test="xm != null" >
+        #{xm,jdbcType=VARCHAR},
+      </if>
+      <if test="gh != null" >
+        #{gh,jdbcType=VARCHAR},
+      </if>
+      <if test="bgyy != null" >
+        #{bgyy,jdbcType=VARCHAR},
+      </if>
+      <if test="bgsj != null" >
+        #{bgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bgfs != null" >
+        #{bgfs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.software.entity.PubSpryExample" resultType="java.lang.Integer" >
+    select count(*) from PUB_SPRY
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PUB_SPRY
+    <set >
+      <if test="record.ajxh != null" >
+        AJXH = #{record.ajxh,jdbcType=INTEGER},
+      </if>
+      <if test="record.sprybh != null" >
+        SPRYBH = #{record.sprybh,jdbcType=INTEGER},
+      </if>
+      <if test="record.fg != null" >
+        FG = #{record.fg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfcbr != null" >
+        SFCBR = #{record.sfcbr,jdbcType=CHAR},
+      </if>
+      <if test="record.sfspz != null" >
+        SFSPZ = #{record.sfspz,jdbcType=CHAR},
+      </if>
+      <if test="record.sfdlspy != null" >
+        SFDLSPY = #{record.sfdlspy,jdbcType=CHAR},
+      </if>
+      <if test="record.sfrmpsy != null" >
+        SFRMPSY = #{record.sfrmpsy,jdbcType=CHAR},
+      </if>
+      <if test="record.xm != null" >
+        XM = #{record.xm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gh != null" >
+        GH = #{record.gh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bgyy != null" >
+        BGYY = #{record.bgyy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bgsj != null" >
+        BGSJ = #{record.bgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bgfs != null" >
+        BGFS = #{record.bgfs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PUB_SPRY
+    set AJXH = #{record.ajxh,jdbcType=INTEGER},
+      SPRYBH = #{record.sprybh,jdbcType=INTEGER},
+      FG = #{record.fg,jdbcType=VARCHAR},
+      SFCBR = #{record.sfcbr,jdbcType=CHAR},
+      SFSPZ = #{record.sfspz,jdbcType=CHAR},
+      SFDLSPY = #{record.sfdlspy,jdbcType=CHAR},
+      SFRMPSY = #{record.sfrmpsy,jdbcType=CHAR},
+      XM = #{record.xm,jdbcType=VARCHAR},
+      GH = #{record.gh,jdbcType=VARCHAR},
+      BGYY = #{record.bgyy,jdbcType=VARCHAR},
+      BGSJ = #{record.bgsj,jdbcType=TIMESTAMP},
+      BGFS = #{record.bgfs,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.software.entity.PubSpry" >
+    update PUB_SPRY
+    <set >
+      <if test="fg != null" >
+        FG = #{fg,jdbcType=VARCHAR},
+      </if>
+      <if test="sfcbr != null" >
+        SFCBR = #{sfcbr,jdbcType=CHAR},
+      </if>
+      <if test="sfspz != null" >
+        SFSPZ = #{sfspz,jdbcType=CHAR},
+      </if>
+      <if test="sfdlspy != null" >
+        SFDLSPY = #{sfdlspy,jdbcType=CHAR},
+      </if>
+      <if test="sfrmpsy != null" >
+        SFRMPSY = #{sfrmpsy,jdbcType=CHAR},
+      </if>
+      <if test="xm != null" >
+        XM = #{xm,jdbcType=VARCHAR},
+      </if>
+      <if test="gh != null" >
+        GH = #{gh,jdbcType=VARCHAR},
+      </if>
+      <if test="bgyy != null" >
+        BGYY = #{bgyy,jdbcType=VARCHAR},
+      </if>
+      <if test="bgsj != null" >
+        BGSJ = #{bgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bgfs != null" >
+        BGFS = #{bgfs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and SPRYBH = #{sprybh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.software.entity.PubSpry" >
+    update PUB_SPRY
+    set FG = #{fg,jdbcType=VARCHAR},
+      SFCBR = #{sfcbr,jdbcType=CHAR},
+      SFSPZ = #{sfspz,jdbcType=CHAR},
+      SFDLSPY = #{sfdlspy,jdbcType=CHAR},
+      SFRMPSY = #{sfrmpsy,jdbcType=CHAR},
+      XM = #{xm,jdbcType=VARCHAR},
+      GH = #{gh,jdbcType=VARCHAR},
+      BGYY = #{bgyy,jdbcType=VARCHAR},
+      BGSJ = #{bgsj,jdbcType=TIMESTAMP},
+      BGFS = #{bgfs,jdbcType=VARCHAR}
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and SPRYBH = #{sprybh,jdbcType=INTEGER}
+  </update>
+</mapper>

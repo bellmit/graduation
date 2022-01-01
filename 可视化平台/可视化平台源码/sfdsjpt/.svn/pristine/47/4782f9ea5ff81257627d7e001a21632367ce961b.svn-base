@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.dao.AjjbDao">
+   <!-- <select id="selectByIds" resultType="com.software.model.AjjbModel">
+        select PUB_AJ_JB.AJXH,PUB_AJ_JB.LARQ,PUB_AJ_JB.JARQ,PUB_SPRY.XM,PUB_AJ_JB.AJMC from PUB_AJ_JB,PUB_SPRY where PUB_AJ_JB.AJXH=PUB_SPRY.AJXH
+        and PUB_AJ_JB.AJXH in
+        <foreach collection="AjxxLists" item="ajxh" open="(" close=")" separator=",">
+            #{ajxh}
+        </foreach>
+    </select>-->
+
+   <!-- <select id="findLcjdAjxx" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM LCJD_AJXXB
+        <where>
+            <if test="cbr != null">
+                CBR = #{cbr} AND
+            </if>
+            <if test="yhbm != null">
+                (BASPT = #{yhbm} OR LASPT = #{yhbm}) AND
+            </if>
+            <choose>
+                <when test="lcjd == '立案'">YSSJ IS NULL AND</when>
+                <when test="lcjd == '分案'">YSSJ IS NOT NULL AND FASJ IS NULL AND</when>
+                <when test="lcjd == '庭前准备'">FASJ IS NOT NULL AND KTSJ IS NULL AND BJSJ IS NULL AND</when>
+                <when test="lcjd == '开庭审理'">FASJ IS NOT NULL AND KTSJ IS NOT NULL AND BJSJ IS NULL AND</when>
+                <when test="lcjd == '报结'">BJSJ IS NOT NULL AND JASJ IS NULL AND</when>
+                <when test="lcjd == '结案'">JASJ IS NOT NULL AND</when>
+            </choose>
+            FYDM = #{fydm} AND
+            (LASJ BETWEEN #{beginTime} AND #{endTime} OR (LASJ &lt; #{beginTime} AND (JASJ IS NULL OR JASJ BETWEEN #{beginTime} AND #{endTime})))
+        </where>
+    </select>-->
+
+    <!--<select id="findLcjdAjxxLimit" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM LCJD_AJXXB
+        <where>
+            <if test="cbr != null">
+                CBR = #{cbr} AND
+            </if>
+            <if test="yhbm != null">
+                (BASPT = #{yhbm} OR LASPT = #{yhbm}) AND
+            </if>
+            <choose>
+                <when test="lcjd == '立案'">YSSJ IS NULL AND</when>
+                <when test="lcjd == '分案'">YSSJ IS NOT NULL AND FASJ IS NULL AND</when>
+                <when test="lcjd == '庭前准备'">FASJ IS NOT NULL AND KTSJ IS NULL AND BJSJ IS NULL AND</when>
+                <when test="lcjd == '开庭审理'">FASJ IS NOT NULL AND KTSJ IS NOT NULL AND BJSJ IS NULL AND</when>
+                <when test="lcjd == '报结'">BJSJ IS NOT NULL AND JASJ IS NULL AND</when>
+                <when test="lcjd == '结案'">JASJ IS NOT NULL AND</when>
+            </choose>
+            FYDM = #{fydm} AND
+            (LASJ BETWEEN #{beginTime} AND #{endTime} OR (LASJ &lt; #{beginTime} AND (JASJ IS NULL OR JASJ &gt;= #{beginTime})))
+            <if test="limit != null">
+                limit #{limit}
+            </if>
+            <if test="offset != null">
+                offset #{offset}
+            </if>
+        </where>
+    </select>
+-->
+   <!-- <select id="countLcjdAjxx" resultType="Integer">
+        SELECT
+        count(*)
+        FROM LCJD_AJXXB
+        <where>
+            <if test="cbr != null">
+                CBR = #{cbr} AND
+            </if>
+            <if test="yhbm != null">
+                (BASPT = #{yhbm} OR LASPT = #{yhbm}) AND
+            </if>
+            <choose>
+                <when test="lcjd == '立案'">YSSJ IS NULL AND</when>
+                <when test="lcjd == '分案'">YSSJ IS NOT NULL AND FASJ IS NULL AND</when>
+                <when test="lcjd == '庭前准备'">FASJ IS NOT NULL AND KTSJ IS NULL AND BJSJ IS NULL AND</when>
+                <when test="lcjd == '开庭审理'">FASJ IS NOT NULL AND KTSJ IS NOT NULL AND BJSJ IS NULL AND</when>
+                <when test="lcjd == '报结'">BJSJ IS NOT NULL AND JASJ IS NULL AND</when>
+                <when test="lcjd == '结案'">JASJ IS NOT NULL AND</when>
+            </choose>
+            FYDM = #{fydm} AND
+            (LASJ BETWEEN #{beginTime} AND #{endTime} OR (LASJ &lt; #{beginTime} AND (JASJ IS NULL OR JASJ &gt;= #{beginTime})))
+        </where>
+    </select>
+
+    <select id="findLcdjAjxxSelf" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM LCJD_AJXXB
+        WHERE CBR = #{cbr} AND
+        FYDM = #{fydm} AND
+        (LASJ BETWEEN #{beginTime} AND #{endTime} OR (LASJ &lt; #{beginTime}
+        AND (JASJ IS NULL OR JASJ &gt;= #{beginTime})))
+    </select>
+
+    <select id="findLcdjAjxxCourt" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM LCJD_AJXXB
+        WHERE
+        (BASPT = #{yhbm} OR LASPT = #{yhbm}) AND
+        FYDM = #{fydm} AND
+        (LASJ BETWEEN #{beginTime} AND #{endTime} OR (LASJ &lt; #{beginTime} AND (JASJ IS NULL OR JASJ &gt;= #{beginTime})))
+    </select>
+
+    <select id="findLcdjAjxxWhole" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM LCJD_AJXXB
+        WHERE FYDM = #{fydm} AND
+        (LASJ BETWEEN #{beginTime} AND #{endTime} OR (LASJ &lt; #{beginTime} AND (JASJ IS NULL
+        OR JASJ &gt;= #{beginTime})))
+    </select>-->
+
+    <resultMap id="AjjbModel" type="com.software.model.AjjbModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"></result>
+        <result column="AH" jdbcType="VARCHAR" property="ah"></result>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"></result>
+        <result column="AJXZ" jdbcType="CHAR" property="ajxz"></result>
+        <result column="SPCX" jdbcType="CHAR" property="spcx"></result>
+        <result column="SPCXDZ" jdbcType="CHAR" property="spcxdz"></result>
+        <result column="BASPT" jdbcType="VARCHAR" property="baspt"></result>
+        <result column="LARQ" jdbcType="VARCHAR" property="larq"></result>
+        <result column="JARQ" jdbcType="VARCHAR" property="jarq"></result>
+    </resultMap>
+    <select id="selectByAjxh" resultMap="AjjbModel">
+        select ajjb.AJXH, ajjb.AH, ajjb.AJMC, ajjb.AJXZ, ajjb.SPCX, ajjb.SPCXDZ, ajjb.BASPT, ajjb.LARQ, ajjb.JARQ
+        from PUB_AJ_JB ajjb
+        where ajjb.AJXH = #{ajxh}
+        <if test="fydm == '120242 22A' || fydm == '120204 223' || fydm == '120205 224' || fydm == '120206 225' || fydm == '120241 229'">
+            AND ajjb.FYDM = #{fydm}
+        </if>
+    </select>
+    <select id="getAjxxIntime" resultMap="AjjbModel">
+       select AH,LARQ from PUB_AJ_JB where LARQ <![CDATA[>=]]> #{beginTime} and LARQ <![CDATA[<=]]> #{endTime}
+    </select>
+    <resultMap id="YwsptModel" type="com.software.model.YwtpmModel">
+        <result column="BASPT" jdbcType="VARCHAR" property="baspt"></result>
+        <result column="DYJAS" jdbcType="INTEGER" property="dyjas"></result>
+        <result column="DYWJS" jdbcType="INTEGER" property="dywjs"></result>
+    </resultMap>
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value" jdbcType="INTEGER" property="value"></result>
+    </resultMap>
+    <resultMap id="K2vModel" type="com.software.model.K2vModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value1" jdbcType="INTEGER" property="value1"></result>
+        <result column="value2" jdbcType="INTEGER" property="value2"></result>
+    </resultMap>
+    <resultMap id="BgrxxModel" type="com.software.model.BgrxxModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"></result>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"></result>
+        <result column="AH" jdbcType="VARCHAR" property="ah"></result>
+        <result column="CSNYR" jdbcType="TIMESTAMP" property="csnyr"></result>
+        <result column="SFZHM" jdbcType="INTEGER" property="sfzhm"></result>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"></result>
+    </resultMap>
+    <select id="getYwtsj" resultMap="K2vModel">
+    select A1.baspt name,A1.yjajs value1,A2.wjajs value2  from  (select D.DMMS baspt,T.c yjajs from  (select BASPT,COUNT(BASPT) c from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+    group by  BASPT ) T left join (select DMBH,DMMS from PUB_DMB where LBBH='USR206-99') D  on T.BASPT=D.DMBH) A1 ,
+    (select D.DMMS baspt,T.c wjajs from  (select BASPT,COUNT(BASPT) c from PUB_AJ_JB where LARQ <![CDATA[>=]]> #{beginTime}  and JARQ is null
+    group by  BASPT ) T left join (select DMBH,DMMS from PUB_DMB where LBBH='USR206-99') D  on T.BASPT=D.DMBH) A2 where A1.baspt=A2.baspt
+    order by  A1.yjajs+A2.wjajs desc
+    </select>
+
+    <select id="getAjCount" resultType="Integer">
+        select count(*) from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%黑%'))
+    </select>
+
+    <select id="getBgrxb" resultMap="KvModel">
+        select D.XB name,count(D.XB) value from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and P.AJXH=D.AJXH  and P.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%黑%'))
+        group by D.XB
+    </select>
+
+    <select id="getBgrsf" resultMap="KvModel">
+        select D.SF name,count(D.SF) value from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and  P.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%黑%'))
+        and P.AJXH=D.AJXH and D.SF!=null  group by D.SF
+    </select>
+
+    <select id="getBgrGlzm" resultMap="KvModel">
+        select LAAY name,Count(LAAY) value from PUB_LA_AY where AJXH in
+        (select PUB_LA_AY.AJXH from PUB_LA_AY,PUB_AJ_JB where AY in (select DMBH from PUB_AYDMB where DMMS like '%黑%')
+        and PUB_LA_AY.AJXH=PUB_AJ_JB.AJXH and JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        )
+        group by LAAY
+    </select>
+    <select id="getBgrAge" resultMap="BgrxxModel">
+        select P.AJXH,D.CSNYR,D.SFZHM ,P.LARQ,P.AJMC from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and LARQ is not null  and P.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%黑%'))
+        and P.AJXH=D.AJXH
+    </select>
+
+    <select id="getLhjfWhcd" resultMap="KvModel">
+        select d.WHCD name,count(d.WHCD) value from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and p.AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%离婚%')) and WHCD is not null
+        group by d.WHCD
+    </select>
+    <select id="getLhjfPjjg" resultMap="KvModel">
+        select JAFS name,count(JAFS) value  from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%离婚%')) group by JAFS
+    </select>
+    <select id="getLhjfAjCount" resultType="Integer">
+        select count(*) from PUB_AJ_JB where JARQ<![CDATA[>=]]>#{beginTime}  and JARQ<![CDATA[<=]]>#{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%离婚%'))
+    </select>
+    <select id="getLhjfJafs" resultMap="KvModel">
+        select JAFS name,count(JAFS) value  from PUB_AJ_JB where JARQ<![CDATA[>=]]>#{beginTime} and JARQ<![CDATA[<=]]>#{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%离婚%')) group by JAFS
+    </select>
+
+    <!--以下是未成年人专用接口-->
+    <select id="getMinorZmfb" resultMap="KvModel">
+        select DMMS name,Count(DMMS) value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and p.AJXH=l.AJXH and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 18 and p.AJXH=l.AJXH
+        ) T where T.AY=PA.DMBH group by DMMS order by count(DMMS) desc
+    </select>
+    <select id="getMinorYjajCount" resultType="Integer">
+        select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+    </select>
+
+    <select id="getMinorXsajCount" resultType="Integer">
+        select count(distinct p.AJXH) from PUB_AJ_JB p,DSR_GR d  where LARQ <![CDATA[>=]]> #{beginTime} and LARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+    </select>
+
+    <select id="getMinorBgrxb" resultMap="KvModel">
+        select d.XB name,count(d.XB) value from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 18
+        group by d.XB
+    </select>
+    <select id="getMinorWlaj" resultMap="KvModel">
+        select substring(d.SFZHM,1,2) name,count(substring(d.SFZHM,1,2)) value from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime}
+         and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 18
+        group by substring(d.SFZHM,1,2)
+    </select>
+<!-- 未成年犯罪 传入时间和案由 得到该案由对应的案件量-->
+    <select id="getMinorajCountByAy" resultType="Integer">
+        select count(*) from PUB_LA_AY pl,DSR_GR d,PUB_AJ_JB p where JARQ <![CDATA[>=]]>#{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        AY in (select DMBH from PUB_AYDMB where
+        DMMS=#{ay}) and d.AJXH=pl.AJXH
+        and  p.AJXH=pl.AJXH and  char_length(SFZHM)=18  and (case when isdate(substring(SFZHM,7,4))=1 then 1 else 0 end )=1
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+    </select>
+     <!--未成年人年龄分布-->
+    <select id="getMinorBgrAge" resultMap="KvModel">
+        select year(p.LARQ)-convert(int,substring(SFZHM,7,4)) name,count(year(p.LARQ)-convert(int,substring(SFZHM,7,4))) value
+        from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]>#{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18
+        group by year(p.LARQ)-convert(int,substring(SFZHM,7,4))
+    </select>
+
+    <!--未成年人14-15周岁涉诉罪名 -->
+    <select id="getMinorSszmRange1" resultMap="KvModel">
+        select DMMS name,Count(DMMS) value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l where JARQ <![CDATA[>=]]>#{beginTime}  and JARQ<![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and p.AJXH=l.AJXH and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]>15
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>=]]>14 and p.AJXH=l.AJXH
+        ) T where T.AY=PA.DMBH group by DMMS
+    </select>
+
+    <!--未成年人16-17周岁涉诉罪名 -->
+    <select id="getMinorSszmRange2" resultMap="KvModel">
+        select DMMS name,Count(DMMS) value from PUB_AYDMB PA,(select l.AY from PUB_AJ_JB p,DSR_GR d ,PUB_LA_AY l where JARQ <![CDATA[>=]]> #{beginTime}  and JARQ<![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and p.AJXH=l.AJXH and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<=]]> 17
+        and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[>=]]>16 and p.AJXH=l.AJXH
+        ) T where T.AY=PA.DMBH group by DMMS
+    </select>
+    <!--未成年人文化程度-->
+    <select id="getMinorWhcd" resultMap="KvModel">
+        select d.WHCD name,count(d.WHCD) value from PUB_AJ_JB p,DSR_GR d  where JARQ<![CDATA[>=]]>#{beginTime} and JARQ<![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and char_length(SFZHM)=18 and year(p.LARQ)-convert(int,substring(SFZHM,7,4)) <![CDATA[<]]> 18 and d.WHCD is not null
+        group by d.WHCD
+    </select>
+</mapper>

@@ -1,0 +1,10 @@
+package com.software.model;
+
+import java.util.List;
+
+//简单柱状图
+public class SimpleBar {
+    public List<String> xAxis;
+    public List<String> yAxis;
+    public List<Integer> series;
+}

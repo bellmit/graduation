@@ -1,0 +1,30 @@
+package com.software.mapper;
+
+import com.software.entity.PubAydmb;
+import com.software.entity.PubAydmbExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface PubAydmbMapper {
+    int countByExample(PubAydmbExample example);
+
+    int deleteByExample(PubAydmbExample example);
+
+    int deleteByPrimaryKey(@Param("bbh") String bbh, @Param("dmbh") String dmbh);
+
+    int insert(PubAydmb record);
+
+    int insertSelective(PubAydmb record);
+
+    List<PubAydmb> selectByExample(PubAydmbExample example);
+
+    PubAydmb selectByPrimaryKey(@Param("bbh") String bbh, @Param("dmbh") String dmbh);
+
+    int updateByExampleSelective(@Param("record") PubAydmb record, @Param("example") PubAydmbExample example);
+
+    int updateByExample(@Param("record") PubAydmb record, @Param("example") PubAydmbExample example);
+
+    int updateByPrimaryKeySelective(PubAydmb record);
+
+    int updateByPrimaryKey(PubAydmb record);
+}

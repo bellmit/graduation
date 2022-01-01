@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.software.mapper.DsrGrMapper" >
+  <resultMap id="BaseResultMap" type="com.software.entity.DsrGr" >
+    <id column="AJXH" property="ajxh" jdbcType="INTEGER" />
+    <id column="DSRBH" property="dsrbh" jdbcType="INTEGER" />
+    <result column="XM" property="xm" jdbcType="VARCHAR" />
+    <result column="XB" property="xb" jdbcType="CHAR" />
+    <result column="CSNYR" property="csnyr" jdbcType="TIMESTAMP" />
+    <result column="MZ" property="mz" jdbcType="CHAR" />
+    <result column="JG" property="jg" jdbcType="CHAR" />
+    <result column="ZY" property="zy" jdbcType="CHAR" />
+    <result column="ZW" property="zw" jdbcType="CHAR" />
+    <result column="WHCD" property="whcd" jdbcType="CHAR" />
+    <result column="GZDW" property="gzdw" jdbcType="CHAR" />
+    <result column="ZZMM" property="zzmm" jdbcType="CHAR" />
+    <result column="JB" property="jb" jdbcType="CHAR" />
+    <result column="SF" property="sf" jdbcType="CHAR" />
+    <result column="HYQK" property="hyqk" jdbcType="CHAR" />
+    <result column="JTQK" property="jtqk" jdbcType="CHAR" />
+    <result column="JKQK" property="jkqk" jdbcType="CHAR" />
+    <result column="SSGJ" property="ssgj" jdbcType="CHAR" />
+    <result column="SFZHM" property="sfzhm" jdbcType="CHAR" />
+    <result column="YB" property="yb" jdbcType="CHAR" />
+    <result column="DH" property="dh" jdbcType="CHAR" />
+    <result column="DZ" property="dz" jdbcType="VARCHAR" />
+    <result column="QRJG" property="qrjg" jdbcType="VARCHAR" />
+    <result column="QRGC" property="qrgc" jdbcType="VARCHAR" />
+    <result column="ZZD" property="zzd" jdbcType="VARCHAR" />
+    <result column="ZWZY" property="zwzy" jdbcType="VARCHAR" />
+    <result column="ZJLB" property="zjlb" jdbcType="CHAR" />
+    <result column="SFZHM_WS" property="sfzhmWs" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    AJXH, DSRBH, XM, XB, CSNYR, MZ, JG, ZY, ZW, WHCD, GZDW, ZZMM, JB, SF, HYQK, JTQK, 
+    JKQK, SSGJ, SFZHM, YB, DH, DZ, QRJG, QRGC, ZZD, ZWZY, ZJLB, SFZHM_WS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.software.entity.DsrGrExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from DSR_GR
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from DSR_GR
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and DSRBH = #{dsrbh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from DSR_GR
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and DSRBH = #{dsrbh,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.software.entity.DsrGrExample" >
+    delete from DSR_GR
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.software.entity.DsrGr" >
+    insert into DSR_GR (AJXH, DSRBH, XM, 
+      XB, CSNYR, MZ, JG, 
+      ZY, ZW, WHCD, GZDW, 
+      ZZMM, JB, SF, HYQK, 
+      JTQK, JKQK, SSGJ, SFZHM, 
+      YB, DH, DZ, QRJG, 
+      QRGC, ZZD, ZWZY, ZJLB, 
+      SFZHM_WS)
+    values (#{ajxh,jdbcType=INTEGER}, #{dsrbh,jdbcType=INTEGER}, #{xm,jdbcType=VARCHAR}, 
+      #{xb,jdbcType=CHAR}, #{csnyr,jdbcType=TIMESTAMP}, #{mz,jdbcType=CHAR}, #{jg,jdbcType=CHAR}, 
+      #{zy,jdbcType=CHAR}, #{zw,jdbcType=CHAR}, #{whcd,jdbcType=CHAR}, #{gzdw,jdbcType=CHAR}, 
+      #{zzmm,jdbcType=CHAR}, #{jb,jdbcType=CHAR}, #{sf,jdbcType=CHAR}, #{hyqk,jdbcType=CHAR}, 
+      #{jtqk,jdbcType=CHAR}, #{jkqk,jdbcType=CHAR}, #{ssgj,jdbcType=CHAR}, #{sfzhm,jdbcType=CHAR}, 
+      #{yb,jdbcType=CHAR}, #{dh,jdbcType=CHAR}, #{dz,jdbcType=VARCHAR}, #{qrjg,jdbcType=VARCHAR}, 
+      #{qrgc,jdbcType=VARCHAR}, #{zzd,jdbcType=VARCHAR}, #{zwzy,jdbcType=VARCHAR}, #{zjlb,jdbcType=CHAR}, 
+      #{sfzhmWs,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.software.entity.DsrGr" >
+    insert into DSR_GR
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ajxh != null" >
+        AJXH,
+      </if>
+      <if test="dsrbh != null" >
+        DSRBH,
+      </if>
+      <if test="xm != null" >
+        XM,
+      </if>
+      <if test="xb != null" >
+        XB,
+      </if>
+      <if test="csnyr != null" >
+        CSNYR,
+      </if>
+      <if test="mz != null" >
+        MZ,
+      </if>
+      <if test="jg != null" >
+        JG,
+      </if>
+      <if test="zy != null" >
+        ZY,
+      </if>
+      <if test="zw != null" >
+        ZW,
+      </if>
+      <if test="whcd != null" >
+        WHCD,
+      </if>
+      <if test="gzdw != null" >
+        GZDW,
+      </if>
+      <if test="zzmm != null" >
+        ZZMM,
+      </if>
+      <if test="jb != null" >
+        JB,
+      </if>
+      <if test="sf != null" >
+        SF,
+      </if>
+      <if test="hyqk != null" >
+        HYQK,
+      </if>
+      <if test="jtqk != null" >
+        JTQK,
+      </if>
+      <if test="jkqk != null" >
+        JKQK,
+      </if>
+      <if test="ssgj != null" >
+        SSGJ,
+      </if>
+      <if test="sfzhm != null" >
+        SFZHM,
+      </if>
+      <if test="yb != null" >
+        YB,
+      </if>
+      <if test="dh != null" >
+        DH,
+      </if>
+      <if test="dz != null" >
+        DZ,
+      </if>
+      <if test="qrjg != null" >
+        QRJG,
+      </if>
+      <if test="qrgc != null" >
+        QRGC,
+      </if>
+      <if test="zzd != null" >
+        ZZD,
+      </if>
+      <if test="zwzy != null" >
+        ZWZY,
+      </if>
+      <if test="zjlb != null" >
+        ZJLB,
+      </if>
+      <if test="sfzhmWs != null" >
+        SFZHM_WS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ajxh != null" >
+        #{ajxh,jdbcType=INTEGER},
+      </if>
+      <if test="dsrbh != null" >
+        #{dsrbh,jdbcType=INTEGER},
+      </if>
+      <if test="xm != null" >
+        #{xm,jdbcType=VARCHAR},
+      </if>
+      <if test="xb != null" >
+        #{xb,jdbcType=CHAR},
+      </if>
+      <if test="csnyr != null" >
+        #{csnyr,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mz != null" >
+        #{mz,jdbcType=CHAR},
+      </if>
+      <if test="jg != null" >
+        #{jg,jdbcType=CHAR},
+      </if>
+      <if test="zy != null" >
+        #{zy,jdbcType=CHAR},
+      </if>
+      <if test="zw != null" >
+        #{zw,jdbcType=CHAR},
+      </if>
+      <if test="whcd != null" >
+        #{whcd,jdbcType=CHAR},
+      </if>
+      <if test="gzdw != null" >
+        #{gzdw,jdbcType=CHAR},
+      </if>
+      <if test="zzmm != null" >
+        #{zzmm,jdbcType=CHAR},
+      </if>
+      <if test="jb != null" >
+        #{jb,jdbcType=CHAR},
+      </if>
+      <if test="sf != null" >
+        #{sf,jdbcType=CHAR},
+      </if>
+      <if test="hyqk != null" >
+        #{hyqk,jdbcType=CHAR},
+      </if>
+      <if test="jtqk != null" >
+        #{jtqk,jdbcType=CHAR},
+      </if>
+      <if test="jkqk != null" >
+        #{jkqk,jdbcType=CHAR},
+      </if>
+      <if test="ssgj != null" >
+        #{ssgj,jdbcType=CHAR},
+      </if>
+      <if test="sfzhm != null" >
+        #{sfzhm,jdbcType=CHAR},
+      </if>
+      <if test="yb != null" >
+        #{yb,jdbcType=CHAR},
+      </if>
+      <if test="dh != null" >
+        #{dh,jdbcType=CHAR},
+      </if>
+      <if test="dz != null" >
+        #{dz,jdbcType=VARCHAR},
+      </if>
+      <if test="qrjg != null" >
+        #{qrjg,jdbcType=VARCHAR},
+      </if>
+      <if test="qrgc != null" >
+        #{qrgc,jdbcType=VARCHAR},
+      </if>
+      <if test="zzd != null" >
+        #{zzd,jdbcType=VARCHAR},
+      </if>
+      <if test="zwzy != null" >
+        #{zwzy,jdbcType=VARCHAR},
+      </if>
+      <if test="zjlb != null" >
+        #{zjlb,jdbcType=CHAR},
+      </if>
+      <if test="sfzhmWs != null" >
+        #{sfzhmWs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.software.entity.DsrGrExample" resultType="java.lang.Integer" >
+    select count(*) from DSR_GR
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update DSR_GR
+    <set >
+      <if test="record.ajxh != null" >
+        AJXH = #{record.ajxh,jdbcType=INTEGER},
+      </if>
+      <if test="record.dsrbh != null" >
+        DSRBH = #{record.dsrbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.xm != null" >
+        XM = #{record.xm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xb != null" >
+        XB = #{record.xb,jdbcType=CHAR},
+      </if>
+      <if test="record.csnyr != null" >
+        CSNYR = #{record.csnyr,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mz != null" >
+        MZ = #{record.mz,jdbcType=CHAR},
+      </if>
+      <if test="record.jg != null" >
+        JG = #{record.jg,jdbcType=CHAR},
+      </if>
+      <if test="record.zy != null" >
+        ZY = #{record.zy,jdbcType=CHAR},
+      </if>
+      <if test="record.zw != null" >
+        ZW = #{record.zw,jdbcType=CHAR},
+      </if>
+      <if test="record.whcd != null" >
+        WHCD = #{record.whcd,jdbcType=CHAR},
+      </if>
+      <if test="record.gzdw != null" >
+        GZDW = #{record.gzdw,jdbcType=CHAR},
+      </if>
+      <if test="record.zzmm != null" >
+        ZZMM = #{record.zzmm,jdbcType=CHAR},
+      </if>
+      <if test="record.jb != null" >
+        JB = #{record.jb,jdbcType=CHAR},
+      </if>
+      <if test="record.sf != null" >
+        SF = #{record.sf,jdbcType=CHAR},
+      </if>
+      <if test="record.hyqk != null" >
+        HYQK = #{record.hyqk,jdbcType=CHAR},
+      </if>
+      <if test="record.jtqk != null" >
+        JTQK = #{record.jtqk,jdbcType=CHAR},
+      </if>
+      <if test="record.jkqk != null" >
+        JKQK = #{record.jkqk,jdbcType=CHAR},
+      </if>
+      <if test="record.ssgj != null" >
+        SSGJ = #{record.ssgj,jdbcType=CHAR},
+      </if>
+      <if test="record.sfzhm != null" >
+        SFZHM = #{record.sfzhm,jdbcType=CHAR},
+      </if>
+      <if test="record.yb != null" >
+        YB = #{record.yb,jdbcType=CHAR},
+      </if>
+      <if test="record.dh != null" >
+        DH = #{record.dh,jdbcType=CHAR},
+      </if>
+      <if test="record.dz != null" >
+        DZ = #{record.dz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qrjg != null" >
+        QRJG = #{record.qrjg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qrgc != null" >
+        QRGC = #{record.qrgc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zzd != null" >
+        ZZD = #{record.zzd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zwzy != null" >
+        ZWZY = #{record.zwzy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zjlb != null" >
+        ZJLB = #{record.zjlb,jdbcType=CHAR},
+      </if>
+      <if test="record.sfzhmWs != null" >
+        SFZHM_WS = #{record.sfzhmWs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update DSR_GR
+    set AJXH = #{record.ajxh,jdbcType=INTEGER},
+      DSRBH = #{record.dsrbh,jdbcType=INTEGER},
+      XM = #{record.xm,jdbcType=VARCHAR},
+      XB = #{record.xb,jdbcType=CHAR},
+      CSNYR = #{record.csnyr,jdbcType=TIMESTAMP},
+      MZ = #{record.mz,jdbcType=CHAR},
+      JG = #{record.jg,jdbcType=CHAR},
+      ZY = #{record.zy,jdbcType=CHAR},
+      ZW = #{record.zw,jdbcType=CHAR},
+      WHCD = #{record.whcd,jdbcType=CHAR},
+      GZDW = #{record.gzdw,jdbcType=CHAR},
+      ZZMM = #{record.zzmm,jdbcType=CHAR},
+      JB = #{record.jb,jdbcType=CHAR},
+      SF = #{record.sf,jdbcType=CHAR},
+      HYQK = #{record.hyqk,jdbcType=CHAR},
+      JTQK = #{record.jtqk,jdbcType=CHAR},
+      JKQK = #{record.jkqk,jdbcType=CHAR},
+      SSGJ = #{record.ssgj,jdbcType=CHAR},
+      SFZHM = #{record.sfzhm,jdbcType=CHAR},
+      YB = #{record.yb,jdbcType=CHAR},
+      DH = #{record.dh,jdbcType=CHAR},
+      DZ = #{record.dz,jdbcType=VARCHAR},
+      QRJG = #{record.qrjg,jdbcType=VARCHAR},
+      QRGC = #{record.qrgc,jdbcType=VARCHAR},
+      ZZD = #{record.zzd,jdbcType=VARCHAR},
+      ZWZY = #{record.zwzy,jdbcType=VARCHAR},
+      ZJLB = #{record.zjlb,jdbcType=CHAR},
+      SFZHM_WS = #{record.sfzhmWs,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.software.entity.DsrGr" >
+    update DSR_GR
+    <set >
+      <if test="xm != null" >
+        XM = #{xm,jdbcType=VARCHAR},
+      </if>
+      <if test="xb != null" >
+        XB = #{xb,jdbcType=CHAR},
+      </if>
+      <if test="csnyr != null" >
+        CSNYR = #{csnyr,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mz != null" >
+        MZ = #{mz,jdbcType=CHAR},
+      </if>
+      <if test="jg != null" >
+        JG = #{jg,jdbcType=CHAR},
+      </if>
+      <if test="zy != null" >
+        ZY = #{zy,jdbcType=CHAR},
+      </if>
+      <if test="zw != null" >
+        ZW = #{zw,jdbcType=CHAR},
+      </if>
+      <if test="whcd != null" >
+        WHCD = #{whcd,jdbcType=CHAR},
+      </if>
+      <if test="gzdw != null" >
+        GZDW = #{gzdw,jdbcType=CHAR},
+      </if>
+      <if test="zzmm != null" >
+        ZZMM = #{zzmm,jdbcType=CHAR},
+      </if>
+      <if test="jb != null" >
+        JB = #{jb,jdbcType=CHAR},
+      </if>
+      <if test="sf != null" >
+        SF = #{sf,jdbcType=CHAR},
+      </if>
+      <if test="hyqk != null" >
+        HYQK = #{hyqk,jdbcType=CHAR},
+      </if>
+      <if test="jtqk != null" >
+        JTQK = #{jtqk,jdbcType=CHAR},
+      </if>
+      <if test="jkqk != null" >
+        JKQK = #{jkqk,jdbcType=CHAR},
+      </if>
+      <if test="ssgj != null" >
+        SSGJ = #{ssgj,jdbcType=CHAR},
+      </if>
+      <if test="sfzhm != null" >
+        SFZHM = #{sfzhm,jdbcType=CHAR},
+      </if>
+      <if test="yb != null" >
+        YB = #{yb,jdbcType=CHAR},
+      </if>
+      <if test="dh != null" >
+        DH = #{dh,jdbcType=CHAR},
+      </if>
+      <if test="dz != null" >
+        DZ = #{dz,jdbcType=VARCHAR},
+      </if>
+      <if test="qrjg != null" >
+        QRJG = #{qrjg,jdbcType=VARCHAR},
+      </if>
+      <if test="qrgc != null" >
+        QRGC = #{qrgc,jdbcType=VARCHAR},
+      </if>
+      <if test="zzd != null" >
+        ZZD = #{zzd,jdbcType=VARCHAR},
+      </if>
+      <if test="zwzy != null" >
+        ZWZY = #{zwzy,jdbcType=VARCHAR},
+      </if>
+      <if test="zjlb != null" >
+        ZJLB = #{zjlb,jdbcType=CHAR},
+      </if>
+      <if test="sfzhmWs != null" >
+        SFZHM_WS = #{sfzhmWs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and DSRBH = #{dsrbh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.software.entity.DsrGr" >
+    update DSR_GR
+    set XM = #{xm,jdbcType=VARCHAR},
+      XB = #{xb,jdbcType=CHAR},
+      CSNYR = #{csnyr,jdbcType=TIMESTAMP},
+      MZ = #{mz,jdbcType=CHAR},
+      JG = #{jg,jdbcType=CHAR},
+      ZY = #{zy,jdbcType=CHAR},
+      ZW = #{zw,jdbcType=CHAR},
+      WHCD = #{whcd,jdbcType=CHAR},
+      GZDW = #{gzdw,jdbcType=CHAR},
+      ZZMM = #{zzmm,jdbcType=CHAR},
+      JB = #{jb,jdbcType=CHAR},
+      SF = #{sf,jdbcType=CHAR},
+      HYQK = #{hyqk,jdbcType=CHAR},
+      JTQK = #{jtqk,jdbcType=CHAR},
+      JKQK = #{jkqk,jdbcType=CHAR},
+      SSGJ = #{ssgj,jdbcType=CHAR},
+      SFZHM = #{sfzhm,jdbcType=CHAR},
+      YB = #{yb,jdbcType=CHAR},
+      DH = #{dh,jdbcType=CHAR},
+      DZ = #{dz,jdbcType=VARCHAR},
+      QRJG = #{qrjg,jdbcType=VARCHAR},
+      QRGC = #{qrgc,jdbcType=VARCHAR},
+      ZZD = #{zzd,jdbcType=VARCHAR},
+      ZWZY = #{zwzy,jdbcType=VARCHAR},
+      ZJLB = #{zjlb,jdbcType=CHAR},
+      SFZHM_WS = #{sfzhmWs,jdbcType=VARCHAR}
+    where AJXH = #{ajxh,jdbcType=INTEGER}
+      and DSRBH = #{dsrbh,jdbcType=INTEGER}
+  </update>
+</mapper>

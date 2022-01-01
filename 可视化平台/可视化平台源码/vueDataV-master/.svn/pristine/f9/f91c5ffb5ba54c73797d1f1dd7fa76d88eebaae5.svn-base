@@ -1,0 +1,887 @@
+import JSON from './tianjin.json'
+import './china'
+// 屏幕缩放
+export function screenSize(editorDom) {
+  let screenWidth = document.body.clientWidth || document.documentElement.clientWidth;
+  let screenHeight = document.body.clientHeight || document.documentElement.clientHeight;
+  let defWidth = 1920;
+  let defHeight = 1080;
+  let xScale = screenWidth / defWidth;
+  let yScale = screenHeight / defHeight;
+  editorDom.style.cssText += ';transform: scale(' + xScale + ',' + yScale + ')';
+
+  $(window).resize(() => {
+    let screenWidth = document.body.clientWidth || document.documentElement.clientWidth;
+    let screenHeight = document.body.clientHeight || document.documentElement.clientHeight;
+    xScale = screenWidth / defWidth;
+    yScale = screenHeight / defHeight;
+    editorDom.style.cssText += ';transform: scale(' + xScale + ',' + yScale + ')';
+  })
+}
+// todo 下面这些方法，可以复用简化
+// 生成柱状图
+export function getBar(title,xData,yData,id){
+  let myChart = echarts.init(id);
+  let itemStyle = {
+    color: '#0084ff'
+  };
+  let option = {
+    color:'#01d8ff',
+    calculable: true,
+    grid: {
+      top: '10%',
+      bottom: '30%'
+    },
+    title:{
+      text:title,
+      left:'40%',
+      lineHeight:16,
+      textStyle: {
+        fontSize: 16,
+        color: '#aad3ee',
+      },
+    },
+    xAxis: [{
+      type: 'category',
+      axisLabel: {
+        interval: 0,
+        rotate:45,
+      },
+      data: xData,
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#9cc0ee',
+        }
+      },
+    }],
+    yAxis: [{
+      type: 'value',
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#9cc0ee'
+        }
+      }
+    }],
+    lineStyle: {
+      color: '#179bf1'
+    },
+    label: {
+      color: '#fff'
+    },
+    checkpointStyle: {
+      color: '#01d8ff',
+      symbolSize: 10,
+      borderColor: 'rgba(1, 216, 255, 0.5)',
+      borderWidth: 5,
+    },
+    series: [{
+      data: yData,
+      type: 'bar',
+      itemStyle: itemStyle,
+      barWidth: 35,
+      legendHoverLink: true,
+      label: {
+        show: true,
+        position: 'top',
+        color: '#fff'
+      }
+    }]
+  };
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 多根柱子的柱状图
+export function getBars(id,source){
+  let myChart = echarts.init(id);
+  let option = {
+    color:['#179bf1', 'rgba(21,248,126,0.96)'],
+    legend: {
+      show: true,
+      x: 'center',
+      bottom: '7%',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 14,
+        color: '#fff'
+      },
+    },
+    grid: {
+      top: '10%',
+      bottom: '20%'
+    },
+    dataset: {
+      source:source
+    },
+    xAxis: {
+      type: 'category',
+      axisLabel: {
+        interval: 0,
+          rotate:10,
+      },
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#9cc0ee',
+        }
+      },
+    },
+    yAxis: {
+      type: 'value',
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#9cc0ee'
+        }
+      }
+    },
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+      {
+        type: 'bar',
+        legendHoverLink: true,
+        label: {
+          show: true,
+          position: 'top',
+          color: '#fff'
+        },
+        barGap:'0'
+      },
+      {
+        type: 'bar',
+        legendHoverLink: true,
+        label: {
+          show: true,
+          position: 'top',
+          color: '#fff'
+        }
+      },
+    ]
+  };
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生成折线图
+export function getLine(xData,yData,id){
+  let myChart = echarts.init(id);
+  let option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#283b56'
+          }
+        }
+      }
+    },
+    grid: {
+      top: '10%',
+      bottom: '30%',
+      left:'3%',
+      containLabel: true
+    },
+    color: ['#15a3dd'],
+    calculable: true,
+    xAxis: {
+      type: 'category',
+      data: xData,
+      boundaryGap: false,
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#9cc0ee'
+        }
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      min: 0,
+      boundaryGap:  false,
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '#9cc0ee'
+        }
+      },
+      splitLine: {
+        show: false
+      },
+    },
+    series: [{
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      itemStyle: {
+        opacity: 0,
+      },
+      data: yData,
+      smooth: true
+    }]
+  }
+
+  myChart.setOption(option, true);
+
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+
+  // this.timer = setInterval(() => {
+  //   for (let i = 0; i < 5; i++) {
+  //     this.xData.shift();
+  //     this.xData.push();
+  //   }
+  //
+  //   myChart.setOption(this.option, true);
+  // }, 2000);
+}
+
+// 下面图都是饼状图
+// 生成普通的饼状图
+export function getPie(pieData,id){
+// 初始化echarts实例
+  let myChart = echarts.init(id);
+  let datas=[];
+  let yAxis=[];
+  let colors=['rgba(14,120,185,0.65)', 'rgba(77,234,148,0.64)', '#f48b3b','#8bec44'];
+  for(let i=0;i<pieData.length;i++){
+    datas.push(
+        {
+          value: pieData[i].value,
+          name:  pieData[i].name,
+          itemStyle: {
+            normal: {
+              color: colors[i]
+            }
+          }
+        }
+    )
+  }
+  let option = {
+    colors:['#0772bb', '#00ffff', '#f48b3b','#8bec44'],
+    series: {
+      type: 'pie',
+      clockWise: true,
+      startAngle: 90,
+      hoverAnimation: false,
+      radius:'60%',
+      center: ['50%', '50%'],
+      label: {
+        normal: {
+          show: true,
+          position:"inner",
+          formatter:"{d}%"
+        },
+      },
+      labelLine: {
+        normal: {
+          show: false
+        }
+      },
+      data:datas,
+    },
+    legend: {
+      show: true,
+      x: 'center',
+      bottom: '2%',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 14,
+        color: '#fff'
+      },
+      data: name,
+    }
+  }
+  // 使用制定的配置项和数据显示图表
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生成特殊的饼状图
+export function getAreaPie(pieData,id) {
+  let myChart = echarts.init(id);
+  let option = {
+    color: ['#EAEA26', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05', '#4465fc'],
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b} : {c} ({d}%)'
+    },
+    calculable: true,
+    series: [{
+      type: 'pie',
+      radius: ['9%', '10%'],
+      hoverAnimation: false,
+      labelLine: {
+        normal: {
+          show: false,
+          length: 30,
+          length2: 50
+        },
+        emphasis: {
+          show: false
+        }
+      },
+      tooltip: {
+        show: false
+      },
+      data: [{
+        name: '',
+        value: 0,
+        itemStyle: {
+          normal: {
+            color: '#0B4A6B'
+          }
+        }
+      }]
+    }, {
+      type: 'pie',
+      radius: ['60%', '61%'],
+      hoverAnimation: false,
+      tooltip: {
+        show: false
+      },
+      data: [{
+        name: '',
+        value: 0,
+        itemStyle: {
+          normal: {
+            color: '#0B4A6B'
+          }
+        }
+      }]
+    },{
+      stack: 'a',
+      type: 'pie',
+      radius: ['20%', '60%'],
+      roseType: 'area',
+      zlevel: 10,
+      label: {
+        normal: {
+          show: true,
+          formatter: '{b}:{d}%',
+          textStyle: {
+            fontSize: 14,
+          },
+          position: 'outside'
+        },
+        emphasis: {
+          show: false
+        }
+      },
+      labelLine: {
+        normal: {
+          show: true,
+          lineStyle: {
+            type: 'dotted'
+          }
+        },
+        emphasis: {
+          show: true
+        }
+      },
+      data: pieData
+    }]
+  }
+
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生成环形跑道
+export function getCircleRunWay(id,resData) {
+  // 初始化echarts实例
+  let myChart = echarts.init(id);
+  // 背景色
+  let itemStyle = {
+    normal: {
+      color: '#091f45',
+    }
+  }
+  let series=[];
+  let yAxis=[];
+  let colors=['#0772bb', '#00ffff', '#f48b3b','#8bec44'];
+  for(let i=0;i<resData.length;i++){
+    yAxis.push((resData[i].value*100).toFixed(1)+'%  ---------------------');
+    series.push(
+        {
+          type: 'pie',
+          clockWise: true,
+          startAngle: 90,
+          hoverAnimation: false,
+          radius: [60-i*12+'%', 56-i*12+'%'],
+          center: ['50%', '50%'],
+          label: {
+            normal: {
+              show: false
+            },
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data: [{
+            value: resData[i].value,
+            name:  resData[i].name,
+            itemStyle: {
+              normal: {
+                color: colors[i]
+              }
+            }
+          },{
+            value: 1-resData[i].value,
+            name: resData[i].name,
+            itemStyle: itemStyle
+          }]
+        }
+    )
+  }
+  yAxis.reverse();
+  let option = {
+    colors:['#0772bb', '#00ffff', '#f48b3b','#8bec44'],
+    series: series,
+    grid: {
+      top: '18%',
+      left: '51%',
+      width: '40%',
+      height: '24%',
+    },
+    legend: {
+      show: true,
+      x: 'center',
+      bottom: '5%',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 14,
+        color: '#fff'
+      },
+      data: name,
+    },
+    xAxis: [{ // x轴隐藏
+      show: false
+    }],
+    yAxis: [{ // y轴配置
+      z:5,
+      type: 'category',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: true,
+        interval: 0,
+        textStyle: {
+          color: '#b2bdea',
+          fontSize: 14,
+        }
+      },
+      data: yAxis
+    }],
+  }
+  // 使用制定的配置项和数据显示图表
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生成圆环图
+export function getRing(resData,id){
+  // 初始化echarts实例
+  let myChart = echarts.init(id);
+  // 背景色
+  let itemStyle = {
+    normal: {
+      color: '#091f45',
+    }
+  }
+  let datas=[];
+  let yAxis=[];
+  let colors=['#0772bb', '#00ffff', '#f48b3b','#8bec44'];
+  for(let i=0;i<resData.length;i++){
+    datas.push(
+        {
+          value: resData[i].value,
+          name:  resData[i].name,
+          itemStyle: {
+            normal: {
+              color: colors[i]
+            }
+          }
+        }
+    )
+  }
+  let option = {
+    colors:['#0772bb', '#00ffff', '#f48b3b','#8bec44'],
+    series: {
+      type: 'pie',
+      clockWise: true,
+      startAngle: 90,
+      hoverAnimation: false,
+      radius: ['60%', '45%'],
+      center: ['50%', '50%'],
+      label: {
+        normal: {
+          show: true,
+          position:"inner",
+          formatter:"{d}%"
+        },
+      },
+      labelLine: {
+        normal: {
+          show: false
+        }
+      },
+      data:datas,
+    },
+    legend: {
+      show: true,
+      x: 'center',
+      bottom: '2%',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 14,
+        color: '#fff'
+      },
+      data: name,
+    }
+  }
+  // 使用制定的配置项和数据显示图表
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生成嵌套饼状图
+export function getPieAndRing(ringData,pieData,id){
+  let myChart = echarts.init(id);
+  let option = {
+    color: ['rgba(113,234,127,0.69)', '#906BF9', '#FE5656', '#01E17E', '#3DD1F9', '#FFAD05', '#4465fc'],
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}:({d}%)'
+    },
+    legend: {
+      show: true,
+      x: 'center',
+      bottom: '2%',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 14,
+        color: '#fff'
+      },
+      data: name,
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: [0, '30%'],
+        label: {
+          position: 'inner',
+          fontSize: 12,
+        },
+        labelLine: {
+          show: false
+        },
+        data: pieData,
+      },
+      {
+        type: 'pie',
+        radius: ['45%', '60%'],
+        label: {
+          normal: {
+            show: true,
+            formatter: '{b}:{d}%',
+            textStyle: {
+              fontSize: 14,
+            },
+            position: 'outside'
+          },
+          emphasis: {
+            show: false
+          }
+        },
+        labelLine: {
+          normal: {
+            show: true,
+            lineStyle: {
+              type: 'dotted'
+            }
+          },
+          emphasis: {
+            show: true
+          }
+        },
+        data: ringData
+      }
+    ]
+  };
+  // 使用制定的配置项和数据显示图表
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生成双饼图
+export function getPies(dim,pieData,id){
+  let myChart = echarts.init(id);
+  let source=[];
+  source.push(dim);
+  for(let i=0;i<pieData.length;i++){
+    source.push(pieData[i]);
+  }
+  // 将dim加入source
+  let option = {
+    color: ['#3382f7', 'rgba(254,86,86,0.82)', '#01E17E', '#3DD1F9', '#FFAD05', '#4465fc'],
+    legend: {
+      show: true,
+      x: 'center',
+      bottom: '2%',
+      itemGap: 20,
+      textStyle: {
+        fontSize: 14,
+        color: '#fff'
+      },
+      data: name,
+    },
+    tooltip: {},
+    dataset: {
+      source: source
+    },
+    title: [
+      {
+        text:'原告类型',
+        left:'19%',
+        top:'15%',
+        textStyle: {
+          fontSize: 16,
+          color: '#20bbdd',
+        },
+      },
+      {
+        text: '被告类型',
+        left:'59%',
+        top:'15%',
+        textStyle: {
+          fontSize: 16,
+          color: '#20bbdd'
+        },
+      }
+    ],
+    series: [{
+      type: 'pie',
+      radius: '40%',
+      label: {
+        normal: {
+          show: true,
+          position:"inner",
+          formatter:"{d}%"
+        },
+      },
+      labelLine: {
+        normal: {
+          show: false
+        }
+      },
+      center: ['25%', '50%']
+      // No encode specified, by default, it is '2012'.
+    }, {
+      type: 'pie',
+      radius: '40%',
+      label: {
+        normal: {
+          show: true,
+          position:"inner",
+          formatter:"{d}%"
+        },
+      },
+      labelLine: {
+        normal: {
+          show: false
+        }
+      },
+      center: ['65%', '50%'],
+    }]
+  };
+  // 使用制定的配置项和数据显示图表
+  myChart.setOption(option, true);
+  window.addEventListener('resize', () => {
+    myChart.resize();
+  });
+}
+// 生产随机数
+function randomData() {
+  return Math.random()*1000;
+}
+// 中国地图
+export function getMap(id,data){
+
+  let myChart = echarts.init(id);
+  let option = {
+    visualMap: {
+      type:'continuous',
+      left: 'right',
+      min: 1,
+      max: 1000,
+      inRange: {
+        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+      },
+      textStyle:{
+        color:'#fff',
+      },
+      // 文本，默认为数值文本
+      calculable: true
+    },
+    tooltip: {
+      trigger: 'item',
+      showDelay: 0,
+      transitionDuration: 0.2,
+      formatter: function (params) {
+        let value=0;
+        if(params.value){
+          value=params.value
+        }
+        return params.seriesName + '<br/>' + params.name + ': ' + value;
+      }
+    },
+    series: {
+      name:'案件量',
+      type:'map',
+      map: "china",
+      label: {
+        emphasis: {
+          show: true,
+          color: "#fff"
+        }
+      },
+      roam: false,
+      //   放大我们的地图
+      zoom: 1,
+      data:data,
+      itemStyle: {
+        normal: {
+          areaColor: "rgba(43, 196, 243, 0.42)",
+          borderColor: "rgba(43, 196, 243, 1)",
+          borderWidth: 1
+        },
+        emphasis: {
+          areaColor: "#2B91B7"
+        }
+      }
+    },
+  }
+  myChart.setOption(option, true);
+  window.addEventListener("resize", () => {
+    myChart.resize();
+  });
+}
+// 天津地图
+export function getTianJinMap(id,data){
+  let myChart = echarts.init(id);
+  let max=0;
+  for(let i=0;i<data.length;i++){
+    max=Math.max(data.value,max)
+  }
+  echarts.registerMap('tianjin',JSON,{})
+  let option = {
+    tooltip: {
+      trigger: 'item',
+      showDelay: 0,
+      transitionDuration: 0.2,
+      formatter: function (params) {
+        let value=0;
+        if(params.value){
+          value=params.value
+        }
+        return params.seriesName + '<br/>' + params.name + ': ' + value;
+      }
+    },
+    visualMap: {
+      left: 'right',
+      min: 1,
+      max: 1000,
+      inRange: {
+        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+      },
+      textStyle:{
+        color:'#fff',
+      },
+      // 文本，默认为数值文本
+      calculable: true
+    },
+    series: {
+      name:'案件量',
+      type:'map',
+      map: "tianjin",
+      label: {
+        emphasis: {
+          show: true,
+          color: "#fff"
+        }
+      },
+      data:data,
+      roam: true,
+      //   放大我们的地图
+      zoom: 1,
+      itemStyle: {
+        normal: {
+          areaColor: "rgba(43, 196, 243, 0.42)",
+          borderColor: "rgba(43, 196, 243, 1)",
+          borderWidth: 1
+        },
+        emphasis: {
+          areaColor: "#2B91B7"
+        }
+      }
+    },
+  }
+  myChart.setOption(option, true);
+  window.addEventListener("resize", () => {
+    myChart.resize();
+  });
+}

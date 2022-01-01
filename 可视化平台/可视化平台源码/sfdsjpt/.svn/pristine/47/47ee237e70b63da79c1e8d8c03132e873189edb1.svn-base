@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.ZscqqqMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="BgrxxModel" type="com.software.model.BgrxxModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"/>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"/>
+        <result column="AH" jdbcType="VARCHAR" property="ah"/>
+        <result column="CSNYR" jdbcType="TIMESTAMP" property="csnyr"/>
+        <result column="SFZHM" jdbcType="INTEGER" property="sfzhm"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+    </resultMap>
+
+    <select id="getAjCount" resultType="Integer">
+        select count(*) from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%知识产权侵权%'))
+    </select>
+
+    <select id="getBgrxb" resultMap="KvModel">
+        select D.XB name,count(D.XB) value from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and P.AJXH=D.AJXH  and P.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%知识产权侵权%'))
+        group by D.XB
+    </select>
+
+    <select id="getBgrAge" resultMap="BgrxxModel">
+        select P.AJXH,D.CSNYR,D.SFZHM ,P.LARQ,P.AJMC from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and LARQ is not null  and P.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%知识产权侵权%'))
+        and P.AJXH=D.AJXH
+    </select>
+
+    <select id="getBgrWhcd" resultMap="KvModel">
+        select d.WHCD name,count(d.WHCD) value from PUB_AJ_JB p,DSR_GR d  where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and
+        p.AJXH=d.AJXH and p.AJXH in (select AJXH from PUB_LA_AY where AY in
+        (select DMBH from PUB_AYDMB where DMMS like '%知识产权侵权%')) and WHCD is not null
+        group by d.WHCD
+    </select>
+
+    <select id="getBgrsf" resultMap="KvModel">
+        select D.SF name,count(D.SF) value from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and  P.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%知识产权侵权%'))
+        and P.AJXH=D.AJXH and D.SF!=null  group by D.SF
+    </select>
+
+</mapper>

@@ -1,0 +1,10 @@
+package com.software.model;
+
+import lombok.Data;
+
+@Data
+public class K2vModel {
+    private String name;
+    private int value1;
+    private int value2;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.ZscqqqMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="DsrModelMap" type="com.software.model.DsrModel">
+        <result column="DSRLB" jdbcType="VARCHAR" property="dsrLb"/>
+        <result column="DSRSSDW" jdbcType="VARCHAR" property="dsrSsdw"/>
+        <result column="VALUE" jdbcType="VARCHAR" property="value"/>
+    </resultMap>
+    <select id="getDsrType" resultMap="DsrModelMap">
+        select pd.DMMS DSRLB,T.DSRSSDW DSRSSDW,count(*) VALUE from PUB_DMB pd
+        join (select DSRLB,DSRSSDW from DSR_JB  dsr
+              join PUB_AJ_JB PAJ on dsr.AJXH = PAJ.AJXH
+              where PAJ.JARQ<![CDATA[>=]]> #{beginTime} and PAJ.JARQ<![CDATA[<=]]> #{endTime}
+              and PAJ.LARQ is not null
+              and PAJ.AJXH in (select AJXH from PUB_LA_AY where AY in (select DMBH from PUB_AYDMB where DMMS like '%知识产权%'))
+             ) T
+        on pd.DMBH=T.DSRLB
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZB='DSR_JB' and pxt.SZL='DSRLB'
+        group by pd.DMMS,T.DSRSSDW
+    </select>
+
+</mapper>

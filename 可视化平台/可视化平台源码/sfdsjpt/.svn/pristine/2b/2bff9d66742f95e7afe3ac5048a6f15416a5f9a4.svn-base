@@ -1,0 +1,64 @@
+package com.software.controller;
+
+import com.software.service.AjService;
+import com.software.service.ShfzService;
+
+import com.software.model.KvModel;
+import com.software.model.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@RestController
+@RequestMapping("/shfz")
+public class ShfzController {
+    @Autowired
+    private AjService ajService;
+    @Autowired
+    private ShfzService shfzService;
+    @RequestMapping("/getAjCount")
+    public ResultModel count() {
+        List<KvModel> kvModels=ajService.getAjCount("黑");
+        return ResultModelUtil.success(kvModels,"","");
+    }
+
+    @RequestMapping("/getBgrxb")
+    public ResultModel bgrxb() {
+        List<KvModel> kvModels=ajService.getBgrxb("2021-01-01","2021-06-22","黑");
+        return ResultModelUtil.success(kvModels,"","");
+    }
+
+    @RequestMapping("/getBgrsf")
+    public ResultModel bgrsf() {
+        List<KvModel> kvModels=ajService.getBgrsf("2021-01-01","2021-06-22","黑");
+        return ResultModelUtil.success(kvModels,"","");
+    }
+    @RequestMapping("/getGlzm")
+    public ResultModel glzm() {
+        List<KvModel> kvModels=shfzService.getBgrGlzm("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels,"","");
+    }
+    @RequestMapping("/getBgrAge")
+    public ResultModel glBrgage() {
+        List<KvModel> kvModels=shfzService.getBrgage("2021-01-01","2021-06-22");
+        return ResultModelUtil.success(kvModels,"","");
+    }
+    /**
+     * 有期徒刑量刑
+     */
+    @RequestMapping("/getYqtxlx")
+    public ResultModel getYqtxlx(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(ajService.getYqtxlx("2021-01-01","2021-06-22","黑"),"","");
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+}

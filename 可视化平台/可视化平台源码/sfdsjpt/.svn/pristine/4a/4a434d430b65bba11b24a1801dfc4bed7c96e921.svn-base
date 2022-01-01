@@ -1,0 +1,23 @@
+package com.software.service.impl;
+
+import com.software.mapper.LhjfMapper;
+import com.software.model.ForDmmsModel;
+import com.software.model.KvModel;
+import com.software.service.LhjfDescService;
+import com.software.service.LhjfService;
+import com.software.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class LhjfDescServiceImpl implements LhjfDescService {
+
+    @Override
+    public List<String> getLhjfPjjg(List<KvModel> kvModels) {
+      return null;
+    }
+}

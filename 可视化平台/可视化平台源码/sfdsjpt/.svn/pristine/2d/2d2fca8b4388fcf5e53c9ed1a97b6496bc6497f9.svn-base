@@ -1,0 +1,15 @@
+package com.software.utils;
+
+import java.math.BigDecimal;
+
+public class NumberUtil {
+
+    /**
+     * 将double转固定位数小数
+     * @return
+     */
+    public static double formatNumber(double val,int scale){
+        BigDecimal bg=new BigDecimal(val);
+        return bg.setScale(scale,BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+}

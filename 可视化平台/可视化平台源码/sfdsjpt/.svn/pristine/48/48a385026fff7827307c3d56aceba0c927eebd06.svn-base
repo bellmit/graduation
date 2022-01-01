@@ -1,0 +1,22 @@
+package com.software.Service;
+
+
+import com.software.model.BgrxxModel;
+import com.software.model.KvModel;
+
+import java.util.List;
+
+//涉黑犯罪
+public interface ShfzService {
+    //被告人年龄 返回的是案件名称->年龄
+    List<KvModel> getBrgage(String beginTime,String endTime);
+    //最近五年的案件量
+    List<KvModel> getYearAjs();
+    //得到被告人的性别
+    List<KvModel> getBgrxb(String beginTime,String endTime);
+    //被告人身份
+    List<KvModel> getBgrsf(String beginTime,String endTime);
+    //被告人关联罪名
+    List<KvModel>  getBgrGlzm(String beginTime,String endTime);
+    //
+}

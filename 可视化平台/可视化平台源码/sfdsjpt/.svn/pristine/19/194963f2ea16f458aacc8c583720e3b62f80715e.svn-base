@@ -1,0 +1,360 @@
+package com.software.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class PubAydmb implements Serializable {
+    private String bbh;
+
+    private String dmbh;
+
+    private String dmms;
+
+    private String aydm4;
+
+    private Integer aydm5;
+
+    private String sfsx;
+
+    private Integer aylb;
+
+    private String txh;
+
+    private String kxh;
+
+    private String bz1;
+
+    private String bz2;
+
+    private Integer aydm8;
+
+    private Integer aydm11;
+
+    private Date xgsj;
+
+    private String aymc;
+
+    private String bz;
+
+    private String dqbs;
+
+    private String sjdm;
+
+    private Double xsys;
+
+    private Double msys;
+
+    private Double msxess;
+
+    private Double mstb;
+
+    private Double xses;
+
+    private Double mses;
+
+    private Integer jb;
+
+    private Double xzys;
+
+    private Double xzes;
+
+    private Double xzss;
+
+    private Double msss;
+
+    private Double xsss;
+
+    private Integer xssx;
+
+    private static final long serialVersionUID = 1L;
+
+    public String getBbh() {
+        return bbh;
+    }
+
+    public void setBbh(String bbh) {
+        this.bbh = bbh == null ? null : bbh.trim();
+    }
+
+    public String getDmbh() {
+        return dmbh;
+    }
+
+    public void setDmbh(String dmbh) {
+        this.dmbh = dmbh == null ? null : dmbh.trim();
+    }
+
+    public String getDmms() {
+        return dmms;
+    }
+
+    public void setDmms(String dmms) {
+        this.dmms = dmms == null ? null : dmms.trim();
+    }
+
+    public String getAydm4() {
+        return aydm4;
+    }
+
+    public void setAydm4(String aydm4) {
+        this.aydm4 = aydm4 == null ? null : aydm4.trim();
+    }
+
+    public Integer getAydm5() {
+        return aydm5;
+    }
+
+    public void setAydm5(Integer aydm5) {
+        this.aydm5 = aydm5;
+    }
+
+    public String getSfsx() {
+        return sfsx;
+    }
+
+    public void setSfsx(String sfsx) {
+        this.sfsx = sfsx == null ? null : sfsx.trim();
+    }
+
+    public Integer getAylb() {
+        return aylb;
+    }
+
+    public void setAylb(Integer aylb) {
+        this.aylb = aylb;
+    }
+
+    public String getTxh() {
+        return txh;
+    }
+
+    public void setTxh(String txh) {
+        this.txh = txh == null ? null : txh.trim();
+    }
+
+    public String getKxh() {
+        return kxh;
+    }
+
+    public void setKxh(String kxh) {
+        this.kxh = kxh == null ? null : kxh.trim();
+    }
+
+    public String getBz1() {
+        return bz1;
+    }
+
+    public void setBz1(String bz1) {
+        this.bz1 = bz1 == null ? null : bz1.trim();
+    }
+
+    public String getBz2() {
+        return bz2;
+    }
+
+    public void setBz2(String bz2) {
+        this.bz2 = bz2 == null ? null : bz2.trim();
+    }
+
+    public Integer getAydm8() {
+        return aydm8;
+    }
+
+    public void setAydm8(Integer aydm8) {
+        this.aydm8 = aydm8;
+    }
+
+    public Integer getAydm11() {
+        return aydm11;
+    }
+
+    public void setAydm11(Integer aydm11) {
+        this.aydm11 = aydm11;
+    }
+
+    public Date getXgsj() {
+        return xgsj;
+    }
+
+    public void setXgsj(Date xgsj) {
+        this.xgsj = xgsj;
+    }
+
+    public String getAymc() {
+        return aymc;
+    }
+
+    public void setAymc(String aymc) {
+        this.aymc = aymc == null ? null : aymc.trim();
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz == null ? null : bz.trim();
+    }
+
+    public String getDqbs() {
+        return dqbs;
+    }
+
+    public void setDqbs(String dqbs) {
+        this.dqbs = dqbs == null ? null : dqbs.trim();
+    }
+
+    public String getSjdm() {
+        return sjdm;
+    }
+
+    public void setSjdm(String sjdm) {
+        this.sjdm = sjdm == null ? null : sjdm.trim();
+    }
+
+    public Double getXsys() {
+        return xsys;
+    }
+
+    public void setXsys(Double xsys) {
+        this.xsys = xsys;
+    }
+
+    public Double getMsys() {
+        return msys;
+    }
+
+    public void setMsys(Double msys) {
+        this.msys = msys;
+    }
+
+    public Double getMsxess() {
+        return msxess;
+    }
+
+    public void setMsxess(Double msxess) {
+        this.msxess = msxess;
+    }
+
+    public Double getMstb() {
+        return mstb;
+    }
+
+    public void setMstb(Double mstb) {
+        this.mstb = mstb;
+    }
+
+    public Double getXses() {
+        return xses;
+    }
+
+    public void setXses(Double xses) {
+        this.xses = xses;
+    }
+
+    public Double getMses() {
+        return mses;
+    }
+
+    public void setMses(Double mses) {
+        this.mses = mses;
+    }
+
+    public Integer getJb() {
+        return jb;
+    }
+
+    public void setJb(Integer jb) {
+        this.jb = jb;
+    }
+
+    public Double getXzys() {
+        return xzys;
+    }
+
+    public void setXzys(Double xzys) {
+        this.xzys = xzys;
+    }
+
+    public Double getXzes() {
+        return xzes;
+    }
+
+    public void setXzes(Double xzes) {
+        this.xzes = xzes;
+    }
+
+    public Double getXzss() {
+        return xzss;
+    }
+
+    public void setXzss(Double xzss) {
+        this.xzss = xzss;
+    }
+
+    public Double getMsss() {
+        return msss;
+    }
+
+    public void setMsss(Double msss) {
+        this.msss = msss;
+    }
+
+    public Double getXsss() {
+        return xsss;
+    }
+
+    public void setXsss(Double xsss) {
+        this.xsss = xsss;
+    }
+
+    public Integer getXssx() {
+        return xssx;
+    }
+
+    public void setXssx(Integer xssx) {
+        this.xssx = xssx;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", bbh=").append(bbh);
+        sb.append(", dmbh=").append(dmbh);
+        sb.append(", dmms=").append(dmms);
+        sb.append(", aydm4=").append(aydm4);
+        sb.append(", aydm5=").append(aydm5);
+        sb.append(", sfsx=").append(sfsx);
+        sb.append(", aylb=").append(aylb);
+        sb.append(", txh=").append(txh);
+        sb.append(", kxh=").append(kxh);
+        sb.append(", bz1=").append(bz1);
+        sb.append(", bz2=").append(bz2);
+        sb.append(", aydm8=").append(aydm8);
+        sb.append(", aydm11=").append(aydm11);
+        sb.append(", xgsj=").append(xgsj);
+        sb.append(", aymc=").append(aymc);
+        sb.append(", bz=").append(bz);
+        sb.append(", dqbs=").append(dqbs);
+        sb.append(", sjdm=").append(sjdm);
+        sb.append(", xsys=").append(xsys);
+        sb.append(", msys=").append(msys);
+        sb.append(", msxess=").append(msxess);
+        sb.append(", mstb=").append(mstb);
+        sb.append(", xses=").append(xses);
+        sb.append(", mses=").append(mses);
+        sb.append(", jb=").append(jb);
+        sb.append(", xzys=").append(xzys);
+        sb.append(", xzes=").append(xzes);
+        sb.append(", xzss=").append(xzss);
+        sb.append(", msss=").append(msss);
+        sb.append(", xsss=").append(xsss);
+        sb.append(", xssx=").append(xssx);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

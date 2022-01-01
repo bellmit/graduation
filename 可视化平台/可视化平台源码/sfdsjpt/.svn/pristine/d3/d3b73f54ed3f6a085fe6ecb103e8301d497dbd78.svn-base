@@ -1,0 +1,30 @@
+package com.software.mapper;
+
+import com.software.entity.PubDmb;
+import com.software.entity.PubDmbExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface PubDmbMapper {
+    int countByExample(PubDmbExample example);
+
+    int deleteByExample(PubDmbExample example);
+
+    int deleteByPrimaryKey(@Param("lbbh") String lbbh, @Param("dmbh") String dmbh);
+
+    int insert(PubDmb record);
+
+    int insertSelective(PubDmb record);
+
+    List<PubDmb> selectByExample(PubDmbExample example);
+
+    PubDmb selectByPrimaryKey(@Param("lbbh") String lbbh, @Param("dmbh") String dmbh);
+
+    int updateByExampleSelective(@Param("record") PubDmb record, @Param("example") PubDmbExample example);
+
+    int updateByExample(@Param("record") PubDmb record, @Param("example") PubDmbExample example);
+
+    int updateByPrimaryKeySelective(PubDmb record);
+
+    int updateByPrimaryKey(PubDmb record);
+}

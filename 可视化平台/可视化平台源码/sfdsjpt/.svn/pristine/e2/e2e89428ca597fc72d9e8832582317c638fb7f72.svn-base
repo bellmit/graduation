@@ -1,0 +1,158 @@
+package com.software.Service.impl;
+
+
+import com.software.Service.ShfzService;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.AjjbModel;
+import com.software.model.BgrxxModel;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+@Service
+public class ShfzServiceImpl implements ShfzService {
+    @Autowired
+    AjjbDao ajjbDao;
+
+    public static String ze(String idCard){
+        String dateReg = "\\d{6}(\\d{8})\\d{3}\\w";
+        String detailReg = "(\\d{4})(\\d{2})(\\d{2})";
+        Pattern pattern = Pattern.compile(dateReg);
+        Matcher matcher = pattern.matcher(idCard);
+        if(matcher.find()){
+            String date = matcher.group(1);
+            pattern = Pattern.compile(detailReg);
+            matcher = pattern.matcher(date);
+            if(matcher.find()){
+                return matcher.group(1)+":"+matcher.group(2)+":"+matcher.group(3);
+            }
+        }
+        return "";
+    }
+    //得到案件被告人的年龄 一个案件可以有多个被告人。
+    @Override
+    public List<KvModel> getBrgage(String beginTime, String endTime){
+        List<BgrxxModel> bgrxxModels=ajjbDao.getBgrAge(beginTime,endTime);
+        //
+        List<KvModel> kvModels=new ArrayList<>();
+        KvModel kvModel1=new KvModel("已满14岁不满30岁",0);
+        KvModel kvModel2=new KvModel("已满18岁不满30岁",0);
+        KvModel kvModel3=new KvModel("已满30岁不满40岁",0);
+        KvModel kvModel4=new KvModel("已满40岁不满50岁",0);
+        KvModel kvModel5=new KvModel("已满50岁不满60岁",0);
+        KvModel kvModel6=new KvModel("60岁以上",0);
+        kvModels.add(kvModel6);
+        kvModels.add(kvModel5);
+        kvModels.add(kvModel4);
+        kvModels.add(kvModel3);
+        kvModels.add(kvModel2);
+        kvModels.add(kvModel1);
+        int[] ages=new int[]{60,50,40,30,18,14};
+        for (BgrxxModel bgrxxModel:bgrxxModels){
+            KvModel k=new KvModel();
+            int year=0;
+            k.setName(bgrxxModel.getAjmc());
+            if (bgrxxModel.getLarq()==null){
+                continue;
+            }
+            if (bgrxxModel.getCsnyr()!=null) {
+                year = DateUtils.getDiffYear(bgrxxModel.getCsnyr(),bgrxxModel.getLarq());
+            }else{
+                //如果是合法的身份证号
+                if (!"".equals(ze(bgrxxModel.getSfzhm()))){
+                    //获取身份证号的年份
+                    String[] res=ze(bgrxxModel.getSfzhm()).split(":");
+                    if (res.length>=2){
+                        year=Integer.parseInt(res[0]);
+                        int larqyear=DateUtils.getYear(bgrxxModel.getLarq());
+                        year=larqyear-year;
+                    }
+                }
+            }
+            if (year<14) continue;
+
+            //得到year后
+            for(int i=0;i<ages.length;i++){
+                //比如42岁 大于40 那么就让get(2)+1
+                if (year>ages[i]){
+                    kvModels.get(i).setValue(kvModels.get(i).getValue()+1);
+                    break;
+                }
+            }
+
+        }
+
+        return kvModels;
+
+    }
+    //最近五年的案件量
+    @Override
+    public List<KvModel> getYearAjs(){
+        int year=DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            String fristday=DateUtils.formatDate(first);
+            kvModel.setValue(ajjbDao.getAjCount(fristday,lastday));
+            list.add(kvModel);
+        }
+        return list;
+    }
+    //得到被告人的性别
+    @Override
+    public List<KvModel> getBgrxb(String beginTime, String endTime){
+        List<KvModel> kvModels= ajjbDao.getBgrxb(beginTime,endTime);
+        kvModels=kvModels.stream().filter(k->k.getName().equals("1")||k.getName().equals("2"))
+                .collect(Collectors.toList());
+        boolean h1=false;
+        boolean h2=false;
+        for (KvModel t:kvModels){
+            if (t.getName().equals("1")){
+                t.setName("男");
+                h1=true;
+            }else if(t.getName().equals("2")){
+                t.setName("女");
+                h2=true;
+            }
+        }
+        if (h1==false){
+            KvModel k1=new KvModel();
+            k1.setName("男");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }else if(h2==false){
+            KvModel k1=new KvModel();
+            k1.setName("女");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }
+
+        return kvModels;
+
+    }
+    //被告人身份
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime){
+        return ajjbDao.getBgrsf(beginTime,endTime);
+    }
+    //被告人关联罪名
+    @Override
+    public List<KvModel>  getBgrGlzm(String beginTime, String endTime){
+        return ajjbDao.getBgrGlzm(beginTime,endTime);
+    }
+
+
+}

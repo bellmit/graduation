@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.software.mapper.PubXtglYhbMapper" >
+  <resultMap id="BaseResultMap" type="com.software.entity.PubXtglYhb" >
+    <id column="YHBH" property="yhbh" jdbcType="INTEGER" />
+    <result column="YHDM" property="yhdm" jdbcType="VARCHAR" />
+    <result column="YHMC" property="yhmc" jdbcType="VARCHAR" />
+    <result column="YHKL" property="yhkl" jdbcType="VARCHAR" />
+    <result column="YHBM" property="yhbm" jdbcType="VARCHAR" />
+    <result column="KLTS" property="klts" jdbcType="VARCHAR" />
+    <result column="KLDA" property="klda" jdbcType="VARCHAR" />
+    <result column="YHSF" property="yhsf" jdbcType="VARCHAR" />
+    <result column="KLSZSJ" property="klszsj" jdbcType="TIMESTAMP" />
+    <result column="QJKSSJ" property="qjkssj" jdbcType="TIMESTAMP" />
+    <result column="QJJSSJ" property="qjjssj" jdbcType="TIMESTAMP" />
+    <result column="QJYY" property="qjyy" jdbcType="VARCHAR" />
+    <result column="GRNZB" property="grnzb" jdbcType="INTEGER" />
+    <result column="QTNZB" property="qtnzb" jdbcType="INTEGER" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="JBXXJ_CODE" property="jbxxjCode" jdbcType="VARCHAR" />
+    <result column="FYBH" property="fybh" jdbcType="INTEGER" />
+    <result column="YHZT" property="yhzt" jdbcType="INTEGER" />
+    <result column="XFQX" property="xfqx" jdbcType="VARCHAR" />
+    <result column="SSFWZXQX" property="ssfwzxqx" jdbcType="VARCHAR" />
+    <result column="FASL" property="fasl" jdbcType="INTEGER" />
+    <result column="FAZT" property="fazt" jdbcType="INTEGER" />
+    <result column="GRBAJS" property="grbajs" jdbcType="INTEGER" />
+    <result column="DZQMSCSJ" property="dzqmscsj" jdbcType="TIMESTAMP" />
+    <result column="COCALL" property="cocall" jdbcType="VARCHAR" />
+    <result column="SFZ" property="sfz" jdbcType="VARCHAR" />
+    <result column="TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="GZZ" property="gzz" jdbcType="VARCHAR" />
+    <result column="ZWURL" property="zwurl" jdbcType="VARCHAR" />
+    <result column="SFPTDL" property="sfptdl" jdbcType="VARCHAR" />
+    <result column="SFJAGLY" property="sfjagly" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    YHBH, YHDM, YHMC, YHKL, YHBM, KLTS, KLDA, YHSF, KLSZSJ, QJKSSJ, QJJSSJ, QJYY, GRNZB, 
+    QTNZB, PHONE, JBXXJ_CODE, FYBH, YHZT, XFQX, SSFWZXQX, FASL, FAZT, GRBAJS, DZQMSCSJ, 
+    COCALL, SFZ, TEL, GZZ, ZWURL, SFPTDL, SFJAGLY
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.software.entity.PubXtglYhbExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PUB_XTGL_YHB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from PUB_XTGL_YHB
+    where YHBH = #{yhbh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PUB_XTGL_YHB
+    where YHBH = #{yhbh,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.software.entity.PubXtglYhbExample" >
+    delete from PUB_XTGL_YHB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.software.entity.PubXtglYhb" >
+    insert into PUB_XTGL_YHB (YHBH, YHDM, YHMC, 
+      YHKL, YHBM, KLTS, KLDA, 
+      YHSF, KLSZSJ, QJKSSJ, 
+      QJJSSJ, QJYY, GRNZB, 
+      QTNZB, PHONE, JBXXJ_CODE, 
+      FYBH, YHZT, XFQX, SSFWZXQX, 
+      FASL, FAZT, GRBAJS, 
+      DZQMSCSJ, COCALL, SFZ, 
+      TEL, GZZ, ZWURL, SFPTDL, 
+      SFJAGLY)
+    values (#{yhbh,jdbcType=INTEGER}, #{yhdm,jdbcType=VARCHAR}, #{yhmc,jdbcType=VARCHAR}, 
+      #{yhkl,jdbcType=VARCHAR}, #{yhbm,jdbcType=VARCHAR}, #{klts,jdbcType=VARCHAR}, #{klda,jdbcType=VARCHAR}, 
+      #{yhsf,jdbcType=VARCHAR}, #{klszsj,jdbcType=TIMESTAMP}, #{qjkssj,jdbcType=TIMESTAMP}, 
+      #{qjjssj,jdbcType=TIMESTAMP}, #{qjyy,jdbcType=VARCHAR}, #{grnzb,jdbcType=INTEGER}, 
+      #{qtnzb,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{jbxxjCode,jdbcType=VARCHAR}, 
+      #{fybh,jdbcType=INTEGER}, #{yhzt,jdbcType=INTEGER}, #{xfqx,jdbcType=VARCHAR}, #{ssfwzxqx,jdbcType=VARCHAR}, 
+      #{fasl,jdbcType=INTEGER}, #{fazt,jdbcType=INTEGER}, #{grbajs,jdbcType=INTEGER}, 
+      #{dzqmscsj,jdbcType=TIMESTAMP}, #{cocall,jdbcType=VARCHAR}, #{sfz,jdbcType=VARCHAR}, 
+      #{tel,jdbcType=VARCHAR}, #{gzz,jdbcType=VARCHAR}, #{zwurl,jdbcType=VARCHAR}, #{sfptdl,jdbcType=VARCHAR}, 
+      #{sfjagly,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.software.entity.PubXtglYhb" >
+    insert into PUB_XTGL_YHB
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="yhbh != null" >
+        YHBH,
+      </if>
+      <if test="yhdm != null" >
+        YHDM,
+      </if>
+      <if test="yhmc != null" >
+        YHMC,
+      </if>
+      <if test="yhkl != null" >
+        YHKL,
+      </if>
+      <if test="yhbm != null" >
+        YHBM,
+      </if>
+      <if test="klts != null" >
+        KLTS,
+      </if>
+      <if test="klda != null" >
+        KLDA,
+      </if>
+      <if test="yhsf != null" >
+        YHSF,
+      </if>
+      <if test="klszsj != null" >
+        KLSZSJ,
+      </if>
+      <if test="qjkssj != null" >
+        QJKSSJ,
+      </if>
+      <if test="qjjssj != null" >
+        QJJSSJ,
+      </if>
+      <if test="qjyy != null" >
+        QJYY,
+      </if>
+      <if test="grnzb != null" >
+        GRNZB,
+      </if>
+      <if test="qtnzb != null" >
+        QTNZB,
+      </if>
+      <if test="phone != null" >
+        PHONE,
+      </if>
+      <if test="jbxxjCode != null" >
+        JBXXJ_CODE,
+      </if>
+      <if test="fybh != null" >
+        FYBH,
+      </if>
+      <if test="yhzt != null" >
+        YHZT,
+      </if>
+      <if test="xfqx != null" >
+        XFQX,
+      </if>
+      <if test="ssfwzxqx != null" >
+        SSFWZXQX,
+      </if>
+      <if test="fasl != null" >
+        FASL,
+      </if>
+      <if test="fazt != null" >
+        FAZT,
+      </if>
+      <if test="grbajs != null" >
+        GRBAJS,
+      </if>
+      <if test="dzqmscsj != null" >
+        DZQMSCSJ,
+      </if>
+      <if test="cocall != null" >
+        COCALL,
+      </if>
+      <if test="sfz != null" >
+        SFZ,
+      </if>
+      <if test="tel != null" >
+        TEL,
+      </if>
+      <if test="gzz != null" >
+        GZZ,
+      </if>
+      <if test="zwurl != null" >
+        ZWURL,
+      </if>
+      <if test="sfptdl != null" >
+        SFPTDL,
+      </if>
+      <if test="sfjagly != null" >
+        SFJAGLY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="yhbh != null" >
+        #{yhbh,jdbcType=INTEGER},
+      </if>
+      <if test="yhdm != null" >
+        #{yhdm,jdbcType=VARCHAR},
+      </if>
+      <if test="yhmc != null" >
+        #{yhmc,jdbcType=VARCHAR},
+      </if>
+      <if test="yhkl != null" >
+        #{yhkl,jdbcType=VARCHAR},
+      </if>
+      <if test="yhbm != null" >
+        #{yhbm,jdbcType=VARCHAR},
+      </if>
+      <if test="klts != null" >
+        #{klts,jdbcType=VARCHAR},
+      </if>
+      <if test="klda != null" >
+        #{klda,jdbcType=VARCHAR},
+      </if>
+      <if test="yhsf != null" >
+        #{yhsf,jdbcType=VARCHAR},
+      </if>
+      <if test="klszsj != null" >
+        #{klszsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qjkssj != null" >
+        #{qjkssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qjjssj != null" >
+        #{qjjssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qjyy != null" >
+        #{qjyy,jdbcType=VARCHAR},
+      </if>
+      <if test="grnzb != null" >
+        #{grnzb,jdbcType=INTEGER},
+      </if>
+      <if test="qtnzb != null" >
+        #{qtnzb,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="jbxxjCode != null" >
+        #{jbxxjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fybh != null" >
+        #{fybh,jdbcType=INTEGER},
+      </if>
+      <if test="yhzt != null" >
+        #{yhzt,jdbcType=INTEGER},
+      </if>
+      <if test="xfqx != null" >
+        #{xfqx,jdbcType=VARCHAR},
+      </if>
+      <if test="ssfwzxqx != null" >
+        #{ssfwzxqx,jdbcType=VARCHAR},
+      </if>
+      <if test="fasl != null" >
+        #{fasl,jdbcType=INTEGER},
+      </if>
+      <if test="fazt != null" >
+        #{fazt,jdbcType=INTEGER},
+      </if>
+      <if test="grbajs != null" >
+        #{grbajs,jdbcType=INTEGER},
+      </if>
+      <if test="dzqmscsj != null" >
+        #{dzqmscsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cocall != null" >
+        #{cocall,jdbcType=VARCHAR},
+      </if>
+      <if test="sfz != null" >
+        #{sfz,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="gzz != null" >
+        #{gzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zwurl != null" >
+        #{zwurl,jdbcType=VARCHAR},
+      </if>
+      <if test="sfptdl != null" >
+        #{sfptdl,jdbcType=VARCHAR},
+      </if>
+      <if test="sfjagly != null" >
+        #{sfjagly,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.software.entity.PubXtglYhbExample" resultType="java.lang.Integer" >
+    select count(*) from PUB_XTGL_YHB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PUB_XTGL_YHB
+    <set >
+      <if test="record.yhbh != null" >
+        YHBH = #{record.yhbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhdm != null" >
+        YHDM = #{record.yhdm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhmc != null" >
+        YHMC = #{record.yhmc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhkl != null" >
+        YHKL = #{record.yhkl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhbm != null" >
+        YHBM = #{record.yhbm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.klts != null" >
+        KLTS = #{record.klts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.klda != null" >
+        KLDA = #{record.klda,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yhsf != null" >
+        YHSF = #{record.yhsf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.klszsj != null" >
+        KLSZSJ = #{record.klszsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.qjkssj != null" >
+        QJKSSJ = #{record.qjkssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.qjjssj != null" >
+        QJJSSJ = #{record.qjjssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.qjyy != null" >
+        QJYY = #{record.qjyy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grnzb != null" >
+        GRNZB = #{record.grnzb,jdbcType=INTEGER},
+      </if>
+      <if test="record.qtnzb != null" >
+        QTNZB = #{record.qtnzb,jdbcType=INTEGER},
+      </if>
+      <if test="record.phone != null" >
+        PHONE = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jbxxjCode != null" >
+        JBXXJ_CODE = #{record.jbxxjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fybh != null" >
+        FYBH = #{record.fybh,jdbcType=INTEGER},
+      </if>
+      <if test="record.yhzt != null" >
+        YHZT = #{record.yhzt,jdbcType=INTEGER},
+      </if>
+      <if test="record.xfqx != null" >
+        XFQX = #{record.xfqx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssfwzxqx != null" >
+        SSFWZXQX = #{record.ssfwzxqx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fasl != null" >
+        FASL = #{record.fasl,jdbcType=INTEGER},
+      </if>
+      <if test="record.fazt != null" >
+        FAZT = #{record.fazt,jdbcType=INTEGER},
+      </if>
+      <if test="record.grbajs != null" >
+        GRBAJS = #{record.grbajs,jdbcType=INTEGER},
+      </if>
+      <if test="record.dzqmscsj != null" >
+        DZQMSCSJ = #{record.dzqmscsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cocall != null" >
+        COCALL = #{record.cocall,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfz != null" >
+        SFZ = #{record.sfz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+        TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gzz != null" >
+        GZZ = #{record.gzz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zwurl != null" >
+        ZWURL = #{record.zwurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfptdl != null" >
+        SFPTDL = #{record.sfptdl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sfjagly != null" >
+        SFJAGLY = #{record.sfjagly,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PUB_XTGL_YHB
+    set YHBH = #{record.yhbh,jdbcType=INTEGER},
+      YHDM = #{record.yhdm,jdbcType=VARCHAR},
+      YHMC = #{record.yhmc,jdbcType=VARCHAR},
+      YHKL = #{record.yhkl,jdbcType=VARCHAR},
+      YHBM = #{record.yhbm,jdbcType=VARCHAR},
+      KLTS = #{record.klts,jdbcType=VARCHAR},
+      KLDA = #{record.klda,jdbcType=VARCHAR},
+      YHSF = #{record.yhsf,jdbcType=VARCHAR},
+      KLSZSJ = #{record.klszsj,jdbcType=TIMESTAMP},
+      QJKSSJ = #{record.qjkssj,jdbcType=TIMESTAMP},
+      QJJSSJ = #{record.qjjssj,jdbcType=TIMESTAMP},
+      QJYY = #{record.qjyy,jdbcType=VARCHAR},
+      GRNZB = #{record.grnzb,jdbcType=INTEGER},
+      QTNZB = #{record.qtnzb,jdbcType=INTEGER},
+      PHONE = #{record.phone,jdbcType=VARCHAR},
+      JBXXJ_CODE = #{record.jbxxjCode,jdbcType=VARCHAR},
+      FYBH = #{record.fybh,jdbcType=INTEGER},
+      YHZT = #{record.yhzt,jdbcType=INTEGER},
+      XFQX = #{record.xfqx,jdbcType=VARCHAR},
+      SSFWZXQX = #{record.ssfwzxqx,jdbcType=VARCHAR},
+      FASL = #{record.fasl,jdbcType=INTEGER},
+      FAZT = #{record.fazt,jdbcType=INTEGER},
+      GRBAJS = #{record.grbajs,jdbcType=INTEGER},
+      DZQMSCSJ = #{record.dzqmscsj,jdbcType=TIMESTAMP},
+      COCALL = #{record.cocall,jdbcType=VARCHAR},
+      SFZ = #{record.sfz,jdbcType=VARCHAR},
+      TEL = #{record.tel,jdbcType=VARCHAR},
+      GZZ = #{record.gzz,jdbcType=VARCHAR},
+      ZWURL = #{record.zwurl,jdbcType=VARCHAR},
+      SFPTDL = #{record.sfptdl,jdbcType=VARCHAR},
+      SFJAGLY = #{record.sfjagly,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.software.entity.PubXtglYhb" >
+    update PUB_XTGL_YHB
+    <set >
+      <if test="yhdm != null" >
+        YHDM = #{yhdm,jdbcType=VARCHAR},
+      </if>
+      <if test="yhmc != null" >
+        YHMC = #{yhmc,jdbcType=VARCHAR},
+      </if>
+      <if test="yhkl != null" >
+        YHKL = #{yhkl,jdbcType=VARCHAR},
+      </if>
+      <if test="yhbm != null" >
+        YHBM = #{yhbm,jdbcType=VARCHAR},
+      </if>
+      <if test="klts != null" >
+        KLTS = #{klts,jdbcType=VARCHAR},
+      </if>
+      <if test="klda != null" >
+        KLDA = #{klda,jdbcType=VARCHAR},
+      </if>
+      <if test="yhsf != null" >
+        YHSF = #{yhsf,jdbcType=VARCHAR},
+      </if>
+      <if test="klszsj != null" >
+        KLSZSJ = #{klszsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qjkssj != null" >
+        QJKSSJ = #{qjkssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qjjssj != null" >
+        QJJSSJ = #{qjjssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qjyy != null" >
+        QJYY = #{qjyy,jdbcType=VARCHAR},
+      </if>
+      <if test="grnzb != null" >
+        GRNZB = #{grnzb,jdbcType=INTEGER},
+      </if>
+      <if test="qtnzb != null" >
+        QTNZB = #{qtnzb,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="jbxxjCode != null" >
+        JBXXJ_CODE = #{jbxxjCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fybh != null" >
+        FYBH = #{fybh,jdbcType=INTEGER},
+      </if>
+      <if test="yhzt != null" >
+        YHZT = #{yhzt,jdbcType=INTEGER},
+      </if>
+      <if test="xfqx != null" >
+        XFQX = #{xfqx,jdbcType=VARCHAR},
+      </if>
+      <if test="ssfwzxqx != null" >
+        SSFWZXQX = #{ssfwzxqx,jdbcType=VARCHAR},
+      </if>
+      <if test="fasl != null" >
+        FASL = #{fasl,jdbcType=INTEGER},
+      </if>
+      <if test="fazt != null" >
+        FAZT = #{fazt,jdbcType=INTEGER},
+      </if>
+      <if test="grbajs != null" >
+        GRBAJS = #{grbajs,jdbcType=INTEGER},
+      </if>
+      <if test="dzqmscsj != null" >
+        DZQMSCSJ = #{dzqmscsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cocall != null" >
+        COCALL = #{cocall,jdbcType=VARCHAR},
+      </if>
+      <if test="sfz != null" >
+        SFZ = #{sfz,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="gzz != null" >
+        GZZ = #{gzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zwurl != null" >
+        ZWURL = #{zwurl,jdbcType=VARCHAR},
+      </if>
+      <if test="sfptdl != null" >
+        SFPTDL = #{sfptdl,jdbcType=VARCHAR},
+      </if>
+      <if test="sfjagly != null" >
+        SFJAGLY = #{sfjagly,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where YHBH = #{yhbh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.software.entity.PubXtglYhb" >
+    update PUB_XTGL_YHB
+    set YHDM = #{yhdm,jdbcType=VARCHAR},
+      YHMC = #{yhmc,jdbcType=VARCHAR},
+      YHKL = #{yhkl,jdbcType=VARCHAR},
+      YHBM = #{yhbm,jdbcType=VARCHAR},
+      KLTS = #{klts,jdbcType=VARCHAR},
+      KLDA = #{klda,jdbcType=VARCHAR},
+      YHSF = #{yhsf,jdbcType=VARCHAR},
+      KLSZSJ = #{klszsj,jdbcType=TIMESTAMP},
+      QJKSSJ = #{qjkssj,jdbcType=TIMESTAMP},
+      QJJSSJ = #{qjjssj,jdbcType=TIMESTAMP},
+      QJYY = #{qjyy,jdbcType=VARCHAR},
+      GRNZB = #{grnzb,jdbcType=INTEGER},
+      QTNZB = #{qtnzb,jdbcType=INTEGER},
+      PHONE = #{phone,jdbcType=VARCHAR},
+      JBXXJ_CODE = #{jbxxjCode,jdbcType=VARCHAR},
+      FYBH = #{fybh,jdbcType=INTEGER},
+      YHZT = #{yhzt,jdbcType=INTEGER},
+      XFQX = #{xfqx,jdbcType=VARCHAR},
+      SSFWZXQX = #{ssfwzxqx,jdbcType=VARCHAR},
+      FASL = #{fasl,jdbcType=INTEGER},
+      FAZT = #{fazt,jdbcType=INTEGER},
+      GRBAJS = #{grbajs,jdbcType=INTEGER},
+      DZQMSCSJ = #{dzqmscsj,jdbcType=TIMESTAMP},
+      COCALL = #{cocall,jdbcType=VARCHAR},
+      SFZ = #{sfz,jdbcType=VARCHAR},
+      TEL = #{tel,jdbcType=VARCHAR},
+      GZZ = #{gzz,jdbcType=VARCHAR},
+      ZWURL = #{zwurl,jdbcType=VARCHAR},
+      SFPTDL = #{sfptdl,jdbcType=VARCHAR},
+      SFJAGLY = #{sfjagly,jdbcType=VARCHAR}
+    where YHBH = #{yhbh,jdbcType=INTEGER}
+  </update>
+  <select id="selectYhFromYhb"  resultType="java.lang.Integer" >
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    select count(*) from PUB_XTGL_YHB
+    where YHDM=#{yhm} and YHKL=#{password}
+  </select>
+
+  <select id="selectByYhkl"  resultType="com.software.model.YhInfoModel" >
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    select YHDM,YHBH,YHKL,YHBM,YHMC from PUB_XTGL_YHB
+    where YHDM=#{yhdm} and YHKL=#{yhkl}
+  </select>
+</mapper>

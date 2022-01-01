@@ -1,0 +1,65 @@
+package com.software.service;
+
+import com.software.model.AjjbModel;
+import com.software.model.CqwgdModel;
+import com.software.model.CqwgdVOModel;
+import com.software.model.KvModel;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+public interface SplcjdService {
+    public List<KvModel> getDrla(String fydm);
+    public List<KvModel> getDrfa(String fydm);
+    public List<KvModel> getDrkt(String fydm);
+    public List<KvModel> getDrts(String fydm);
+    public List<KvModel> getDrsx(String fydm);
+    public List<KvModel> getDrja(String fydm);
+    public List<KvModel> getDrgd(String fydm);
+    public List<KvModel> getDyla(String fydm);
+    public List<KvModel> getDyfa(String fydm);
+    public List<KvModel> getDykt(String fydm);
+    public List<KvModel> getDyts(String fydm);
+    public List<KvModel> getDysx(String fydm);
+    public List<KvModel> getDyja(String fydm);
+    public List<KvModel> getDygd(String fydm);
+    public List<KvModel> getDrbj(String fydm);
+    public List<KvModel> getDybj(String fydm);
+    public List<KvModel> getDycqja(String fydm);
+    public List<CqwgdVOModel> getDycqgd();
+    public List<AjjbModel> getDrbjList(String fydm,String index);
+    public List<AjjbModel> getDybjList(String fydm,String index);
+    public List<AjjbModel> getDrfaList(String fydm,String index);
+    public List<AjjbModel> getDyfaList(String fydm,String index);
+    public List<AjjbModel> getDrktList(String fydm,String index);
+    public List<AjjbModel> getDyktList(String fydm,String index);
+    public List<AjjbModel> getDrtsList(String fydm,String index);
+    public List<AjjbModel> getDytsList(String fydm,String index);
+    public List<AjjbModel> getDrsxList(String fydm,String index);
+    public List<AjjbModel> getDysxList(String fydm,String index);
+    public List<AjjbModel> getDrjaList(String fydm,String index);
+    public List<AjjbModel> getDyjaList(String fydm,String index);
+    public List<AjjbModel> getDrgdList(String fydm,String index);
+    public List<AjjbModel> getDygdList(String fydm,String index);
+    public List<AjjbModel> getDrlaList(String fydm,String index);
+    public List<AjjbModel> getDylaList(String fydm,String index);
+    public List<AjjbModel> getDycqjaList(String fydm,String index);
+    public void getDrbjListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDybjListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrlaListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDylaListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrfaListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDyfaListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrktListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDyktListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrtsListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDytsListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrsxListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDysxListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrjaListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDyjaListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDrgdListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDygdListExcel(String fydm, String index, HttpServletResponse response);
+    public void getDycqjaListExcel(String fydm, String index, HttpServletResponse response);
+    void exportWord(HttpServletResponse response, String beginTime, String endTime, String fydm);
+}

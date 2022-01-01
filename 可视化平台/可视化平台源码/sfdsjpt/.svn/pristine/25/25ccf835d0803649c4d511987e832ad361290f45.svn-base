@@ -1,0 +1,22 @@
+package com.software.utils;
+
+public class StringUtils {
+    public static String likePattern(String[] strs,String str){
+        for (String s:strs){
+            if (s.charAt(0)==str.charAt(0)&&s.charAt(1)=='*') {
+                return s.substring(2);
+            }
+        }
+        return "";
+    }
+    // 字符串精确匹配
+
+    public static String equalPattern(String[] strs,String str){
+        for(String s:strs){
+            if (s.startsWith(str)) {
+                return s.substring(2);
+            }
+        }
+        return "";
+    }
+}

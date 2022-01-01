@@ -1,0 +1,64 @@
+package com.software.Service.impl;
+
+import com.software.Service.IndexService;
+import com.software.datasource.DataSourceRouter;
+import com.software.mapper.PubAjJbMapper;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.AjjbModel;
+import com.software.model.K2vModel;
+import com.software.model.YwtpmModel;
+import com.software.utils.DateUtils;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class IndexServiceImpl implements IndexService {
+/*
+    public List<DmbModel> findByLbbh(String lbbh) {
+        changeSource();
+
+        DmbEntityExample example = new DmbEntityExample();
+        example.or().andLBBHEqualTo(lbbh).andBZEqualTo("审判");
+        List<DmbEntity> entityList = dmbMapper.selectByExample(example);
+        return DmbModel.toModelList(entityList);
+    }*/
+
+   @Autowired
+   private AjjbDao ajjbDao;
+
+    //得到业务庭的当月结案数和当月未结数
+    //首先得到该院的所有审判部门 以部门号和月份为分组
+    /*public ResultModel getYwtsj(){
+        List<YwtpmModel> ywtpmModels=ajJbMapper.getYwtsj();
+        return ResultModelUtil.success(ywtpmModels);
+
+
+    }*/
+    public List<K2vModel> getYwtpm(String beginTime,String endTime){
+        //格式 办案审判庭名称 当月结案数 当月未结数
+        List<K2vModel> list=ajjbDao.getYwtsj(beginTime,endTime);
+        //取前五名
+        list=list.stream().limit(5).collect(Collectors.toList());
+        return list;
+    }
+    //得到当天的实时数据并展示。每五分钟更新一次
+    public List<AjjbModel> getAjxxIntime(){
+
+        Date time1=DateUtils.getZeroIntime();
+        String beginTime=DateUtils.formatDateBySecond(time1);
+        Date time2=DateUtils.getIntime();
+        String endTime=DateUtils.formatDateBySecond(time2);
+        List<AjjbModel> ajjbModels=ajjbDao.getAjxxIntime(beginTime,endTime);
+
+
+        return ajjbModels;
+    }
+}

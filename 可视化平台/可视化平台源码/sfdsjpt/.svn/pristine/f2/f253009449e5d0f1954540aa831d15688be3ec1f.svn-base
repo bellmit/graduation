@@ -1,0 +1,65 @@
+package com.software.Service.impl;
+
+import com.software.Service.LhjfService;
+import com.software.datasource.DataSourceEnum;
+import com.software.datasource.DataSourceRouter;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class LhjfServiceImpl implements LhjfService {
+    @Autowired
+    private AjjbDao ajjbDao;
+
+    public List<KvModel> getLhjfAjCount(String beginTime, String endTime){
+        int year=DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            String fristday=DateUtils.formatDate(first);
+            kvModel.setValue(ajjbDao.getLhjfAjCount(fristday,lastday));
+            list.add(kvModel);
+        }
+        return list;
+    }
+
+    public List<KvModel> getLhjfTjdqAjCount(String beginTime,String endTime){
+
+        List<String> fydmList=DataSourceEnum.getSubFydm("120000 200");
+        List<KvModel> kvModels=new ArrayList<>();
+
+        for (String fydm:fydmList){
+            DataSourceRouter.routerTo(fydm);
+            int count=ajjbDao.getLhjfAjCount(beginTime,endTime);
+            KvModel k=new KvModel();
+            k.setName(DataSourceEnum.getFymcByFydm(fydm));
+            k.setValue(count);
+            kvModels.add(k);
+        }
+        return kvModels;
+    }
+
+    public List<KvModel> getLhjfPjjg(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getLhjfPjjg(beginTime,endTime);
+
+        return list;
+    }
+
+    public List<KvModel> getLhjfWhcd(String beginTime,String endTime){
+
+        List<KvModel> list=ajjbDao.getLhjfWhcd(beginTime,endTime);
+
+        return list;
+    }
+}

@@ -1,0 +1,19 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface ZscqqqService extends CommonService{
+
+
+    List<KvModel> getAyDistribution(String beginTime,String endTime);
+
+    int[][] getDsrType(String beginTime,String endTime);
+
+    List<KvModel> getDwNature(String beginTime,String endTime);
+
+    List<KvModel> getBgCount(String beginTime,String endTime);
+
+    List<KvModel> getProcessingCycle(String beginTime,String endTime);
+}

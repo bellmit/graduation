@@ -1,0 +1,22 @@
+package com.software.mapper;
+
+import com.software.model.BgrxxModel;
+import com.software.model.KvModel;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+@Mapper
+public interface XykzpMapper {
+
+    Integer getAjCount(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+
+    List<KvModel> getBgrxb(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+
+    List<BgrxxModel> getBgrAge(@Param("beginTime")String beginTime, @Param("endTime") String endTime);
+
+    List<KvModel> getBgrWhcd(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+    List<KvModel> getBgrsf(@Param("beginTime") String beginTime,@Param("endTime")String endTime);
+}

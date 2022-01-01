@@ -1,0 +1,13 @@
+package com.software.mapper;
+
+import com.software.model.DsrModel;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+@Mapper
+public interface ZscqqqMapper extends AjMapper{
+
+    List<DsrModel> getDsrType(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+}

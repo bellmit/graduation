@@ -1,0 +1,46 @@
+package com.software.service.impl;
+
+import com.software.service.ZscqqqService;
+import com.software.mapper.ZscqqqMapper;
+import com.software.model.KvModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ZscqqqServiceImpl implements ZscqqqService {
+    @Autowired
+    ZscqqqMapper zscqqqMapper;
+
+
+    @Override
+    public List<KvModel> getAyDistribution(String beginTime, String endTime) {
+        // 案由分布
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getDsrType(String beginTime, String endTime) {
+        // 当事人分为被告和原告
+        // 当事人类别为法人、、、
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getDwNature(String beginTime, String endTime) {
+        // 单位分为机关单位dsr_xp_jg和普通单位dsr_dw，需要分别查询
+        return  null;
+    }
+
+    @Override
+    public List<KvModel> getBgCount(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getProcessingCycle(String beginTime, String endTime) {
+        return null;
+    }
+
+}

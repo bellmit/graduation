@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.IndexMapper">
+    <resultMap id="AjjbModel" type="com.software.model.AjjbModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"></result>
+        <result column="AH" jdbcType="VARCHAR" property="ah"></result>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"></result>
+        <result column="AJXZ" jdbcType="CHAR" property="ajxz"></result>
+        <result column="SPCX" jdbcType="CHAR" property="spcx"></result>
+        <result column="SPCXDZ" jdbcType="CHAR" property="spcxdz"></result>
+        <result column="BASPT" jdbcType="VARCHAR" property="baspt"></result>
+        <result column="LARQ" jdbcType="VARCHAR" property="larq"></result>
+        <result column="JARQ" jdbcType="VARCHAR" property="jarq"></result>
+        <result column="FYDM" jdbcType="VARCHAR" property="fydm"></result>
+    </resultMap>
+    <resultMap id="K2vModel" type="com.software.model.K2vModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value1" jdbcType="INTEGER" property="value1"></result>
+        <result column="value2" jdbcType="INTEGER" property="value2"></result>
+    </resultMap>
+    <select id="getAjxxIntime" resultMap="AjjbModel">
+       select AH,LARQ from PUB_AJ_JB where
+        <choose>
+            <when test="fydm == '120242 22A' ">
+                LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                and LARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                and fydm=#{fydm}
+            </when>
+            <otherwise>
+                LARQ <![CDATA[>=]]> #{beginTime}
+                and LARQ <![CDATA[<=]]> #{endTime}
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getYwtsj" resultMap="K2vModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select A1.baspt as name,A1.yjajs as value1,A2.wjajs as value2  from
+                (select D.DMMS baspt,T.c yjajs from  (select BASPT,COUNT(BASPT) c from PUB_AJ_JB where JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                and JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                group by  BASPT ) T left join (select DMBH,DMMS from PUB_DMB where LBBH='USR206-99') D  on T.BASPT=D.DMBH)
+                A1,
+                (select D.DMMS baspt,T.c wjajs from  (select BASPT,COUNT(BASPT) c from PUB_AJ_JB where LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                  and JARQ is null
+                group by  BASPT ) T left join (select DMBH,DMMS from PUB_DMB where LBBH='USR206-99') D  on T.BASPT=D.DMBH)
+                A2
+                where A1.baspt=A2.baspt
+                order by  A1.yjajs+A2.wjajs desc
+            </when>
+            <otherwise>
+                select A1.baspt name,A1.yjajs value1,A2.wjajs value2  from
+                (
+                    select D.DMMS baspt,T.c yjajs from
+                (
+                select BASPT,COUNT(BASPT) c from PUB_AJ_JB
+                where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+                group by  BASPT
+                ) T
+                left join
+                (
+                select DMBH,DMMS from PUB_DMB where LBBH='USR206-99'
+                ) D
+                on T.BASPT=D.DMBH
+                )A1,
+                (
+                    select D.DMMS baspt,T.c wjajs from
+                    (
+                     select BASPT,COUNT(BASPT) c from PUB_AJ_JB
+                     where LARQ <![CDATA[>=]]> #{beginTime}  and JARQ is null
+                     group by  BASPT
+                    ) T
+                    left join
+                    (
+                    select DMBH,DMMS from PUB_DMB where LBBH='USR206-99'
+                    ) D
+                    on T.BASPT=D.DMBH
+                )A2
+                where A1.baspt=A2.baspt
+                order by  A1.yjajs+A2.wjajs desc
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

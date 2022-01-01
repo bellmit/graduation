@@ -1,0 +1,62 @@
+package com.software.entity;
+
+import java.io.Serializable;
+
+public class PubLaAy implements Serializable {
+    private Integer ajxh;
+
+    private Integer laaybh;
+
+    private String ay;
+
+    private String laay;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getAjxh() {
+        return ajxh;
+    }
+
+    public void setAjxh(Integer ajxh) {
+        this.ajxh = ajxh;
+    }
+
+    public Integer getLaaybh() {
+        return laaybh;
+    }
+
+    public void setLaaybh(Integer laaybh) {
+        this.laaybh = laaybh;
+    }
+
+    public String getAy() {
+        return ay;
+    }
+
+    public void setAy(String ay) {
+        this.ay = ay == null ? null : ay.trim();
+    }
+
+    public String getLaay() {
+        return laay;
+    }
+
+    public void setLaay(String laay) {
+        this.laay = laay == null ? null : laay.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", ajxh=").append(ajxh);
+        sb.append(", laaybh=").append(laaybh);
+        sb.append(", ay=").append(ay);
+        sb.append(", laay=").append(laay);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

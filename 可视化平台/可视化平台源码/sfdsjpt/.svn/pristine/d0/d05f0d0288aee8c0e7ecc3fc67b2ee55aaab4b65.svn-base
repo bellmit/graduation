@@ -1,0 +1,101 @@
+package com.software.service.impl;
+
+import com.software.service.AjService;
+import com.software.datasource.DataSourceEnum;
+import com.software.datasource.DataSourceRouter;
+import com.software.mapper.AjMapper;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+@Service
+public class AjServiceImpl implements AjService {
+    @Autowired
+    AjMapper ajMapper;
+
+    @Override
+    public List<KvModel> getAjCount(String ay) {
+        int year= DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(i +"年");
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastDay=DateUtils.formatDate(last);
+            String firstDay=DateUtils.formatDate(first);
+            kvModel.setValue(ajMapper.getAjCount(firstDay,lastDay,ay));
+            list.add(kvModel);
+        }
+        return list;
+    }
+    @Override
+    public List<KvModel> getAreaDistribution(String beginTime,String endTime,String fydm,String ay) {
+        List<KvModel> kvModels = new ArrayList<>();
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+        List<String> fydms = DataSourceEnum.getSubFydm(fydm);
+        for (String dm : fydms) {
+            executors.execute(() -> {
+                KvModel k = new KvModel();
+                DataSourceRouter.routerTo(dm);
+                int ajs = ajMapper.getAjCount(beginTime, endTime,ay);
+                k.setName(DataSourceEnum.getFydqByFydm(dm));
+                k.setValue(ajs);
+                kvModels.add(k);
+                System.out.println();
+            });
+        }
+        try {
+            executors.shutdown();
+            executors.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException ignored) {
+
+        }
+        return kvModels;
+    }
+    @Override
+    public List<KvModel> getBgrxb(String beginTime, String endTime, String ay) {
+        List<KvModel> kvModels= ajMapper.getBgrxb(beginTime,endTime,ay);
+        kvModels=kvModels.stream().filter(k-> "1".equals(k.getName())|| "2".equals(k.getName()))
+                .collect(Collectors.toList());
+        boolean h1=false;
+        boolean h2=false;
+        for (KvModel t:kvModels){
+            if ("1".equals(t.getName())){
+                t.setName("男");
+                h1=true;
+            }else if("2".equals(t.getName())){
+                t.setName("女");
+                h2=true;
+            }
+        }
+        if (!h1){
+            KvModel k1=new KvModel();
+            k1.setName("男性");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }else if(!h2){
+            KvModel k1=new KvModel();
+            k1.setName("女性");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }
+        return kvModels;
+    }
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime, String ay) {
+        return ajMapper.getBgrsf(beginTime,endTime,ay);
+    }
+    @Override
+    public List<KvModel> getBgrWhcd(String beginTime, String endTime, String ay) {
+        return ajMapper.getBgrWhcd(beginTime,endTime,ay);
+    }
+}

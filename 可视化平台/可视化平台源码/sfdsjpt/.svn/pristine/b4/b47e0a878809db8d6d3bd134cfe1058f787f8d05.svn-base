@@ -1,0 +1,233 @@
+package com.software.Service.impl;
+
+import com.software.Service.MinorFzService;
+import com.software.datasource.DataSourceEnum;
+import com.software.datasource.DataSourceRouter;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.K2vModel;
+import com.software.model.KvModel;
+import com.software.utils.AgeUtils;
+import com.software.utils.DateUtils;
+import com.software.utils.ToolsUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+
+@Service
+public class MinorFzServiceImpl implements MinorFzService {
+    @Autowired
+    AjjbDao ajjbDao;
+    /*//
+    public List<KvModel> getMinorZmfb(String beginTime, String endTime){
+        List<KvModel> kvModels=ajjbDao.getMinorZmfb(beginTime,endTime);
+        return kvModels;
+    }
+    //返回的是最近三年的
+    public List<K2vModel> getMinorYearAjCount(){
+        *//*int year=DateUtils.getCurYear();
+        List<K2vModel> list=new ArrayList<>();
+        for(int i=year-2;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            String fristday=DateUtils.formatDate(first);
+            kvModel.setValue(ajjbDao.getAjCount(fristday,lastday));
+            list.add(k2vModel);
+        }
+        return list;
+        int a1=ajjbDao.getMinorXsajCount();
+        int b1=ajjbDao.getMinorYjajCount();
+*//*
+        return null;
+
+    }*/
+
+    //未成年人罪名分布
+    public List<KvModel> getMinorZmfb(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getMinorZmfb(beginTime,endTime);
+        list=list.stream().limit(10).collect(Collectors.toList());
+        return list;
+    }
+    //返回的是最近三年的 包括年新收案件量 年审结案件量
+    public List<K2vModel> getMinorYearAjCount(){
+        int year=DateUtils.getCurYear();
+        List<K2vModel> list=new ArrayList<>();
+        for(int i=year-2;i<=year;i++){
+            K2vModel k2vModel=new K2vModel();
+            k2vModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            String fristday=DateUtils.formatDate(first);
+            k2vModel.setValue1(ajjbDao.getMinorXsajCount(fristday,lastday));
+            System.out.println("新收数"+ajjbDao.getMinorXsajCount(fristday,lastday));
+            k2vModel.setValue2(ajjbDao.getMinorYjajCount(fristday,lastday));
+            System.out.println("已结数"+ajjbDao.getMinorYjajCount(fristday,lastday));
+            list.add(k2vModel);
+        }
+        return list;
+    }
+    //案件地域分布
+    public List<KvModel> getMinorDyfb (String fydm,String beginTime, String endTime)
+             {
+        //中院显示辖区 高院显示全部
+        //List<KvModel> list=ajjbDao.getMinorWlaj(beginTime,endTime);
+
+        List<KvModel> kvModels=new ArrayList<>();
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+        if (fydm!=null){
+            List<String> fydms=DataSourceEnum.getSubFydm(fydm);
+            for(String dm:fydms){
+                Runnable task=new Runnable() {
+                    @Override
+                    public void run() {
+                        KvModel k=new KvModel();
+                        System.out.println("法院："+dm);
+
+                        DataSourceRouter.routerTo(dm);
+                        int ajs=ajjbDao.getAjCount(beginTime,endTime);
+                        k.setName(DataSourceEnum.getFydqByFydm(dm));
+                        k.setValue(ajs);
+                        System.out.println(k.getName()+" "+k.getValue());
+                        kvModels.add(k);
+                        System.out.println();
+
+                    }
+                };
+                executors.execute(task);
+
+
+            }
+
+            DataSourceRouter.routerTo(fydm);//最后再切会该法院
+        }
+        try {
+            executors.shutdown();
+            executors.awaitTermination(1,TimeUnit.MINUTES);
+        }catch (InterruptedException e){
+
+        }
+
+
+
+        return kvModels;
+    }
+
+    //被告人性别
+    public List<KvModel> getMinorBgrxb(String beginTime,String endTime){
+        List<KvModel> kvModels= ajjbDao.getMinorBgrxb(beginTime,endTime);
+        kvModels=kvModels.stream().filter(k->k.getName().equals("1")||k.getName().equals("2"))
+                .collect(Collectors.toList());
+        boolean h1=false;
+        boolean h2=false;
+        for (KvModel t:kvModels){
+            if (t.getName().equals("1")){
+                t.setName("男");
+                h1=true;
+            }else if(t.getName().equals("2")){
+                t.setName("女");
+                h2=true;
+            }
+        }
+        if (h1==false){
+            KvModel k1=new KvModel();
+            k1.setName("男");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }else if(h2==false){
+            KvModel k1=new KvModel();
+            k1.setName("女");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }
+
+        return kvModels;
+
+    }
+    //各省未成年犯罪情况
+    public List<KvModel> getMinorWlaj(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getMinorWlaj(beginTime,endTime);
+        Map<String,String> map=ToolsUtils.getSf();
+        list.forEach(a->{
+           String t=a.getName();
+           if (map.containsKey(t)){
+               a.setName(map.get(t));
+           }
+        });
+        return list;
+    }
+    //未成年人年龄分布 一个年龄一个段
+    public List<KvModel> getMinorBgrAge(String beginTime,String endTime){
+
+        List<KvModel> list=ajjbDao.getMinorBgrAge(beginTime,endTime);
+        list=list.stream().filter(a->Integer.valueOf(a.getName())>=10).collect(Collectors.toList());
+        return list;
+    }
+    //未成年人文化程度
+    public List<KvModel> getMinorWhcd(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getMinorWhcd(beginTime,endTime);
+        return null;
+    }
+    //涉诉罪名情况 最近两年
+    public List<K2vModel> getMinorSszm(){
+        int year=DateUtils.getCurYear();
+        List<K2vModel> list=new ArrayList<>();
+        int lastyear=year-1;
+        String fristday1=DateUtils.formatDate(DateUtils.getCurYearFirst());
+        String lastDay1=DateUtils.formatDate(DateUtils.getCurYearLast());
+        Date first1=DateUtils.getYearFirst(lastyear);
+        Date last1=DateUtils.getYearLast(lastyear);
+        String fristday=DateUtils.formatDate(first1);
+        String lastday=DateUtils.formatDate(last1);
+
+        List<KvModel> kvModels=ajjbDao.getMinorZmfb(fristday,lastDay1);
+        //得到前五名的案由
+        List<String> ayList=new ArrayList<>();
+        if (kvModels.size()>=5){
+            ayList=kvModels.stream().map(a->a.getName()).limit(5).collect(Collectors.toList());
+        }else{
+            ayList=kvModels.stream().map(a->a.getName()).collect(Collectors.toList());
+        }
+        //对于每一个案由 查出最近两年的数量
+        for (String str:ayList){
+            K2vModel k2vModel=new K2vModel();
+            k2vModel.setName(str);
+            //去年的
+            int lastCount=ajjbDao.getMinorajCountByAy(fristday,lastday,str);
+            //今年的
+            int curCount=ajjbDao.getMinorajCountByAy(fristday1,lastDay1,str);
+            k2vModel.setValue1(lastCount);
+            k2vModel.setValue2(curCount);
+            list.add(k2vModel);
+        }
+        return list;
+    }
+    //14到15周岁涉诉罪名
+    public List<KvModel> getMinorSszmRange1(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getMinorSszmRange1(beginTime,endTime);
+        return list;
+    }
+    //16-17周岁涉诉罪名
+    public List<KvModel> getMinorSszmRange2(String beginTime,String endTime){
+        return ajjbDao.getMinorSszmRange2(beginTime,endTime);
+    }
+
+    public static void main(String[] args) {
+        MinorFzServiceImpl minorFzService=new MinorFzServiceImpl();
+        minorFzService.getMinorYearAjCount();
+    }
+}

@@ -1,0 +1,24 @@
+package com.software.Service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface ZscqqqService {
+    
+    List<KvModel> getAjCount();
+
+    List<KvModel> getBgrsf(String beginTime,String endTime);
+    
+    List<KvModel> getAyDistribution(String beginTime,String endTime);
+
+    List<KvModel> getDsrType(String beginTime,String endTime);
+
+    List<KvModel> getDwNature(String beginTime,String endTime);
+
+    List<KvModel> getBgCount(String beginTime,String endTime);
+
+    List<KvModel> getSupportForLitigation(String beginTime,String endTime);
+
+    List<KvModel> getProcessingCycle(String beginTime,String endTime);
+}

@@ -1,0 +1,103 @@
+package com.software.controller;
+
+import com.software.Service.ZscqqqService;
+import com.software.model.KvModel;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 知识产权侵权接口
+ */
+@RestController
+@RequestMapping("/zscqqq")
+public class ZscqqqController {
+    @Autowired
+    ZscqqqService zscqqqService;
+
+    /**
+     * 各年案件量(近五年)
+     */
+    @RequestMapping("/getAjCount")
+    public ResultModel getAjCount(HttpServletRequest request){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        try{
+            return ResultModelUtil.success(zscqqqService.getAjCount());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 案由分布情况
+     */
+    @RequestMapping("/getAyDistribution")
+    public ResultModel getAyDistribution(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(zscqqqService.getAyDistribution("2021-01-01","2021-06-22"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 当事人类型
+     */
+    @RequestMapping("/getDsrType")
+    public ResultModel getDsrType(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(zscqqqService.getDsrType("2021-01-01","2021-06-22"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 单位性质
+     */
+    @RequestMapping("/getDwNature")
+    public ResultModel getDwNature(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(zscqqqService.getDwNature("2021-01-01","2021-06-22"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 被告个数
+     */
+    @RequestMapping("/getBgCount")
+    public ResultModel getBgCount(HttpServletRequest request) {
+        List<KvModel> kvModels=zscqqqService.getBgCount("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    /**
+     * 被告身份
+     */
+    @RequestMapping("/getBgrsf")
+    public ResultModel getBgrsf(HttpServletRequest request) {
+        List<KvModel> kvModels=zscqqqService.getBgrsf("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    /**
+     * 诉讼请求支持情况
+     */
+    @RequestMapping("/getSupportForLitigation")
+    public ResultModel getSupportForLitigation(HttpServletRequest request) {
+        List<KvModel> kvModels=zscqqqService.getSupportForLitigation("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+    /**
+     * 审理周期信息
+     */
+    @RequestMapping("/getProcessingCycle")
+    public ResultModel getProcessingCycle(HttpServletRequest request){
+        List<KvModel> kvModels=zscqqqService.getProcessingCycle("2021-06-01","2021-06-22");
+        return ResultModelUtil.success(kvModels);
+    }
+}

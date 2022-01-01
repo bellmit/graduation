@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.LadsjMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="AjjbModel" type="com.software.model.AjjbModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"></result>
+        <result column="AH" jdbcType="VARCHAR" property="ah"></result>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"></result>
+        <result column="AJXZ" jdbcType="CHAR" property="ajxz"></result>
+        <result column="SPCX" jdbcType="CHAR" property="spcx"></result>
+        <result column="SPCXDZ" jdbcType="CHAR" property="spcxdz"></result>
+        <result column="BASPT" jdbcType="VARCHAR" property="baspt"></result>
+        <result column="LARQ" jdbcType="VARCHAR" property="larq"></result>
+        <result column="JARQ" jdbcType="VARCHAR" property="jarq"></result>
+    </resultMap>
+    <select id="getDjlasj" resultType="int">
+        select count(*) from PUB_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getLasj" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getLayssj" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and BASPT is not null
+    </select>
+    <select id="getDjlasj1" resultType="int">
+        select count(*) from PUB_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getDjlalzsj" resultType="int">
+        select count(*) from PUB_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and LAAJXH is not null
+    </select>
+    <select id="getDjlasjLx" resultMap="KvModel">
+        select AJXZ as name ,count(*) as value from PUB_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        group by AJXZ
+    </select>
+    <select id="getDjladsrsj" resultType="int">
+        select count(*) from PUB_DJ_JB, DSR_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and PUB_DJ_JB.AJXH=DSR_DJ_JB.AJXH
+    </select>
+    <select id="getDjladsrsjLx" resultMap="KvModel">
+        select AJXZ as name,count(*) as value from PUB_DJ_JB, DSR_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and PUB_DJ_JB.AJXH=DSR_DJ_JB.AJXH
+        group by AJXZ
+    </select>
+    <select id="getDrlasjMS" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='2'
+    </select>
+    <select id="getDrlasjMSSP" resultMap="KvModel">
+        select count(*) as name, sum(case when BASPT is not null then 1 else 0 end) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='2'
+    </select>
+    <select id="getDrlasjXZ" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and (AJXZ='6' or (AJXZ='7' and SPCX='B'))
+    </select>
+    <select id="getDrlasjXZSP" resultMap="KvModel">
+        select count(*) as name, sum(case when BASPT is not null then 1 else 0 end) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and (AJXZ='6' or (AJXZ='7' and SPCX='B'))
+    </select>
+    <select id="getDrlasjPC" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getDrlasjPCSP" resultMap="KvModel">
+        select count(*) as name, sum(case when BASPT is not null then 1 else 0 end) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='7' and SPCX!='B'
+    </select>
+    <select id="getDrlasjZX" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='8'
+    </select>
+    <select id="getDrlasjZXSP" resultMap="KvModel">
+        select count(*) as name, sum(case when BASPT is not null then 1 else 0 end) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='8'
+    </select>
+    <select id="getDrlasjXS" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='1'
+    </select>
+    <select id="getDrlasjXSSP" resultMap="KvModel">
+        select count(*) as name, sum(case when BASPT is not null then 1 else 0 end) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ='1'
+    </select>
+    <select id="getDrlasjQT" resultType="int">
+        select count(*) from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ not in ('2','6','7','8','1')
+    </select>
+    <select id="getDrlasjQTSP" resultMap="KvModel">
+        select count(*) as name, sum(case when BASPT is not null then 1 else 0 end) as value from PUB_AJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AJXZ not in ('2','6','7','8','1')
+    </select>
+    <select id="getSqtjsj" resultType="int">
+        select count(*) from PUB_DJ_JB where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+            </otherwise>
+        </choose>
+        and AH like '%调%'
+    </select>
+    <select id="getDjlasssj" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ from PUB_DJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                order by LARQ desc
+                limit 20
+            </when>
+            <otherwise>
+                select top 20 AH,AJMC,LARQ from PUB_DJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                order by LARQ desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getLasssj" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                order by LARQ desc
+                limit 20
+            </when>
+            <otherwise>
+                select top 20 AH,AJMC,LARQ from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                order by LARQ desc
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getSqtjsssj" resultMap="AjjbModel">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+
+            <when test="fydm == '120242 22A' ">
+                select AH,AJMC,LARQ from PUB_DJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and AH like '%调%'
+                order by LARQ desc
+                limit 20
+            </when>
+            <otherwise>
+                select top 20 AH,AJMC,LARQ from PUB_DJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    and LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AH like '%调%'
+                order by LARQ desc
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

@@ -1,0 +1,151 @@
+package com.software.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class PubSpry implements Serializable {
+    private Integer ajxh;
+
+    private Integer sprybh;
+
+    private String fg;
+
+    private String sfcbr;
+
+    private String sfspz;
+
+    private String sfdlspy;
+
+    private String sfrmpsy;
+
+    private String xm;
+
+    private String gh;
+
+    private String bgyy;
+
+    private Date bgsj;
+
+    private String bgfs;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getAjxh() {
+        return ajxh;
+    }
+
+    public void setAjxh(Integer ajxh) {
+        this.ajxh = ajxh;
+    }
+
+    public Integer getSprybh() {
+        return sprybh;
+    }
+
+    public void setSprybh(Integer sprybh) {
+        this.sprybh = sprybh;
+    }
+
+    public String getFg() {
+        return fg;
+    }
+
+    public void setFg(String fg) {
+        this.fg = fg == null ? null : fg.trim();
+    }
+
+    public String getSfcbr() {
+        return sfcbr;
+    }
+
+    public void setSfcbr(String sfcbr) {
+        this.sfcbr = sfcbr == null ? null : sfcbr.trim();
+    }
+
+    public String getSfspz() {
+        return sfspz;
+    }
+
+    public void setSfspz(String sfspz) {
+        this.sfspz = sfspz == null ? null : sfspz.trim();
+    }
+
+    public String getSfdlspy() {
+        return sfdlspy;
+    }
+
+    public void setSfdlspy(String sfdlspy) {
+        this.sfdlspy = sfdlspy == null ? null : sfdlspy.trim();
+    }
+
+    public String getSfrmpsy() {
+        return sfrmpsy;
+    }
+
+    public void setSfrmpsy(String sfrmpsy) {
+        this.sfrmpsy = sfrmpsy == null ? null : sfrmpsy.trim();
+    }
+
+    public String getXm() {
+        return xm;
+    }
+
+    public void setXm(String xm) {
+        this.xm = xm == null ? null : xm.trim();
+    }
+
+    public String getGh() {
+        return gh;
+    }
+
+    public void setGh(String gh) {
+        this.gh = gh == null ? null : gh.trim();
+    }
+
+    public String getBgyy() {
+        return bgyy;
+    }
+
+    public void setBgyy(String bgyy) {
+        this.bgyy = bgyy == null ? null : bgyy.trim();
+    }
+
+    public Date getBgsj() {
+        return bgsj;
+    }
+
+    public void setBgsj(Date bgsj) {
+        this.bgsj = bgsj;
+    }
+
+    public String getBgfs() {
+        return bgfs;
+    }
+
+    public void setBgfs(String bgfs) {
+        this.bgfs = bgfs == null ? null : bgfs.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", ajxh=").append(ajxh);
+        sb.append(", sprybh=").append(sprybh);
+        sb.append(", fg=").append(fg);
+        sb.append(", sfcbr=").append(sfcbr);
+        sb.append(", sfspz=").append(sfspz);
+        sb.append(", sfdlspy=").append(sfdlspy);
+        sb.append(", sfrmpsy=").append(sfrmpsy);
+        sb.append(", xm=").append(xm);
+        sb.append(", gh=").append(gh);
+        sb.append(", bgyy=").append(bgyy);
+        sb.append(", bgsj=").append(bgsj);
+        sb.append(", bgfs=").append(bgfs);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

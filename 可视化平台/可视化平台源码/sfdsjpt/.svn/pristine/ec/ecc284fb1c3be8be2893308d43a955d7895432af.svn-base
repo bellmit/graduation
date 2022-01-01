@@ -1,0 +1,37 @@
+package com.software.mapper;
+
+import com.software.entity.PubXtglYhb;
+import com.software.entity.PubXtglYhbExample;
+import java.util.List;
+
+import com.software.model.YhInfoModel;
+import org.apache.ibatis.annotations.Param;
+
+public interface PubXtglYhbMapper {
+    int countByExample(PubXtglYhbExample example);
+
+    int deleteByExample(PubXtglYhbExample example);
+
+    int deleteByPrimaryKey(Integer yhbh);
+
+    int insert(PubXtglYhb record);
+
+    int insertSelective(PubXtglYhb record);
+
+    List<PubXtglYhb> selectByExample(PubXtglYhbExample example);
+
+    PubXtglYhb selectByPrimaryKey(Integer yhbh);
+
+    int updateByExampleSelective(@Param("record") PubXtglYhb record, @Param("example") PubXtglYhbExample example);
+
+    int updateByExample(@Param("record") PubXtglYhb record, @Param("example") PubXtglYhbExample example);
+
+    int updateByPrimaryKeySelective(PubXtglYhb record);
+
+    int updateByPrimaryKey(PubXtglYhb record);
+
+    //登陆验证
+    int selectYhFromYhb();
+
+    YhInfoModel selectByYhkl(@Param("yhdm") String yhdm, @Param("yhkl") String yhkl);
+}

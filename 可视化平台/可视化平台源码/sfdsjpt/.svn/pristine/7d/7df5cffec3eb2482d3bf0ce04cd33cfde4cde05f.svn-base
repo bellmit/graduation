@@ -1,0 +1,879 @@
+package com.software.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class PubAjJb implements Serializable {
+    private Integer ajxh;
+
+    private String ah;
+
+    private String ajmc;
+
+    private String ajxz;
+
+    private String ajly;
+
+    private String spcx;
+
+    private String spcxdz;
+
+    private String sycx;
+
+    private String sfys;
+
+    private String sfzdaj;
+
+    private String sfjbaj;
+
+    private String sffhcs;
+
+    private String sfwdyj;
+
+    private Integer sx;
+
+    private Integer fjsx;
+
+    private String lydq;
+
+    private String baspt;
+
+    private Date larq;
+
+    private String lar;
+
+    private String bafy;
+
+    private String gksjg;
+
+    private Date jarq;
+
+    private String jafs;
+
+    private String jayy;
+
+    private String jayydm;
+
+    private String bz;
+
+    private Date sxrq;
+
+    private String gdbz;
+
+    private String ajzt;
+
+    private String bycxdz;
+
+    private String ajwsqk;
+
+    private Date gdrq;
+
+    private Integer gdxlh;
+
+    private Date cbrbprq;
+
+    private Date spzsqrq;
+
+    private Date hythyrq;
+
+    private Date tzsqrq;
+
+    private Date yzsqrq;
+
+    private Date swhjdrq;
+
+    private Date yzqfrq;
+
+    private String slqk;
+
+    private String sslx;
+
+    private String sfgs;
+
+    private String fhcsyy;
+
+    private String gpyy;
+
+    private String jjar;
+
+    private String sfzscq;
+
+    private String swlx;
+
+    private String modflag;
+
+    private String transflag;
+
+    private Integer sptg;
+
+    private String psycy;
+
+    private String msajtjs;
+
+    private String msajtjsss;
+
+    private String shwdfxpg;
+
+    private String sfxess;
+
+    private String sffcxx;
+
+    private String sfcqyscs;
+
+    private String fxhjcs;
+
+    private String pjsffdjfnr;
+
+    private String sfdtpj;
+
+    private String sfhj;
+
+    private String sfktsl;
+
+    private String sftz;
+
+    private String ajsfys;
+
+    private String rmpsyxm;
+
+    private String lybm;
+
+    private Integer rmpsyid;
+
+
+    private String sfxssc;
+
+    private String wjawsyy;
+
+    private String pjjg;
+
+    private String jathyy;
+
+    private String jyaq;
+
+    private String cbryj;
+
+    private String hytyj;
+
+    private String tzhyj;
+
+    private String yzhyj;
+
+    private String swhyj;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getAjxh() {
+        return ajxh;
+    }
+
+    public void setAjxh(Integer ajxh) {
+        this.ajxh = ajxh;
+    }
+
+    public String getAh() {
+        return ah;
+    }
+
+    public void setAh(String ah) {
+        this.ah = ah == null ? null : ah.trim();
+    }
+
+    public String getAjmc() {
+        return ajmc;
+    }
+
+    public void setAjmc(String ajmc) {
+        this.ajmc = ajmc == null ? null : ajmc.trim();
+    }
+
+    public String getAjxz() {
+        return ajxz;
+    }
+
+    public void setAjxz(String ajxz) {
+        this.ajxz = ajxz == null ? null : ajxz.trim();
+    }
+
+    public String getAjly() {
+        return ajly;
+    }
+
+    public void setAjly(String ajly) {
+        this.ajly = ajly == null ? null : ajly.trim();
+    }
+
+    public String getSpcx() {
+        return spcx;
+    }
+
+    public void setSpcx(String spcx) {
+        this.spcx = spcx == null ? null : spcx.trim();
+    }
+
+    public String getSpcxdz() {
+        return spcxdz;
+    }
+
+    public void setSpcxdz(String spcxdz) {
+        this.spcxdz = spcxdz == null ? null : spcxdz.trim();
+    }
+
+    public String getSycx() {
+        return sycx;
+    }
+
+    public void setSycx(String sycx) {
+        this.sycx = sycx == null ? null : sycx.trim();
+    }
+
+    public String getSfys() {
+        return sfys;
+    }
+
+    public void setSfys(String sfys) {
+        this.sfys = sfys == null ? null : sfys.trim();
+    }
+
+    public String getSfzdaj() {
+        return sfzdaj;
+    }
+
+    public void setSfzdaj(String sfzdaj) {
+        this.sfzdaj = sfzdaj == null ? null : sfzdaj.trim();
+    }
+
+    public String getSfjbaj() {
+        return sfjbaj;
+    }
+
+    public void setSfjbaj(String sfjbaj) {
+        this.sfjbaj = sfjbaj == null ? null : sfjbaj.trim();
+    }
+
+    public String getSffhcs() {
+        return sffhcs;
+    }
+
+    public void setSffhcs(String sffhcs) {
+        this.sffhcs = sffhcs == null ? null : sffhcs.trim();
+    }
+
+    public String getSfwdyj() {
+        return sfwdyj;
+    }
+
+    public void setSfwdyj(String sfwdyj) {
+        this.sfwdyj = sfwdyj == null ? null : sfwdyj.trim();
+    }
+
+    public Integer getSx() {
+        return sx;
+    }
+
+    public void setSx(Integer sx) {
+        this.sx = sx;
+    }
+
+    public Integer getFjsx() {
+        return fjsx;
+    }
+
+    public void setFjsx(Integer fjsx) {
+        this.fjsx = fjsx;
+    }
+
+    public String getLydq() {
+        return lydq;
+    }
+
+    public void setLydq(String lydq) {
+        this.lydq = lydq == null ? null : lydq.trim();
+    }
+
+    public String getBaspt() {
+        return baspt;
+    }
+
+    public void setBaspt(String baspt) {
+        this.baspt = baspt == null ? null : baspt.trim();
+    }
+
+    public Date getLarq() {
+        return larq;
+    }
+
+    public void setLarq(Date larq) {
+        this.larq = larq;
+    }
+
+    public String getLar() {
+        return lar;
+    }
+
+    public void setLar(String lar) {
+        this.lar = lar == null ? null : lar.trim();
+    }
+
+    public String getBafy() {
+        return bafy;
+    }
+
+    public void setBafy(String bafy) {
+        this.bafy = bafy == null ? null : bafy.trim();
+    }
+
+    public String getGksjg() {
+        return gksjg;
+    }
+
+    public void setGksjg(String gksjg) {
+        this.gksjg = gksjg == null ? null : gksjg.trim();
+    }
+
+    public Date getJarq() {
+        return jarq;
+    }
+
+    public void setJarq(Date jarq) {
+        this.jarq = jarq;
+    }
+
+    public String getJafs() {
+        return jafs;
+    }
+
+    public void setJafs(String jafs) {
+        this.jafs = jafs == null ? null : jafs.trim();
+    }
+
+    public String getJayy() {
+        return jayy;
+    }
+
+    public void setJayy(String jayy) {
+        this.jayy = jayy == null ? null : jayy.trim();
+    }
+
+    public String getJayydm() {
+        return jayydm;
+    }
+
+    public void setJayydm(String jayydm) {
+        this.jayydm = jayydm == null ? null : jayydm.trim();
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz == null ? null : bz.trim();
+    }
+
+    public Date getSxrq() {
+        return sxrq;
+    }
+
+    public void setSxrq(Date sxrq) {
+        this.sxrq = sxrq;
+    }
+
+    public String getGdbz() {
+        return gdbz;
+    }
+
+    public void setGdbz(String gdbz) {
+        this.gdbz = gdbz == null ? null : gdbz.trim();
+    }
+
+    public String getAjzt() {
+        return ajzt;
+    }
+
+    public void setAjzt(String ajzt) {
+        this.ajzt = ajzt == null ? null : ajzt.trim();
+    }
+
+    public String getBycxdz() {
+        return bycxdz;
+    }
+
+    public void setBycxdz(String bycxdz) {
+        this.bycxdz = bycxdz == null ? null : bycxdz.trim();
+    }
+
+    public String getAjwsqk() {
+        return ajwsqk;
+    }
+
+    public void setAjwsqk(String ajwsqk) {
+        this.ajwsqk = ajwsqk == null ? null : ajwsqk.trim();
+    }
+
+    public Date getGdrq() {
+        return gdrq;
+    }
+
+    public void setGdrq(Date gdrq) {
+        this.gdrq = gdrq;
+    }
+
+    public Integer getGdxlh() {
+        return gdxlh;
+    }
+
+    public void setGdxlh(Integer gdxlh) {
+        this.gdxlh = gdxlh;
+    }
+
+    public Date getCbrbprq() {
+        return cbrbprq;
+    }
+
+    public void setCbrbprq(Date cbrbprq) {
+        this.cbrbprq = cbrbprq;
+    }
+
+    public Date getSpzsqrq() {
+        return spzsqrq;
+    }
+
+    public void setSpzsqrq(Date spzsqrq) {
+        this.spzsqrq = spzsqrq;
+    }
+
+    public Date getHythyrq() {
+        return hythyrq;
+    }
+
+    public void setHythyrq(Date hythyrq) {
+        this.hythyrq = hythyrq;
+    }
+
+    public Date getTzsqrq() {
+        return tzsqrq;
+    }
+
+    public void setTzsqrq(Date tzsqrq) {
+        this.tzsqrq = tzsqrq;
+    }
+
+    public Date getYzsqrq() {
+        return yzsqrq;
+    }
+
+    public void setYzsqrq(Date yzsqrq) {
+        this.yzsqrq = yzsqrq;
+    }
+
+    public Date getSwhjdrq() {
+        return swhjdrq;
+    }
+
+    public void setSwhjdrq(Date swhjdrq) {
+        this.swhjdrq = swhjdrq;
+    }
+
+    public Date getYzqfrq() {
+        return yzqfrq;
+    }
+
+    public void setYzqfrq(Date yzqfrq) {
+        this.yzqfrq = yzqfrq;
+    }
+
+    public String getSlqk() {
+        return slqk;
+    }
+
+    public void setSlqk(String slqk) {
+        this.slqk = slqk == null ? null : slqk.trim();
+    }
+
+    public String getSslx() {
+        return sslx;
+    }
+
+    public void setSslx(String sslx) {
+        this.sslx = sslx == null ? null : sslx.trim();
+    }
+
+    public String getSfgs() {
+        return sfgs;
+    }
+
+    public void setSfgs(String sfgs) {
+        this.sfgs = sfgs == null ? null : sfgs.trim();
+    }
+
+    public String getFhcsyy() {
+        return fhcsyy;
+    }
+
+    public void setFhcsyy(String fhcsyy) {
+        this.fhcsyy = fhcsyy == null ? null : fhcsyy.trim();
+    }
+
+    public String getGpyy() {
+        return gpyy;
+    }
+
+    public void setGpyy(String gpyy) {
+        this.gpyy = gpyy == null ? null : gpyy.trim();
+    }
+
+    public String getJjar() {
+        return jjar;
+    }
+
+    public void setJjar(String jjar) {
+        this.jjar = jjar == null ? null : jjar.trim();
+    }
+
+    public String getSfzscq() {
+        return sfzscq;
+    }
+
+    public void setSfzscq(String sfzscq) {
+        this.sfzscq = sfzscq == null ? null : sfzscq.trim();
+    }
+
+    public String getSwlx() {
+        return swlx;
+    }
+
+    public void setSwlx(String swlx) {
+        this.swlx = swlx == null ? null : swlx.trim();
+    }
+
+    public String getModflag() {
+        return modflag;
+    }
+
+    public void setModflag(String modflag) {
+        this.modflag = modflag == null ? null : modflag.trim();
+    }
+
+    public String getTransflag() {
+        return transflag;
+    }
+
+    public void setTransflag(String transflag) {
+        this.transflag = transflag == null ? null : transflag.trim();
+    }
+
+    public Integer getSptg() {
+        return sptg;
+    }
+
+    public void setSptg(Integer sptg) {
+        this.sptg = sptg;
+    }
+
+    public String getPsycy() {
+        return psycy;
+    }
+
+    public void setPsycy(String psycy) {
+        this.psycy = psycy == null ? null : psycy.trim();
+    }
+
+    public String getMsajtjs() {
+        return msajtjs;
+    }
+
+    public void setMsajtjs(String msajtjs) {
+        this.msajtjs = msajtjs == null ? null : msajtjs.trim();
+    }
+
+    public String getMsajtjsss() {
+        return msajtjsss;
+    }
+
+    public void setMsajtjsss(String msajtjsss) {
+        this.msajtjsss = msajtjsss == null ? null : msajtjsss.trim();
+    }
+
+    public String getShwdfxpg() {
+        return shwdfxpg;
+    }
+
+    public void setShwdfxpg(String shwdfxpg) {
+        this.shwdfxpg = shwdfxpg == null ? null : shwdfxpg.trim();
+    }
+
+    public String getSfxess() {
+        return sfxess;
+    }
+
+    public void setSfxess(String sfxess) {
+        this.sfxess = sfxess == null ? null : sfxess.trim();
+    }
+
+    public String getSffcxx() {
+        return sffcxx;
+    }
+
+    public void setSffcxx(String sffcxx) {
+        this.sffcxx = sffcxx == null ? null : sffcxx.trim();
+    }
+
+    public String getSfcqyscs() {
+        return sfcqyscs;
+    }
+
+    public void setSfcqyscs(String sfcqyscs) {
+        this.sfcqyscs = sfcqyscs == null ? null : sfcqyscs.trim();
+    }
+
+    public String getFxhjcs() {
+        return fxhjcs;
+    }
+
+    public void setFxhjcs(String fxhjcs) {
+        this.fxhjcs = fxhjcs == null ? null : fxhjcs.trim();
+    }
+
+    public String getPjsffdjfnr() {
+        return pjsffdjfnr;
+    }
+
+    public void setPjsffdjfnr(String pjsffdjfnr) {
+        this.pjsffdjfnr = pjsffdjfnr == null ? null : pjsffdjfnr.trim();
+    }
+
+    public String getSfdtpj() {
+        return sfdtpj;
+    }
+
+    public void setSfdtpj(String sfdtpj) {
+        this.sfdtpj = sfdtpj == null ? null : sfdtpj.trim();
+    }
+
+    public String getSfhj() {
+        return sfhj;
+    }
+
+    public void setSfhj(String sfhj) {
+        this.sfhj = sfhj == null ? null : sfhj.trim();
+    }
+
+    public String getSfktsl() {
+        return sfktsl;
+    }
+
+    public void setSfktsl(String sfktsl) {
+        this.sfktsl = sfktsl == null ? null : sfktsl.trim();
+    }
+
+    public String getSftz() {
+        return sftz;
+    }
+
+    public void setSftz(String sftz) {
+        this.sftz = sftz == null ? null : sftz.trim();
+    }
+
+    public String getAjsfys() {
+        return ajsfys;
+    }
+
+    public void setAjsfys(String ajsfys) {
+        this.ajsfys = ajsfys == null ? null : ajsfys.trim();
+    }
+
+    public String getRmpsyxm() {
+        return rmpsyxm;
+    }
+
+    public void setRmpsyxm(String rmpsyxm) {
+        this.rmpsyxm = rmpsyxm == null ? null : rmpsyxm.trim();
+    }
+
+    public String getLybm() {
+        return lybm;
+    }
+
+    public void setLybm(String lybm) {
+        this.lybm = lybm == null ? null : lybm.trim();
+    }
+
+    public Integer getRmpsyid() {
+        return rmpsyid;
+    }
+
+    public void setRmpsyid(Integer rmpsyid) {
+        this.rmpsyid = rmpsyid;
+    }
+
+    public String getSfxssc() {
+        return sfxssc;
+    }
+
+    public void setSfxssc(String sfxssc) {
+        this.sfxssc = sfxssc == null ? null : sfxssc.trim();
+    }
+
+    public String getWjawsyy() {
+        return wjawsyy;
+    }
+
+    public void setWjawsyy(String wjawsyy) {
+        this.wjawsyy = wjawsyy == null ? null : wjawsyy.trim();
+    }
+
+    public String getPjjg() {
+        return pjjg;
+    }
+
+    public void setPjjg(String pjjg) {
+        this.pjjg = pjjg == null ? null : pjjg.trim();
+    }
+
+    public String getJathyy() {
+        return jathyy;
+    }
+
+    public void setJathyy(String jathyy) {
+        this.jathyy = jathyy == null ? null : jathyy.trim();
+    }
+
+    public String getJyaq() {
+        return jyaq;
+    }
+
+    public void setJyaq(String jyaq) {
+        this.jyaq = jyaq == null ? null : jyaq.trim();
+    }
+
+    public String getCbryj() {
+        return cbryj;
+    }
+
+    public void setCbryj(String cbryj) {
+        this.cbryj = cbryj == null ? null : cbryj.trim();
+    }
+
+    public String getHytyj() {
+        return hytyj;
+    }
+
+    public void setHytyj(String hytyj) {
+        this.hytyj = hytyj == null ? null : hytyj.trim();
+    }
+
+    public String getTzhyj() {
+        return tzhyj;
+    }
+
+    public void setTzhyj(String tzhyj) {
+        this.tzhyj = tzhyj == null ? null : tzhyj.trim();
+    }
+
+    public String getYzhyj() {
+        return yzhyj;
+    }
+
+    public void setYzhyj(String yzhyj) {
+        this.yzhyj = yzhyj == null ? null : yzhyj.trim();
+    }
+
+    public String getSwhyj() {
+        return swhyj;
+    }
+
+    public void setSwhyj(String swhyj) {
+        this.swhyj = swhyj == null ? null : swhyj.trim();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", ajxh=").append(ajxh);
+        sb.append(", ah=").append(ah);
+        sb.append(", ajmc=").append(ajmc);
+        sb.append(", ajxz=").append(ajxz);
+        sb.append(", ajly=").append(ajly);
+        sb.append(", spcx=").append(spcx);
+        sb.append(", spcxdz=").append(spcxdz);
+        sb.append(", sycx=").append(sycx);
+        sb.append(", sfys=").append(sfys);
+        sb.append(", sfzdaj=").append(sfzdaj);
+        sb.append(", sfjbaj=").append(sfjbaj);
+        sb.append(", sffhcs=").append(sffhcs);
+        sb.append(", sfwdyj=").append(sfwdyj);
+        sb.append(", sx=").append(sx);
+        sb.append(", fjsx=").append(fjsx);
+        sb.append(", lydq=").append(lydq);
+        sb.append(", baspt=").append(baspt);
+        sb.append(", larq=").append(larq);
+        sb.append(", lar=").append(lar);
+        sb.append(", bafy=").append(bafy);
+        sb.append(", gksjg=").append(gksjg);
+        sb.append(", jarq=").append(jarq);
+        sb.append(", jafs=").append(jafs);
+        sb.append(", jayy=").append(jayy);
+        sb.append(", jayydm=").append(jayydm);
+        sb.append(", bz=").append(bz);
+        sb.append(", sxrq=").append(sxrq);
+        sb.append(", gdbz=").append(gdbz);
+        sb.append(", ajzt=").append(ajzt);
+        sb.append(", bycxdz=").append(bycxdz);
+        sb.append(", ajwsqk=").append(ajwsqk);
+        sb.append(", gdrq=").append(gdrq);
+        sb.append(", gdxlh=").append(gdxlh);
+        sb.append(", cbrbprq=").append(cbrbprq);
+        sb.append(", spzsqrq=").append(spzsqrq);
+        sb.append(", hythyrq=").append(hythyrq);
+        sb.append(", tzsqrq=").append(tzsqrq);
+        sb.append(", yzsqrq=").append(yzsqrq);
+        sb.append(", swhjdrq=").append(swhjdrq);
+        sb.append(", yzqfrq=").append(yzqfrq);
+        sb.append(", slqk=").append(slqk);
+        sb.append(", sslx=").append(sslx);
+        sb.append(", sfgs=").append(sfgs);
+        sb.append(", fhcsyy=").append(fhcsyy);
+        sb.append(", gpyy=").append(gpyy);
+        sb.append(", jjar=").append(jjar);
+        sb.append(", sfzscq=").append(sfzscq);
+        sb.append(", swlx=").append(swlx);
+        sb.append(", modflag=").append(modflag);
+        sb.append(", transflag=").append(transflag);
+        sb.append(", sptg=").append(sptg);
+        sb.append(", psycy=").append(psycy);
+        sb.append(", msajtjs=").append(msajtjs);
+        sb.append(", msajtjsss=").append(msajtjsss);
+        sb.append(", shwdfxpg=").append(shwdfxpg);
+        sb.append(", sfxess=").append(sfxess);
+        sb.append(", sffcxx=").append(sffcxx);
+        sb.append(", sfcqyscs=").append(sfcqyscs);
+        sb.append(", fxhjcs=").append(fxhjcs);
+        sb.append(", pjsffdjfnr=").append(pjsffdjfnr);
+        sb.append(", sfdtpj=").append(sfdtpj);
+        sb.append(", sfhj=").append(sfhj);
+        sb.append(", sfktsl=").append(sfktsl);
+        sb.append(", sftz=").append(sftz);
+        sb.append(", ajsfys=").append(ajsfys);
+        sb.append(", rmpsyxm=").append(rmpsyxm);
+        sb.append(", lybm=").append(lybm);
+        sb.append(", rmpsyid=").append(rmpsyid);
+        sb.append(", rmpsyid=").append(rmpsyid);
+        sb.append(", sfxssc=").append(sfxssc);
+        sb.append(", wjawsyy=").append(wjawsyy);
+        sb.append(", pjjg=").append(pjjg);
+        sb.append(", jathyy=").append(jathyy);
+        sb.append(", jyaq=").append(jyaq);
+        sb.append(", cbryj=").append(cbryj);
+        sb.append(", hytyj=").append(hytyj);
+        sb.append(", tzhyj=").append(tzhyj);
+        sb.append(", yzhyj=").append(yzhyj);
+        sb.append(", swhyj=").append(swhyj);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
+}

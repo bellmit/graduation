@@ -1,0 +1,25 @@
+package com.software.Service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface AjService {
+    /**
+     * 各年案件量
+     */
+    List<KvModel> getAjCount(String ay);
+
+    List<KvModel> getAreaDistribution(String beginTime,String endTime,String fydm,String ay);
+
+    List<KvModel> getBgrxb(String beginTime,String endTime,String ay);
+
+    List<KvModel> getBgrsf(String beginTime,String endTime,String ay);
+
+    List<KvModel> getBgrWhcd(String beginTime,String endTime,String ay);
+
+    /**
+     * 利用案件性质和审判程序解析sjxx得到lbbh
+     */
+    String jxLbbh(String ajxz,String spcx, String sjxx);
+}

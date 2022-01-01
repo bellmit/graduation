@@ -1,0 +1,148 @@
+<!--
+ 描述: 未成年犯罪
+-->
+
+<template>
+  <div class="home-container">
+    <div class="wrap" ref="editor">
+      <div class="top">
+        <div class="date">
+          <div><label>开始时间：</label><input type="date" v-model="beginTime"></div>
+          <div><label>结束时间：</label><input type="date" v-model="endTime"></div>
+        </div>
+      </div>
+      <div class="content">
+        <item>
+          <template v-slot:title>案件收结情况</template>
+          <template v-slot:chart>
+            <!--最近三年案件量 双柱状图-->
+            <bars api="/wcnfz/minorYearAjCount" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件收结情况</template>
+          <template v-slot:chart>
+            <!--罪名分布 柱状图-->
+            <bar api="/wcnfz/minorZmfb" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件地域分布</template>
+          <template v-slot:chart>
+            <!--中院显示辖区 高院显示所有-->
+            <tianjin-map  api="/wcnfz/minorDyfb" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>当事人特征</template>
+          <template v-slot:chart>
+            <!--被告人性别 饼状图-->
+            <pie api="/wcnfz/minorBgrxb" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>当事人特征</template>
+          <template v-slot:chart>
+            <!--年龄分布 一年零一个段 柱状图-->
+            <bar api="/wcnfz/minorBgrAge" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>当事人特征</template>
+          <template v-slot:chart>
+            <!--文化程度 饼图-->
+            <bar api="/wcnfz/minorWhcd" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件特征</template>
+          <template v-slot:chart>
+            <!--诉讼罪名分析14--15周岁 柱状图-->
+            <bar api="/wcnfz/minorSszmRange1" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+        <item>
+          <template v-slot:title>案件特征</template>
+          <template v-slot:chart>
+            <!--诉讼罪名分析 16--17周岁 柱状图-->
+            <bar api="/wcnfz/minorSszmRange2" :begin-time="beginTime" :end-time="endTime"/>
+          </template>
+        </item>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {getCurTime, screenSize} from '@/assets/js/utils'
+
+export default {
+  name: 'Home',
+  components: {},
+  data() {
+    return {
+      beginTime:new Date().getFullYear()+'-01-01',
+      endTime:getCurTime(),
+    }
+  },
+  computed: {
+
+  },
+  created() {
+  },
+  mounted() {
+    screenSize(this.$refs.editor);
+  },
+  methods: {
+
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.home-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  .wrap {
+    transform-origin: 0px 0px 0px;
+    background: url(../assets/img/bj.jpg) no-repeat;
+    background-size: contain;
+    background-position: 50% 0;
+    background-color: rgb(0, 0, 0);
+    min-width: auto;
+    width: 1920px;
+    min-height: auto;
+    height: 1080px;
+    overflow: auto;
+    .top {
+      .date{
+        height: 50px;
+        margin-top: 15px;
+        float: right;
+        div{
+          height: 25px;
+          padding: 2px;
+          label{
+            color: #00aeef;
+            font-size: 15px;
+          }
+        }
+      }
+      width: 100%;
+      height: 80px;
+      background-color: transparent;
+      background: url(../assets/img/top_nav.png) no-repeat;
+      background-position: 65% 0;
+      border: none;
+      overflow: hidden;
+    }
+    .content{
+      overflow: hidden;
+      padding-bottom: 60px;
+    }
+  }
+}
+</style>

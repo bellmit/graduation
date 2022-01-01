@@ -1,0 +1,67 @@
+package com.software.controller;
+
+import com.software.service.AjDescriptionService;
+import com.software.service.ShfzDescService;
+import com.software.service.ShfzService;
+
+import com.software.model.KvModel;
+import com.software.model.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@RestController
+@RequestMapping("/shfz")
+public class ShfzController {
+    @Autowired
+    private ShfzService shfzService;
+    @Autowired
+    private AjDescriptionService ads;
+    @Autowired
+    private ShfzDescService shfzDescService;
+    
+    @RequestMapping("/getAjCount")
+    public ResultModel count() {
+        List<KvModel> kvModels=shfzService.getAjCount();
+        List<String> description=ads.getAjCountDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"年案件量",description);
+    }
+
+    @RequestMapping("/getBgrxb")
+    public ResultModel bgrxb() {
+        List<KvModel> kvModels=shfzService.getBgrxb("2021-01-01","2021-06-22");
+        List<String> description=ads.getBgrxbDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人性别",description);
+    }
+
+    @RequestMapping("/getBgrsf")
+    public ResultModel bgrsf() {
+        List<KvModel> kvModels=shfzService.getBgrsf("2021-01-01","2021-06-22");
+        List<String> description=ads.getBgrsfDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人身份",description);
+    }
+    @RequestMapping("/getGlzm")
+    public ResultModel glzm() {
+        List<KvModel> kvModels=shfzService.getBgrGlzm("2021-01-01","2021-06-22");
+        List<String> description=shfzDescService.getBgrGlzm(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人关联罪名",description);
+    }
+    @RequestMapping("/getBgrAge")
+    public ResultModel glBrgage() {
+        List<KvModel> kvModels=shfzService.getBrgage("2021-01-01","2021-06-22");
+        List<String> description=ads.getBgrAgeDesc(kvModels);
+        return ResultModelUtil.success(kvModels,"被告人年龄",description);
+    }
+    /**
+     * 有期徒刑量刑
+     */
+    @RequestMapping("/getYqtxlx")
+    public ResultModel getYqtxlx(HttpServletRequest request){
+        List<KvModel> kvModels=shfzService.getYqtxlx("2021-01-01","2021-06-22");
+        List<String> description=ads.getYqtxlxDesc(kvModels);
+       return ResultModelUtil.success(kvModels,"有期徒刑量刑","");
+    }
+}

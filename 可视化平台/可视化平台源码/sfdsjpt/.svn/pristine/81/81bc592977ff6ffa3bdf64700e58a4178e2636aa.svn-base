@@ -1,0 +1,95 @@
+package com.software.Service.impl;
+
+import com.software.Service.LhjfService;
+import com.software.datasource.DataSourceEnum;
+import com.software.datasource.DataSourceRouter;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class LhjfServiceImpl implements LhjfService {
+    @Autowired
+    private AjjbDao ajjbDao;
+
+    public List<KvModel> getLhjfAjCount(String beginTime, String endTime){
+        int year=DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            System.out.println(lastday);
+            String fristday=DateUtils.formatDate(first);
+            kvModel.setValue(ajjbDao.getLhjfAjCount(fristday,lastday));
+            list.add(kvModel);
+        }
+        return list;
+    }
+
+    public List<KvModel> getLhjfTjdqAjCount(HttpServletRequest request,String beginTime, String endTime){
+        HttpSession session = request.getSession();
+        String fydm=(String) session.getAttribute("fydm");
+        List<KvModel> kvModels=new ArrayList<>();
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+        if (fydm!=null){
+            List<String> fydms=DataSourceEnum.getSubFydm(fydm);
+            for(String dm:fydms){
+                Runnable task=new Runnable() {
+                    @Override
+                    public void run() {
+                        KvModel k=new KvModel();
+                        System.out.println("法院："+dm);
+
+                        DataSourceRouter.routerTo(dm);
+                        int ajs=ajjbDao.getLhjfAjCount(beginTime,endTime);
+
+                        k.setName(DataSourceEnum.getFydqByFydm(dm));
+                        k.setValue(ajs);
+                        System.out.println(k.getName()+" "+k.getValue());
+                        kvModels.add(k);
+                        System.out.println();
+
+                    }
+                };
+                executors.execute(task);
+
+
+            }
+
+            DataSourceRouter.routerTo(fydm);//最后再切会该法院
+        }
+        try {
+            executors.shutdown();
+            executors.awaitTermination(1,TimeUnit.MINUTES);
+        }catch (InterruptedException e){
+
+        }
+
+        return kvModels;
+    }
+
+    public List<KvModel> getLhjfPjjg(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getLhjfPjjg(beginTime,endTime);
+
+        return list;
+    }
+
+    public List<KvModel> getLhjfWhcd(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getLhjfWhcd(beginTime,endTime);
+        return list;
+    }
+}

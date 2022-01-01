@@ -1,0 +1,86 @@
+package com.software.service.impl;
+
+import com.software.service.AjService;
+import com.software.service.XykzpService;
+import com.software.mapper.XykzpMapper;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class XykzpServiceImpl implements XykzpService {
+    @Autowired
+    XykzpMapper xykzpMapper;
+    @Autowired
+    AjService ajService;
+    @Override
+    public List<KvModel> getAjCount() {
+        return ajService.getAjCount(xykzpMapper);
+    }
+
+    @Override
+    public List<KvModel> getAreaDistribution(String beginTime, String endTime, String fydm) {
+        return ajService.getAreaDistribution(beginTime,endTime,fydm,xykzpMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrxb(String beginTime, String endTime) {
+        return ajService.getBgrxb(beginTime,endTime,xykzpMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime) {
+        return ajService.getBgrsf(beginTime,endTime,xykzpMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrWhcd(String beginTime, String endTime) {
+        return ajService.getBgrWhcd(beginTime,endTime,xykzpMapper);
+    }
+
+    @Override
+    public List<KvModel> getBrgage(String beginTime, String endTime) {
+        return ajService.getBrgage(beginTime,endTime,xykzpMapper);
+    }
+
+    @Override
+    public List<KvModel> getYqtxlx(String beginTime, String endTime) {
+        return ajService.getYqtxlx(beginTime,endTime,xykzpMapper);
+    }
+    /**
+     * 当年各月案件量统计
+     */
+    @Override
+    public List<KvModel> getAjMonthCount() {
+        int year= DateUtils.getCurYear();
+        Date first=DateUtils.getYearFirst(year);
+        String firstDay=DateUtils.formatDate(first);
+        String cur=DateUtils.formatDate(new Date());
+        // 返回的月份为实际月份-1
+        int month=DateUtils.getCurMonth();
+        List<KvModel> list=new ArrayList<>(month+1);
+        for(int i=0;i<=month;i++){
+            list.add(new KvModel(i+1+"月",0));
+        }
+        List<KvModel> kvs=xykzpMapper.getAjMonthCount(firstDay,cur);
+        kvs.stream().forEach((kv)->{
+            int m=Integer.parseInt(kv.getName());
+            list.get(m-1).setValue(kv.getValue());
+        });
+        boolean isNull=true;
+        for (KvModel k:kvs){
+            if (k.getValue()!=0){
+                isNull=false;
+                break;
+            }
+        }
+
+
+        return isNull?null:list;
+    }
+}

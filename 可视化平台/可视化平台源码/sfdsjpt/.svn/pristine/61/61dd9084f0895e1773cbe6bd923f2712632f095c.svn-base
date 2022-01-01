@@ -1,0 +1,46 @@
+package com.software.service.impl;
+
+import com.software.mapper.ZscqqqMapper;
+import com.software.model.KvModel;
+import com.software.service.ZscqqqDescService;
+import com.software.service.ZscqqqService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.util.List;
+
+@Service
+public class ZscqqqDescServiceImpl implements ZscqqqDescService {
+
+
+    @Override
+    public List<String> getAyDistribution(List<KvModel> kvModels) {
+        // 案由分布
+        return null;
+    }
+
+    @Override
+    public List<String> getDsrType(List<KvModel> kvModels) {
+        // 当事人分为被告和原告
+        // 当事人类别为法人、、、
+        return null;
+    }
+
+    @Override
+    public List<String> getDwNature(List<KvModel> kvModels) {
+        // 单位分为机关单位dsr_xp_jg和普通单位dsr_dw，需要分别查询
+        return  null;
+    }
+
+    @Override
+    public List<String> getBgCount(List<KvModel> kvModels) {
+        return null;
+    }
+
+    @Override
+    public List<String> getProcessingCycle(List<KvModel> kvModels) {
+        return null;
+    }
+
+}

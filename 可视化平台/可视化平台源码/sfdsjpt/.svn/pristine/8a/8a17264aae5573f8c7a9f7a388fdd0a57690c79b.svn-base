@@ -1,0 +1,154 @@
+package com.software.Service.impl;
+
+import com.software.Service.AjService;
+import com.software.Service.LhjfService;
+import com.software.datasource.DataSourceEnum;
+import com.software.datasource.DataSourceRouter;
+import com.software.entity.PubXtglXxxglExample;
+import com.software.mapper.PubXtglXxxglMapper;
+import com.software.mapper.dao.AjjbDao;
+import com.software.model.AjjbModel;
+import com.software.model.ForDmmsModel;
+import com.software.model.KvModel;
+import com.software.utils.DateUtils;
+import com.software.utils.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.sql.Clob;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class LhjfServiceImpl implements LhjfService {
+    @Autowired
+    private AjjbDao ajjbDao;
+    @Autowired
+    private AjService ajService;
+
+
+    public List<KvModel> getLhjfAjCount(String beginTime, String endTime){
+        int year=DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(String.valueOf(i));
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastday=DateUtils.formatDate(last);
+            System.out.println(lastday);
+            String fristday=DateUtils.formatDate(first);
+            kvModel.setValue(ajjbDao.getLhjfAjCount(fristday,lastday));
+            list.add(kvModel);
+        }
+        return list;
+    }
+
+    public List<KvModel> getLhjfTjdqAjCount(String fydm,String beginTime, String endTime){
+        List<KvModel> kvModels=new ArrayList<>();
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+
+            List<String> fydms=DataSourceEnum.getSubFydm(fydm);
+            for(String dm:fydms){
+                Runnable task=new Runnable() {
+                    @Override
+                    public void run() {
+                        KvModel k=new KvModel();
+                        System.out.println("法院："+dm);
+                        DataSourceRouter.routerTo(dm);
+                        int ajs=ajjbDao.getLhjfAjCount(beginTime,endTime);
+                        k.setName(DataSourceEnum.getFydqByFydm(dm));
+                        k.setValue(ajs);
+                        System.out.println(k.getName()+" "+k.getValue());
+                        kvModels.add(k);
+                        System.out.println();
+                    }
+                };
+                executors.execute(task);
+            }
+
+        try {
+            executors.shutdown();
+            executors.awaitTermination(1,TimeUnit.MINUTES);
+        }catch (InterruptedException e){
+
+        }
+
+        return kvModels;
+    }
+
+    public List<KvModel> getLhjfPjjg(String beginTime,String endTime){
+        List<ForDmmsModel> forDmmsModels=ajjbDao.getForDmms(beginTime,endTime,"离婚");
+        //通过所在行 所在列得到审计信息
+       // String sjxx=ajjbDao.getSjxx("PUB_AJ_JB","JAFS");
+        Clob c_sjxx=ajjbDao.getSjxx("PUB_AJ_JB","JAFS").getName();
+        String sjxx="";
+        try{
+            sjxx=c_sjxx.getSubString(0,(int)c_sjxx.length());
+            System.out.println(sjxx);
+        }catch (Exception e){
+
+        }
+
+
+        List<KvModel> jafsKv=new ArrayList<>();
+        for (ForDmmsModel a:forDmmsModels){
+            String ajxz=a.getAjxz();
+            String spcx=a.getSpcx();
+            String jafs=a.getName();
+            //通过案件性质 审判程序 审计信息得到类别编号
+            String lbbh=StringUtils.jxLbbh(ajxz,spcx,sjxx);
+            //根据类别编号和代码编号可以得到代码描述
+            String dmms=ajjbDao.getDmms(lbbh,jafs);
+
+            //
+            KvModel k=new KvModel();
+            k.setName(dmms);
+            k.setValue(a.getValue());
+            jafsKv.add(k);
+        }
+
+
+        return jafsKv;
+    }
+
+  /*  public List<KvModel> getLhjfPjjgTest(String beginTime,String endTime){
+        List<ForDmmsModel> forDmmsModels=ajjbDao.getForDmms(beginTime,endTime,"离婚");
+        //通过所在行 所在列得到审计信息
+        PubXtglXxxglExample p=new PubXtglXxxglExample();
+
+        String sjxx=ajjbDao.getSjxx("PUB_AJ_JB","JAFS").getName();
+
+        List<KvModel> jafsKv=new ArrayList<>();
+        for (ForDmmsModel a:forDmmsModels){
+            String ajxz=a.getAjxz();
+            String spcx=a.getSpcx();
+            String jafs=a.getName();
+            //通过案件性质 审判程序 审计信息得到类别编号
+            String lbbh=StringUtils.jxLbbh(ajxz,spcx,sjxx);
+            //根据类别编号和代码编号可以得到代码描述
+            String dmms=ajjbDao.getDmms(lbbh,jafs);
+
+            //
+            KvModel k=new KvModel();
+            k.setName(dmms);
+            k.setValue(a.getValue());
+            jafsKv.add(k);
+        }
+
+
+        return jafsKv;
+    }
+*/
+
+    public List<KvModel> getLhjfWhcd(String beginTime,String endTime){
+        List<KvModel> list=ajjbDao.getLhjfWhcd(beginTime,endTime);
+        return list;
+    }
+}

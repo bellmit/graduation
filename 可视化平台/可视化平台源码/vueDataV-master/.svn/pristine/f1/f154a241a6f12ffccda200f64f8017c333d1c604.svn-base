@@ -1,0 +1,69 @@
+/*
+ * 描述: 封装组件库
+ * 作者: Jack Chen
+ * 日期: 2020-04-18
+ */
+
+import bgAnimation from './bgAnimation' // 登录界面背景图动画
+import modal from './modal' // 自定义全局模态框
+import sinan from './sinan' // 司南排名图
+import ywtpm from './sinan/ywtpm' //业务庭排名
+import ssajxx from './seamless/ssajxx' //实时案件信息
+import seamless from './seamless' // 新闻无缝滚动
+import bar from './bar'
+import areaPie from './areaPie'
+import pie from './pie'
+import circleRunway from "@/components/circleRunway";
+import dynamicLine from './line'
+import ring from './ring'
+import pieAndRing from "@/components/pieAndRing";
+import item from "@/components/item";
+import pies from "@/components/pies";
+import bars from "./bars"
+
+
+
+const components = {
+  bgAnimation,
+  modal,
+  sinan,
+  ywtpm,
+  ssajxx,
+  seamless,
+  // 系统结构框架
+  item,
+  // 具体的图表和描述
+  bar,
+  areaPie,
+  pie,
+  dynamicLine,
+  circleRunway,
+  ring,
+  pieAndRing,
+  pies,
+  bars
+};
+
+const install = (Vue = {}) => {
+  if (install.installed) return;
+  Object.keys(components).forEach(component => {
+    Vue.component(components[component].name, components[component]);
+  });
+
+  install.installed = true;
+};
+
+install.installed = false;
+
+if (typeof window !== "undefined" && window.Vue) {
+  install(window.Vue);
+  install.installed = true;
+}
+
+const Vcomp = {
+  ...components,
+  install
+};
+
+
+export default Vcomp

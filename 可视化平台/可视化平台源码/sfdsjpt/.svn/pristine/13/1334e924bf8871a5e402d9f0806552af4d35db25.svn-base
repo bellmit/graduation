@@ -1,0 +1,23 @@
+package com.software.mapper;
+
+import com.software.model.BgrxxModel;
+import com.software.model.KvModel;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+@Mapper
+public interface WxjszMapper {
+
+    Integer getAjCount(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+
+    List<KvModel> getBgrxb(@Param("beginTime")String beginTime, @Param("endTime")String endTime);
+
+    // 被告人年龄分析 身份证按格式才有效
+    List<BgrxxModel> getBgrAge(@Param("beginTime")String beginTime, @Param("endTime") String endTime);
+    // 被告人文化程度
+    List<KvModel> getBgrWhcd(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+
+
+}

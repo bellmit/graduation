@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.ShfzMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="value" jdbcType="INTEGER" property="value"></result>
+    </resultMap>
+    <select id="getBgrGlzm" resultMap="KvModel">
+        select LAAY name,Count(LAAY) value from PUB_LA_AY where AJXH in
+        (select PUB_LA_AY.AJXH from PUB_LA_AY,PUB_AJ_JB where AY in (select DMBH from PUB_AYDMB where DMMS like '%黑%')
+        and PUB_LA_AY.AJXH=PUB_AJ_JB.AJXH and JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        )
+        group by LAAY
+    </select>
+</mapper>

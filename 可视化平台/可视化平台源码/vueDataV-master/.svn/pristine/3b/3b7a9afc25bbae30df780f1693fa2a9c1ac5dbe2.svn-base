@@ -1,0 +1,84 @@
+<!--
+ 描述: 天津地图
+-->
+<template>
+  <div class="container" style="height: 500px;">
+    <div class="mychart" ref="map"></div>
+    <div class='describe'>
+      <div style="margin-left: 40px">
+        <table border="0" width="200px">
+          <tr>
+            <th>地区</th>
+            <th>案件数</th>
+          </tr>
+          <tr v-for="(item) in description">
+            <td align="center">{{item.name}}</td>
+            <td align="center">{{item.value}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {getTianJinMap} from '@/assets/js/utils'
+export default {
+  name: "tianjinMap",
+  props:[
+    'api',
+  ],
+  data() {
+    return {
+      descriptionTitle:'各地区分布',
+      description:[]
+    }
+  },
+  mounted() {
+    let that=this;
+    this.axios.get(this.api).then(function (response){
+      if (response.data.code==0){
+        getTianJinMap(that.$refs.map,response.data.chartData);
+        that.description=response.data.chartData;
+      } else{
+        //
+      }
+    }).catch(function (error){
+      //
+    });
+  },
+  methods: {
+
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+td{
+
+}
+.mychart{
+  width: 67%;
+  height:460px;
+  margin-top: 40px;
+  float: left
+}
+.describe{
+  .title{
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #489de2;
+    line-height: 30px;
+  }
+  width: 33%;
+  float: left;
+  margin-top: 70px;
+  padding-bottom: 25%;
+  font-size: 16px;
+  color: #00c2ff;
+  line-height: 26px;
+}
+</style>

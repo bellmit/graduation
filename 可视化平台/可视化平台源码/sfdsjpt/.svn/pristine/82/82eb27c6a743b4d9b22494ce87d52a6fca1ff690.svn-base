@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.software.mapper.PubDmbMapper" >
+  <resultMap id="BaseResultMap" type="com.software.entity.PubDmb" >
+    <id column="LBBH" property="lbbh" jdbcType="VARCHAR" />
+    <id column="DMBH" property="dmbh" jdbcType="VARCHAR" />
+    <result column="DMMS" property="dmms" jdbcType="VARCHAR" />
+    <result column="XGDM" property="xgdm" jdbcType="VARCHAR" />
+    <result column="BZ" property="bz" jdbcType="VARCHAR" />
+    <result column="MODFLAG" property="modflag" jdbcType="VARCHAR" />
+    <result column="TRANSFLAG" property="transflag" jdbcType="VARCHAR" />
+    <result column="XGSJ" property="xgsj" jdbcType="TIMESTAMP" />
+    <result column="XSSX" property="xssx" jdbcType="DOUBLE" />
+    <result column="DQBS" property="dqbs" jdbcType="VARCHAR" />
+    <result column="FYBH" property="fybh" jdbcType="INTEGER" />
+    <result column="FYSX" property="fysx" jdbcType="VARCHAR" />
+    <result column="FYLBDM" property="fylbdm" jdbcType="VARCHAR" />
+    <result column="XZQDMBH" property="xzqdmbh" jdbcType="INTEGER" />
+    <result column="DMBBH" property="dmbbh" jdbcType="INTEGER" />
+    <result column="SPBM" property="spbm" jdbcType="CHAR" />
+    <result column="BMZT" property="bmzt" jdbcType="VARCHAR" />
+    <result column="XGDM2" property="xgdm2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    LBBH, DMBH, DMMS, XGDM, BZ, MODFLAG, TRANSFLAG, XGSJ, XSSX, DQBS, FYBH, FYSX, FYLBDM, 
+    XZQDMBH, DMBBH, SPBM, BMZT, XGDM2
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.software.entity.PubDmbExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PUB_DMB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from PUB_DMB
+    where LBBH = #{lbbh,jdbcType=VARCHAR}
+      and DMBH = #{dmbh,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from PUB_DMB
+    where LBBH = #{lbbh,jdbcType=VARCHAR}
+      and DMBH = #{dmbh,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.software.entity.PubDmbExample" >
+    delete from PUB_DMB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.software.entity.PubDmb" >
+    insert into PUB_DMB (LBBH, DMBH, DMMS, 
+      XGDM, BZ, MODFLAG, 
+      TRANSFLAG, XGSJ, XSSX, 
+      DQBS, FYBH, FYSX, FYLBDM, 
+      XZQDMBH, DMBBH, SPBM, 
+      BMZT, XGDM2)
+    values (#{lbbh,jdbcType=VARCHAR}, #{dmbh,jdbcType=VARCHAR}, #{dmms,jdbcType=VARCHAR}, 
+      #{xgdm,jdbcType=VARCHAR}, #{bz,jdbcType=VARCHAR}, #{modflag,jdbcType=VARCHAR}, 
+      #{transflag,jdbcType=VARCHAR}, #{xgsj,jdbcType=TIMESTAMP}, #{xssx,jdbcType=DOUBLE}, 
+      #{dqbs,jdbcType=VARCHAR}, #{fybh,jdbcType=INTEGER}, #{fysx,jdbcType=VARCHAR}, #{fylbdm,jdbcType=VARCHAR}, 
+      #{xzqdmbh,jdbcType=INTEGER}, #{dmbbh,jdbcType=INTEGER}, #{spbm,jdbcType=CHAR}, 
+      #{bmzt,jdbcType=VARCHAR}, #{xgdm2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.software.entity.PubDmb" >
+    insert into PUB_DMB
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lbbh != null" >
+        LBBH,
+      </if>
+      <if test="dmbh != null" >
+        DMBH,
+      </if>
+      <if test="dmms != null" >
+        DMMS,
+      </if>
+      <if test="xgdm != null" >
+        XGDM,
+      </if>
+      <if test="bz != null" >
+        BZ,
+      </if>
+      <if test="modflag != null" >
+        MODFLAG,
+      </if>
+      <if test="transflag != null" >
+        TRANSFLAG,
+      </if>
+      <if test="xgsj != null" >
+        XGSJ,
+      </if>
+      <if test="xssx != null" >
+        XSSX,
+      </if>
+      <if test="dqbs != null" >
+        DQBS,
+      </if>
+      <if test="fybh != null" >
+        FYBH,
+      </if>
+      <if test="fysx != null" >
+        FYSX,
+      </if>
+      <if test="fylbdm != null" >
+        FYLBDM,
+      </if>
+      <if test="xzqdmbh != null" >
+        XZQDMBH,
+      </if>
+      <if test="dmbbh != null" >
+        DMBBH,
+      </if>
+      <if test="spbm != null" >
+        SPBM,
+      </if>
+      <if test="bmzt != null" >
+        BMZT,
+      </if>
+      <if test="xgdm2 != null" >
+        XGDM2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lbbh != null" >
+        #{lbbh,jdbcType=VARCHAR},
+      </if>
+      <if test="dmbh != null" >
+        #{dmbh,jdbcType=VARCHAR},
+      </if>
+      <if test="dmms != null" >
+        #{dmms,jdbcType=VARCHAR},
+      </if>
+      <if test="xgdm != null" >
+        #{xgdm,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="modflag != null" >
+        #{modflag,jdbcType=VARCHAR},
+      </if>
+      <if test="transflag != null" >
+        #{transflag,jdbcType=VARCHAR},
+      </if>
+      <if test="xgsj != null" >
+        #{xgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xssx != null" >
+        #{xssx,jdbcType=DOUBLE},
+      </if>
+      <if test="dqbs != null" >
+        #{dqbs,jdbcType=VARCHAR},
+      </if>
+      <if test="fybh != null" >
+        #{fybh,jdbcType=INTEGER},
+      </if>
+      <if test="fysx != null" >
+        #{fysx,jdbcType=VARCHAR},
+      </if>
+      <if test="fylbdm != null" >
+        #{fylbdm,jdbcType=VARCHAR},
+      </if>
+      <if test="xzqdmbh != null" >
+        #{xzqdmbh,jdbcType=INTEGER},
+      </if>
+      <if test="dmbbh != null" >
+        #{dmbbh,jdbcType=INTEGER},
+      </if>
+      <if test="spbm != null" >
+        #{spbm,jdbcType=CHAR},
+      </if>
+      <if test="bmzt != null" >
+        #{bmzt,jdbcType=VARCHAR},
+      </if>
+      <if test="xgdm2 != null" >
+        #{xgdm2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.software.entity.PubDmbExample" resultType="java.lang.Integer" >
+    select count(*) from PUB_DMB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PUB_DMB
+    <set >
+      <if test="record.lbbh != null" >
+        LBBH = #{record.lbbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dmbh != null" >
+        DMBH = #{record.dmbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dmms != null" >
+        DMMS = #{record.dmms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xgdm != null" >
+        XGDM = #{record.xgdm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bz != null" >
+        BZ = #{record.bz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modflag != null" >
+        MODFLAG = #{record.modflag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transflag != null" >
+        TRANSFLAG = #{record.transflag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xgsj != null" >
+        XGSJ = #{record.xgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.xssx != null" >
+        XSSX = #{record.xssx,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dqbs != null" >
+        DQBS = #{record.dqbs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fybh != null" >
+        FYBH = #{record.fybh,jdbcType=INTEGER},
+      </if>
+      <if test="record.fysx != null" >
+        FYSX = #{record.fysx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fylbdm != null" >
+        FYLBDM = #{record.fylbdm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xzqdmbh != null" >
+        XZQDMBH = #{record.xzqdmbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.dmbbh != null" >
+        DMBBH = #{record.dmbbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.spbm != null" >
+        SPBM = #{record.spbm,jdbcType=CHAR},
+      </if>
+      <if test="record.bmzt != null" >
+        BMZT = #{record.bmzt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xgdm2 != null" >
+        XGDM2 = #{record.xgdm2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PUB_DMB
+    set LBBH = #{record.lbbh,jdbcType=VARCHAR},
+      DMBH = #{record.dmbh,jdbcType=VARCHAR},
+      DMMS = #{record.dmms,jdbcType=VARCHAR},
+      XGDM = #{record.xgdm,jdbcType=VARCHAR},
+      BZ = #{record.bz,jdbcType=VARCHAR},
+      MODFLAG = #{record.modflag,jdbcType=VARCHAR},
+      TRANSFLAG = #{record.transflag,jdbcType=VARCHAR},
+      XGSJ = #{record.xgsj,jdbcType=TIMESTAMP},
+      XSSX = #{record.xssx,jdbcType=DOUBLE},
+      DQBS = #{record.dqbs,jdbcType=VARCHAR},
+      FYBH = #{record.fybh,jdbcType=INTEGER},
+      FYSX = #{record.fysx,jdbcType=VARCHAR},
+      FYLBDM = #{record.fylbdm,jdbcType=VARCHAR},
+      XZQDMBH = #{record.xzqdmbh,jdbcType=INTEGER},
+      DMBBH = #{record.dmbbh,jdbcType=INTEGER},
+      SPBM = #{record.spbm,jdbcType=CHAR},
+      BMZT = #{record.bmzt,jdbcType=VARCHAR},
+      XGDM2 = #{record.xgdm2,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.software.entity.PubDmb" >
+    update PUB_DMB
+    <set >
+      <if test="dmms != null" >
+        DMMS = #{dmms,jdbcType=VARCHAR},
+      </if>
+      <if test="xgdm != null" >
+        XGDM = #{xgdm,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null" >
+        BZ = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="modflag != null" >
+        MODFLAG = #{modflag,jdbcType=VARCHAR},
+      </if>
+      <if test="transflag != null" >
+        TRANSFLAG = #{transflag,jdbcType=VARCHAR},
+      </if>
+      <if test="xgsj != null" >
+        XGSJ = #{xgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xssx != null" >
+        XSSX = #{xssx,jdbcType=DOUBLE},
+      </if>
+      <if test="dqbs != null" >
+        DQBS = #{dqbs,jdbcType=VARCHAR},
+      </if>
+      <if test="fybh != null" >
+        FYBH = #{fybh,jdbcType=INTEGER},
+      </if>
+      <if test="fysx != null" >
+        FYSX = #{fysx,jdbcType=VARCHAR},
+      </if>
+      <if test="fylbdm != null" >
+        FYLBDM = #{fylbdm,jdbcType=VARCHAR},
+      </if>
+      <if test="xzqdmbh != null" >
+        XZQDMBH = #{xzqdmbh,jdbcType=INTEGER},
+      </if>
+      <if test="dmbbh != null" >
+        DMBBH = #{dmbbh,jdbcType=INTEGER},
+      </if>
+      <if test="spbm != null" >
+        SPBM = #{spbm,jdbcType=CHAR},
+      </if>
+      <if test="bmzt != null" >
+        BMZT = #{bmzt,jdbcType=VARCHAR},
+      </if>
+      <if test="xgdm2 != null" >
+        XGDM2 = #{xgdm2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LBBH = #{lbbh,jdbcType=VARCHAR}
+      and DMBH = #{dmbh,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.software.entity.PubDmb" >
+    update PUB_DMB
+    set DMMS = #{dmms,jdbcType=VARCHAR},
+      XGDM = #{xgdm,jdbcType=VARCHAR},
+      BZ = #{bz,jdbcType=VARCHAR},
+      MODFLAG = #{modflag,jdbcType=VARCHAR},
+      TRANSFLAG = #{transflag,jdbcType=VARCHAR},
+      XGSJ = #{xgsj,jdbcType=TIMESTAMP},
+      XSSX = #{xssx,jdbcType=DOUBLE},
+      DQBS = #{dqbs,jdbcType=VARCHAR},
+      FYBH = #{fybh,jdbcType=INTEGER},
+      FYSX = #{fysx,jdbcType=VARCHAR},
+      FYLBDM = #{fylbdm,jdbcType=VARCHAR},
+      XZQDMBH = #{xzqdmbh,jdbcType=INTEGER},
+      DMBBH = #{dmbbh,jdbcType=INTEGER},
+      SPBM = #{spbm,jdbcType=CHAR},
+      BMZT = #{bmzt,jdbcType=VARCHAR},
+      XGDM2 = #{xgdm2,jdbcType=VARCHAR}
+    where LBBH = #{lbbh,jdbcType=VARCHAR}
+      and DMBH = #{dmbh,jdbcType=VARCHAR}
+  </update>
+</mapper>

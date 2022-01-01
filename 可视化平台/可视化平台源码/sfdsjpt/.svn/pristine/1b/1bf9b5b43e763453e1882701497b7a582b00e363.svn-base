@@ -1,0 +1,166 @@
+package com.software.Service.impl;
+
+import com.software.Service.WxjszService;
+import com.software.mapper.WxjszMapper;
+import com.software.model.BgrxxModel;
+import com.software.model.KvModel;
+import com.software.utils.AgeUtils;
+import com.software.utils.DateUtils;
+import com.software.utils.ResultModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class WxjszServiceImpl implements WxjszService {
+    @Autowired
+    WxjszMapper wxjszMapper;
+
+    /**
+     * 获取五年内案件量
+     * @return
+     */
+    @Override
+    public List<KvModel> getAjCount() {
+        int year= DateUtils.getCurYear();
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(i +"年");
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastDay=DateUtils.formatDate(last);
+            String firstDay=DateUtils.formatDate(first);
+            kvModel.setValue(wxjszMapper.getAjCount(firstDay,lastDay));
+            list.add(kvModel);
+        }
+        return list;
+    }
+
+    @Override
+    public ResultModel getBehaviorProportion() {
+        return null;
+    }
+
+    @Override
+    public ResultModel getVol() {
+        return null;
+    }
+
+    @Override
+    public ResultModel getTimeOfSeizure() {
+        return null;
+    }
+
+    @Override
+    public ResultModel getTypeOfVehicle() {
+        return null;
+    }
+
+    /**
+     * 获取被告人男性比例
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @Override
+    public double getBgrxb(String beginTime, String endTime){
+        List<KvModel> kvModels= wxjszMapper.getBgrxb(beginTime,endTime);
+        kvModels=kvModels.stream().filter(k-> "1".equals(k.getName())|| "2".equals(k.getName()))
+                .collect(Collectors.toList());
+        double man=0;
+        double count=0;
+        for(KvModel kv:kvModels){
+            if("1".equals(kv.getName())){
+                man+=kv.getValue();
+            }
+            count+=kv.getValue();
+        }
+        return man/count;
+    }
+
+    /**
+     * 返回被告人25-55的比例
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @Override
+    public double getBgrAge(String beginTime, String endTime){
+        List<BgrxxModel> bgrxxModels=wxjszMapper.getBgrAge(beginTime,endTime);
+        // 25至55的人数
+        int count=0;
+        for (BgrxxModel bgrxxModel:bgrxxModels){
+            KvModel k=new KvModel();
+            int age=0;
+            k.setName(bgrxxModel.getAjmc());
+            if (bgrxxModel.getLarq()==null){
+                continue;
+            }
+            if (bgrxxModel.getCsnyr()!=null) {
+                age = DateUtils.getDiffYear(bgrxxModel.getCsnyr(),bgrxxModel.getLarq());
+            }else{
+                //如果是合法的身份证号
+                if (!"".equals(AgeUtils.ze(bgrxxModel.getSfzhm()))){
+                    //获取身份证号的年份
+                    String[] res=AgeUtils.ze(bgrxxModel.getSfzhm()).split(":");
+                    if (res.length>=2){
+                        int year=Integer.parseInt(res[0]);
+                        int larqYear=DateUtils.getYear(bgrxxModel.getLarq());
+                        age=larqYear-year;
+                    }
+                }
+            }
+            if (age>=25&&age<=55) {
+                count++;
+            }
+        }
+        return (double) count/bgrxxModels.size();
+    }
+
+    /**
+     * 返回低学历比例
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @Override
+    public double getBgrWhcd(String beginTime, String endTime) {
+        List<KvModel> kvModels=wxjszMapper.getBgrWhcd(beginTime,endTime);
+        int count=0;
+        int low=0;
+        for(KvModel kv:kvModels){
+            if(kv.getName().equals("低学历")){
+                low+=kv.getValue();
+            }
+            count+=kv.getValue();
+        }
+        return (double) low/count;
+    }
+
+    /**
+     * 返回农业和无职业比例
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @Override
+    public double getBgrSf(String beginTime, String endTime) {
+        List<KvModel> kvModels=wxjszMapper.getBgrWhcd(beginTime,endTime);
+        int count=0;
+        int farmer=0;
+        for(KvModel kv:kvModels){
+            if(kv.getName().equals("农业")){
+                farmer+=kv.getValue();
+            }
+            count+=kv.getValue();
+        }
+        return (double) farmer/count;
+    }
+
+
+}

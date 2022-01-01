@@ -1,0 +1,28 @@
+package com.software.service;
+
+import com.software.mapper.AjMapper;
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface AjService {
+    /**
+     * 各年案件量
+     */
+    List<KvModel> getAjCount(AjMapper ajMapper);
+
+    List<KvModel> getAreaDistribution(String beginTime,String endTime,String fydm,AjMapper ajMapper);
+
+    List<KvModel> getBgrxb(String beginTime,String endTime,AjMapper ajMapper);
+
+    List<KvModel> getBgrsf(String beginTime,String endTime,AjMapper ajMapper);
+
+    List<KvModel> getBgrWhcd(String beginTime,String endTime,AjMapper ajMapper);
+
+    List<KvModel> getBrgage(String beginTime,String endTime,AjMapper ajMapper);
+
+    /**
+     * 有期徒刑量刑
+     */
+    List<KvModel> getYqtxlx(String beginTime,String endTime,AjMapper ajMapper);
+}

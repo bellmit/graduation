@@ -1,0 +1,107 @@
+<template>
+  <div class="container" style="height: 500px;">
+    <!--    图表显示-->
+    <div v-show="showChart" class="mychart" ref="ring">
+      <!--      饼图需要向里面传递数据-->
+    </div>
+    <!--    文字描述-->
+    <div v-show="showChart" class='describe'>
+      <div class='title'>{{descriptionTitle}}</div>
+      <ul style="margin-right: 40px">
+        <li v-for="(item,index) in description">
+          （{{index+1}}）{{item}}
+        </li>
+      </ul>
+    </div>
+    <div v-show="!showChart" style="height:500px;line-height:500px;text-align: center;font-size: 40px;color: #0a6aff">暂无数据</div>
+  </div>
+</template>
+
+<script>
+import {getRing, showLoading} from '@/assets/js/utils'
+export default {
+  props:[
+    'api',
+    'beginTime',
+    'endTime'
+  ],
+  name: "ring",
+  data() {
+    return {
+      // 异步获取需要的格式
+      showChart:true,
+      descriptionTitle:'',
+      description:[]
+    }
+  },
+  watch:{
+    beginTime:function (newValue,oldValue){
+      // 监听到变化需要重新发起请求
+      this.getData(this.beginTime,this.endTime);
+    },
+    endTime:function (newValue,oldValue){
+      this.getData(this.beginTime,this.endTime);
+    }
+  },
+  mounted() {
+    this.getData(this.beginTime,this.endTime);
+  },
+  methods: {
+    getData(beginTime,endTime){
+      let that=this
+      let myChart=echarts.init(that.$refs.ring);
+      myChart.showLoading(showLoading);
+      this.axios.get(this.api,{
+        params:{
+          beginTime:beginTime,
+          endTime:endTime
+        }
+      }).then(function (response){
+        if (response.data.code==0){
+          if(response.data.chartData!=null&&response.data.chartData.length>0){
+            getRing(response.data.chartData,myChart);
+            that.showChart=true;
+            that.description=response.data.description;
+            that.descriptionTitle=response.data.title;
+          }else{
+            myChart.hideLoading();
+            that.showChart=false;
+          }
+        } else{
+          that.$Toast({
+            content: response.data.message,
+            type: 'error',
+          })
+        }
+      })
+    }
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.mychart{
+  width: 67%;
+  height:400px;
+  float: left;
+  margin-top: 40px
+}
+.describe{
+  .title{
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #489de2;
+    line-height: 30px;
+  }
+  width: 33%;
+  float: left;
+  margin-top: 100px;
+  padding-bottom: 25%;
+  font-size: 16px;
+  color: #00c2ff;
+  line-height: 26px;
+}
+</style>

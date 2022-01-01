@@ -1,0 +1,59 @@
+package com.software.Service;
+
+import com.software.model.KvModel;
+import com.software.utils.ResultModel;
+
+import java.util.List;
+
+public interface WxjszService {
+    /**
+     * 各年案件量
+     * @return
+     */
+     List<KvModel> getAjCount();
+
+    /**
+     * 危险驾驶罪中行为整体分布比
+     * @return
+     */
+     ResultModel getBehaviorProportion();
+
+
+    /**
+     * 酒驾酒精含量分布
+     * @return
+     */
+     ResultModel getVol();
+    /**
+     * 查获时间
+     */
+     ResultModel getTimeOfSeizure();
+
+    /**
+     * 机动车类型
+     * @return
+     *
+     */
+     ResultModel getTypeOfVehicle();
+
+    /**
+     * 返回被告人性别
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    double getBgrxb(String beginTime,String endTime);
+
+    /**
+     * 被告人年龄
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    double getBgrAge(String beginTime,String endTime);
+
+    double getBgrWhcd(String beginTime,String endTime);
+
+    double getBgrSf(String beginTime,String endTime);
+
+}

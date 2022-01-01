@@ -1,0 +1,16 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface XykzpService {
+
+    List<KvModel> getBrgage(String beginTime,String endTime);
+
+    List<KvModel> getCrimeAmount(String beginTime,String endTime);
+
+    List<KvModel> getFraudMethod(String beginTime,String endTime);
+
+    List<KvModel> getVictimBank(String beginTime,String endTime);
+}

@@ -1,0 +1,28 @@
+package com.software.controller;
+
+
+import com.software.datasource.DataSourceRouter;
+import com.software.entity.PubAjJb;
+import com.software.mapper.PubAjJbMapper;
+import com.software.model.AjjbModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class TestController {
+    @Autowired
+    PubAjJbMapper pubAjJbMapper;
+    @ResponseBody
+    @GetMapping("/test")
+    public AjjbModel wsCount(String ajxh) {
+        DataSourceRouter.routerTo("120108 216");
+        AjjbModel pubAjJb= pubAjJbMapper.selectByAjxh("",159262);
+        System.out.println(pubAjJb.toString());
+        return pubAjJb;
+    }
+
+
+
+}

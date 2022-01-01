@@ -1,0 +1,44 @@
+package com.software.service.impl;
+
+import com.software.service.XykzpService;
+import com.software.mapper.AjMapper;
+import com.software.mapper.XykzpMapper;
+import com.software.model.KvModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class XykzpServiceImpl implements XykzpService {
+    @Autowired
+    XykzpMapper xykzpMapper;
+    @Autowired
+    AjMapper ajMapper;
+    /**
+     * 被告人年纪
+     */
+    @Override
+    public List<KvModel> getCrimeAmount(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getFraudMethod(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getVictimBank(String beginTime, String endTime) {
+        return null;
+    }
+
+    /**
+     * 当年月案件量
+     * @return
+     */
+    @Override
+    public List<KvModel> getAjMonthCount() {
+        return null;
+    }
+}

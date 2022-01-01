@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.software.mapper.PubXtglXxxglMapper" >
+  <resultMap id="BaseResultMap" type="com.software.entity.PubXtglXxxgl" >
+    <id column="XXXBH" property="xxxbh" jdbcType="INTEGER" />
+    <result column="FYBH" property="fybh" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SZB" property="szb" jdbcType="VARCHAR" />
+    <result column="SZL" property="szl" jdbcType="VARCHAR" />
+    <result column="DATATYPE" property="datatype" jdbcType="VARCHAR" />
+    <result column="XXXJC" property="xxxjc" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.software.entity.PubXtglXxxgl" extends="BaseResultMap" >
+    <result column="SJXX" property="sjxx" jdbcType="LONGVARCHAR" />
+    <result column="SJXX2016" property="sjxx2016" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    XXXBH, FYBH, NAME, SZB, SZL, DATATYPE, XXXJC
+  </sql>
+  <sql id="Blob_Column_List" >
+    SJXX, SJXX2016
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.software.entity.PubXtglXxxglExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PUB_XTGL_XXXGL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.software.entity.PubXtglXxxglExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PUB_XTGL_XXXGL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PUB_XTGL_XXXGL
+    where XXXBH = #{xxxbh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PUB_XTGL_XXXGL
+    where XXXBH = #{xxxbh,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.software.entity.PubXtglXxxglExample" >
+    delete from PUB_XTGL_XXXGL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.software.entity.PubXtglXxxgl" >
+    insert into PUB_XTGL_XXXGL (XXXBH, FYBH, `NAME`, 
+      SZB, SZL, DATATYPE, 
+      XXXJC, SJXX, SJXX2016
+      )
+    values (#{xxxbh,jdbcType=INTEGER}, #{fybh,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{szb,jdbcType=VARCHAR}, #{szl,jdbcType=VARCHAR}, #{datatype,jdbcType=VARCHAR}, 
+      #{xxxjc,jdbcType=VARCHAR}, #{sjxx,jdbcType=LONGVARCHAR}, #{sjxx2016,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.software.entity.PubXtglXxxgl" >
+    insert into PUB_XTGL_XXXGL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="xxxbh != null" >
+        XXXBH,
+      </if>
+      <if test="fybh != null" >
+        FYBH,
+      </if>
+      <if test="name != null" >
+        `NAME`,
+      </if>
+      <if test="szb != null" >
+        SZB,
+      </if>
+      <if test="szl != null" >
+        SZL,
+      </if>
+      <if test="datatype != null" >
+        DATATYPE,
+      </if>
+      <if test="xxxjc != null" >
+        XXXJC,
+      </if>
+      <if test="sjxx != null" >
+        SJXX,
+      </if>
+      <if test="sjxx2016 != null" >
+        SJXX2016,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="xxxbh != null" >
+        #{xxxbh,jdbcType=INTEGER},
+      </if>
+      <if test="fybh != null" >
+        #{fybh,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="szb != null" >
+        #{szb,jdbcType=VARCHAR},
+      </if>
+      <if test="szl != null" >
+        #{szl,jdbcType=VARCHAR},
+      </if>
+      <if test="datatype != null" >
+        #{datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="xxxjc != null" >
+        #{xxxjc,jdbcType=VARCHAR},
+      </if>
+      <if test="sjxx != null" >
+        #{sjxx,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="sjxx2016 != null" >
+        #{sjxx2016,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.software.entity.PubXtglXxxglExample" resultType="java.lang.Integer" >
+    select count(*) from PUB_XTGL_XXXGL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PUB_XTGL_XXXGL
+    <set >
+      <if test="record.xxxbh != null" >
+        XXXBH = #{record.xxxbh,jdbcType=INTEGER},
+      </if>
+      <if test="record.fybh != null" >
+        FYBH = #{record.fybh,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        `NAME` = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.szb != null" >
+        SZB = #{record.szb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.szl != null" >
+        SZL = #{record.szl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.datatype != null" >
+        DATATYPE = #{record.datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xxxjc != null" >
+        XXXJC = #{record.xxxjc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sjxx != null" >
+        SJXX = #{record.sjxx,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.sjxx2016 != null" >
+        SJXX2016 = #{record.sjxx2016,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update PUB_XTGL_XXXGL
+    set XXXBH = #{record.xxxbh,jdbcType=INTEGER},
+      FYBH = #{record.fybh,jdbcType=INTEGER},
+      `NAME` = #{record.name,jdbcType=VARCHAR},
+      SZB = #{record.szb,jdbcType=VARCHAR},
+      SZL = #{record.szl,jdbcType=VARCHAR},
+      DATATYPE = #{record.datatype,jdbcType=VARCHAR},
+      XXXJC = #{record.xxxjc,jdbcType=VARCHAR},
+      SJXX = #{record.sjxx,jdbcType=LONGVARCHAR},
+      SJXX2016 = #{record.sjxx2016,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PUB_XTGL_XXXGL
+    set XXXBH = #{record.xxxbh,jdbcType=INTEGER},
+      FYBH = #{record.fybh,jdbcType=INTEGER},
+      `NAME` = #{record.name,jdbcType=VARCHAR},
+      SZB = #{record.szb,jdbcType=VARCHAR},
+      SZL = #{record.szl,jdbcType=VARCHAR},
+      DATATYPE = #{record.datatype,jdbcType=VARCHAR},
+      XXXJC = #{record.xxxjc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.software.entity.PubXtglXxxgl" >
+    update PUB_XTGL_XXXGL
+    <set >
+      <if test="fybh != null" >
+        FYBH = #{fybh,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="szb != null" >
+        SZB = #{szb,jdbcType=VARCHAR},
+      </if>
+      <if test="szl != null" >
+        SZL = #{szl,jdbcType=VARCHAR},
+      </if>
+      <if test="datatype != null" >
+        DATATYPE = #{datatype,jdbcType=VARCHAR},
+      </if>
+      <if test="xxxjc != null" >
+        XXXJC = #{xxxjc,jdbcType=VARCHAR},
+      </if>
+      <if test="sjxx != null" >
+        SJXX = #{sjxx,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="sjxx2016 != null" >
+        SJXX2016 = #{sjxx2016,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where XXXBH = #{xxxbh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.software.entity.PubXtglXxxgl" >
+    update PUB_XTGL_XXXGL
+    set FYBH = #{fybh,jdbcType=INTEGER},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      SZB = #{szb,jdbcType=VARCHAR},
+      SZL = #{szl,jdbcType=VARCHAR},
+      DATATYPE = #{datatype,jdbcType=VARCHAR},
+      XXXJC = #{xxxjc,jdbcType=VARCHAR},
+      SJXX = #{sjxx,jdbcType=LONGVARCHAR},
+      SJXX2016 = #{sjxx2016,jdbcType=LONGVARCHAR}
+    where XXXBH = #{xxxbh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.software.entity.PubXtglXxxgl" >
+    update PUB_XTGL_XXXGL
+    set FYBH = #{fybh,jdbcType=INTEGER},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      SZB = #{szb,jdbcType=VARCHAR},
+      SZL = #{szl,jdbcType=VARCHAR},
+      DATATYPE = #{datatype,jdbcType=VARCHAR},
+      XXXJC = #{xxxjc,jdbcType=VARCHAR}
+    where XXXBH = #{xxxbh,jdbcType=INTEGER}
+  </update>
+</mapper>

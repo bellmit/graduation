@@ -1,0 +1,15 @@
+package com.software.mapper;
+
+import com.software.model.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+@Mapper
+public interface ShfzMapper extends AjMapper{
+
+    //被告人关联罪名
+    List<KvModel> getBgrGlzm(@Param("beginTime")String beginTime,@Param("endTime")String endTime);
+}
+

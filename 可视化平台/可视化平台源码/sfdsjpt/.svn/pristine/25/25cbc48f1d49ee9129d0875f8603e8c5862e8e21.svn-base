@@ -1,0 +1,88 @@
+package com.software.service.impl;
+
+import com.software.service.XykzpService;
+import com.software.mapper.AjMapper;
+import com.software.mapper.XykzpMapper;
+import com.software.model.BgrxxModel;
+import com.software.model.KvModel;
+import com.software.utils.AgeUtils;
+import com.software.utils.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class XykzpServiceImpl implements XykzpService {
+    @Autowired
+    XykzpMapper xykzpMapper;
+    @Autowired
+    AjMapper ajMapper;
+    /**
+     * 被告人年纪
+     */
+    @Override
+    public List<KvModel> getBrgage(String beginTime, String endTime){
+        List<BgrxxModel> bgrxxModels=ajMapper.getBgrAge(beginTime,endTime,"信用卡诈骗");
+        List<KvModel> kvModels=new ArrayList<>();
+        KvModel kvModel1=new KvModel("已满14岁不满18岁",0);
+        KvModel kvModel2=new KvModel("已满18岁不满25岁",0);
+        KvModel kvModel3=new KvModel("已满25岁不满39岁",0);
+        KvModel kvModel4=new KvModel("已满39岁不满49岁",0);
+        KvModel kvModel5=new KvModel("已满49岁不满59岁",0);
+        KvModel kvModel6=new KvModel("59岁以上",0);
+        kvModels.add(kvModel1);
+        kvModels.add(kvModel2);
+        kvModels.add(kvModel3);
+        kvModels.add(kvModel4);
+        kvModels.add(kvModel5);
+        kvModels.add(kvModel6);
+        int[][] ages=new int[][]{{14,18}, {18,25}, {25,39},{39,49}, {49,59}, {59,200}};
+        for (BgrxxModel bgrxxModel:bgrxxModels){
+            int age=0;
+            if (bgrxxModel.getLarq()==null){
+                continue;
+            }
+            if (bgrxxModel.getCsnyr()!=null) {
+                age = DateUtils.getDiffYear(bgrxxModel.getCsnyr(),bgrxxModel.getLarq());
+            }else{
+                //如果是合法的身份证号
+                if (!"".equals(AgeUtils.ze(bgrxxModel.getSfzhm()))){
+                    //获取身份证号的年份
+                    String[] res=AgeUtils.ze(bgrxxModel.getSfzhm()).split(":");
+                    if (res.length>=2){
+                        int year=Integer.parseInt(res[0]);
+                        int larqYear=DateUtils.getYear(bgrxxModel.getLarq());
+                        age=larqYear-year;
+                    }
+                }
+            }
+            if (age<14) {
+                continue;
+            }
+            for(int i=0;i<ages.length;i++){
+                if (age>=ages[i][0]&&age<ages[i][1]){
+                    kvModels.get(i).setValue(kvModels.get(i).getValue()+1);
+                    break;
+                }
+            }
+        }
+        return kvModels;
+    }
+
+    @Override
+    public List<KvModel> getCrimeAmount(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getFraudMethod(String beginTime, String endTime) {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getVictimBank(String beginTime, String endTime) {
+        return null;
+    }
+}

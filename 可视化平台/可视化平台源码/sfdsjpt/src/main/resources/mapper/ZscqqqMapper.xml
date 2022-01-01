@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.ZscqqqMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="DsrModelMap" type="com.software.model.DsrModel">
+        <result column="DSRLB" jdbcType="VARCHAR" property="dsrLb"/>
+        <result column="DSRSSDW" jdbcType="VARCHAR" property="dsrSsdw"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+    </resultMap>
+    <resultMap id="BgrxxModel" type="com.software.model.BgrxxModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"/>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"/>
+        <result column="AH" jdbcType="VARCHAR" property="ah"/>
+        <result column="CSNYR" jdbcType="TIMESTAMP" property="csnyr"/>
+        <result column="SFZHM" jdbcType="INTEGER" property="sfzhm"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+    </resultMap>
+    <resultMap id="TimeModel" type="com.software.model.TimeModel">
+        <result column="year" jdbcType="VARCHAR" property="year"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+        <result column="JARQ" jdbcType="TIMESTAMP" property="jarq"/>
+    </resultMap>
+    <resultMap id="K2vModel" type="com.software.model.K2vModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value1" jdbcType="INTEGER" property="value1"/>
+        <result column="value2" jdbcType="INTEGER" property="value2"/>
+    </resultMap>
+    <resultMap id="K2vModelBH" type="com.software.model.K2vModelBH">
+        <result column="name1" jdbcType="VARCHAR" property="name1"/>
+        <result column="name2" jdbcType="VARCHAR" property="name2"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBlobs" type="com.software.model.ResultMapWithBlobs">
+        <result column="SJXX" jdbcType="LONGNVARCHAR" property="name" typeHandler="com.software.customTypeHandler.StringCustomTypeHandler"></result>
+    </resultMap>
+    <select id="getDsrType" resultMap="DsrModelMap">
+        select pd.DMMS DSRLB,T.DSRSSDW DSRSSDW,count(*) as value from PUB_DMB pd
+        join
+        (
+        select DSRLB,DSRSSDW from DSR_JB  dsr
+        join PUB_AJ_JB PAJ on dsr.AJXH = PAJ.AJXH
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    PAJ.JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND PAJ.JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    PAJ.JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND PAJ.JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and PAJ.LARQ is not null
+        and PAJ.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+        ) T
+        on pd.DMBH=T.DSRLB
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZB='DSR_JB' and pxt.SZL='DSRLB'
+        group by pd.DMMS,T.DSRSSDW
+    </select>
+    <select id="getAjCount" resultType="Integer">
+        select count(*) from PUB_AJ_JB
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose> and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getBgrxb" resultMap="KvModel">
+        select D.XB as name,count(D.XB) as value from PUB_AJ_JB P,DSR_GR D
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and P.AJXH=D.AJXH  and P.AJXH in (select AJXH from PUB_LA_AY  where AY like '111307%')
+        group by D.XB
+    </select>
+    <select id="getBgrAge" resultMap="BgrxxModel">
+        select P.AJXH,D.CSNYR,D.SFZHM ,P.LARQ,P.AJMC from PUB_AJ_JB P,DSR_GR D
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and LARQ is not null  and P.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+        and P.AJXH=D.AJXH
+    </select>
+    <select id="getBgrWhcd" resultMap="KvModel">
+        select d.WHCD_WS as name,count(d.WHCD_WS) as value from PUB_AJ_JB p,DSR_GR d
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and
+        p.AJXH=d.AJXH and p.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%') and WHCD_WS is not null
+        group by d.WHCD_WS
+    </select>
+    <select id="getBgrsf" resultMap="KvModel">
+        select pd.DMMS as name,count(pd.DMMS) as value from PUB_DMB pd
+        join (select D.SF,P.AH  from PUB_AJ_JB P,DSR_GR D where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+
+        </choose>
+        and  P.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+        and P.AJXH=D.AJXH and D.SF!=null ) T on T.SF=pd.DMBH
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZL='SF' and pxt.SZB='DSR_GR'
+        group by pd.DMMS
+
+    </select>
+    <select id="getAyType" resultType="com.software.model.AyModel">
+        select DMBH dmbh,DMMS dmms from PUB_AYDMB where DMBH like '111307%'
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+               and fydm=#{fydm}
+            </when>
+        </choose>
+    </select>
+    <select id="getAjCountByAy" resultType="java.lang.Integer">
+        select count(*) from PUB_AJ_JB
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY=#{dmbh})
+    </select>
+    <select id="getAjAvgDayByAy" resultType="java.lang.Integer">
+
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select avg(date_part('day',jarq-larq)) from PUB_AJ_JB
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                select avg(datediff(day,LARQ,JARQ)) from PUB_AJ_JB
+                where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and LARQ is not null
+        AND PUB_AJ_JB.JARQ IS NOT NULL
+        and AJXH in (select AJXH from PUB_LA_AY where AY=#{dmbh})
+    </select>
+    <select id="getBgCount" resultType="java.lang.Integer">
+        select COUNT(*) from PUB_AJ_JB
+        join DSR_JB DJ on PUB_AJ_JB.AJXH = DJ.AJXH
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+            </otherwise>
+        </choose>
+        and PUB_AJ_JB.LARQ is not null
+        and PUB_AJ_JB.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+        AND DSRSSDW='12'
+        GROUP BY DJ.AJXH
+    </select>
+    <select id="getDsrDw" resultType="com.software.model.KvModel">
+        select FRXZ as name ,count(*) as value from PUB_AJ_JB
+        join DSR_DW DJ on PUB_AJ_JB.AJXH = DJ.AJXH
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (PUB_AJ_JB.AJXH,PUB_AJ_JB.FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+                and PUB_AJ_JB.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+        AND PUB_AJ_JB.LARQ is not null
+        AND FRXZ is not null
+        group by FRXZ
+    </select>
+    <select id="getDsrJg" resultType="com.software.model.KvModel">
+        select XZJGXZ as name ,count(*) as value from PUB_AJ_JB
+        join DSR_XP_JG DJ on PUB_AJ_JB.AJXH = DJ.AJXH
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (PUB_AJ_JB.AJXH,PUB_AJ_JB.FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<=]]> #{endTime}
+                </if>
+                and PUB_AJ_JB.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+        AND PUB_AJ_JB.LARQ is not null
+        AND XZJGXZ is not null
+        group by XZJGXZ
+    </select>
+
+    <select id="getAjslJa" resultType="int">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select count(*) from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                select count(*) from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getAjslLa" resultType="int">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select count(*) from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                select count(*) from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getAjslAvg" resultMap="TimeModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select 'year' as year,LARQ,JARQ from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                select 'year' as year,LARQ,JARQ from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getBmajslLa" resultMap="KvModel">
+        select d.DMMS as name,count(*) as value from PUB_AJ_JB a, PUB_DMB d where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (a.AJXH,a.FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and a.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+        and d.LBBH='USR206-99'
+        and a.BASPT=d.DMBH
+        <choose>
+            <when test="fydm == '120242 22A' ">
+                and a.FYDM=d.FYDM
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+        group by d.DMMS
+    </select>
+    <select id="getBmajslJa" resultMap="KvModel">
+        select d.DMMS as name,count(*) as value from PUB_AJ_JB a, PUB_DMB d where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (a.AJXH,a.FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and a.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+        and d.LBBH='USR206-99'
+        and a.BASPT=d.DMBH
+        <choose>
+            <when test="fydm == '120242 22A' ">
+                and a.FYDM=d.FYDM
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+        group by d.DMMS
+    </select>
+    <select id="getBmajslavg" resultMap="TimeModel">
+        select d.DMMS as year,a.LARQ,a.JARQ  from PUB_AJ_JB a, PUB_DMB d
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (a.AJXH,a.FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and a.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+        and d.LBBH='USR206-99'
+        and a.BASPT=d.DMBH
+        <choose>
+            <when test="fydm == '120242 22A' ">
+                and a.FYDM=d.FYDM
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getYjCount" resultMap="KvModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select extract(year from JARQ) as name,count(*) as value from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+                group by extract(year from JARQ)
+            </when>
+            <otherwise>
+                select year(JARQ) as name,count(*) as value from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+                group by year(JARQ)
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getSjCount" resultMap="KvModel">
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                select extract(year from LARQ) as name,count(*) as value from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+                group by extract(year from LARQ)
+            </when>
+            <otherwise>
+                select year(LARQ) as name,count(*) as value from PUB_AJ_JB where
+                <if test="beginTime!=null and beginTime!='' ">
+                    LARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND LARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+                group by year(LARQ)
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="getDsrSf" resultMap="KvModel">
+        select pd.DMMS as name,count(pd.DMMS) as value from PUB_DMB pd
+        join (select D.SF,P.AH  from PUB_AJ_JB P,DSR_GR D
+        where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and  (P.AJXH,P.FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and  P.AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+            </otherwise>
+        </choose>
+        and P.AJXH=D.AJXH and D.SF!=null ) T on T.SF=pd.DMBH
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZL='SF' and pxt.SZB='DSR_GR'
+        group by pd.DMMS
+    </select>
+
+    <select id="getAj" resultMap="KvModel">
+        select AJXZ+SPCX as name,AJXH as value from PUB_AJ_JB where
+        <if test="beginTime!=null and beginTime!='' ">
+            JARQ <![CDATA[>=]]> #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            AND JARQ <![CDATA[<]]> #{endTime}
+        </if>
+
+        and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getAjBefore" resultMap="KvModel">
+        select AJXZ+SPCX as name,AJXH as value from PUB_AJ_JB where
+        <if test="beginTime!=null and beginTime!='' ">
+            JARQ <![CDATA[>=]]> #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            AND JARQ <![CDATA[<]]> #{endTime}
+        </if>
+        <!--        <if test="laTime!=null and laTime!='' ">-->
+        <!--            and LARQ <![CDATA[<]]> #{laTime}-->
+        <!--        </if>-->
+        and LARQ <![CDATA[<'2016-01-01']]>
+        and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getAjAfter" resultMap="KvModel">
+        select AJXZ+SPCX as name,AJXH as value from PUB_AJ_JB where
+        <if test="beginTime!=null and beginTime!='' ">
+            JARQ <![CDATA[>=]]> #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            AND JARQ <![CDATA[<]]> #{endTime}
+        </if>
+        and LARQ <![CDATA[>='2016-01-01']]>
+        and AJXH in (select AJXH from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getAjBHBefore" resultMap="K2vModelBH">
+        select AJXZ||SPCX as name1,FYDM as name2, AJXH as value from PUB_AJ_JB where
+        <if test="beginTime!=null and beginTime!='' ">
+            JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+        </if>
+        and LARQ <![CDATA[<'2016-01-01']]>
+        and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getAjBHAfter" resultMap="K2vModelBH">
+        select AJXZ||SPCX as name1,FYDM as name2, AJXH as value from PUB_AJ_JB where
+        <if test="beginTime!=null and beginTime!='' ">
+            JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+        </if>
+        and LARQ <![CDATA[>='2016-01-01']]>
+        and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getAjBH" resultMap="K2vModelBH">
+        select AJXZ||SPCX as name1,FYDM as name2, AJXH as value from PUB_AJ_JB where
+        <if test="beginTime!=null and beginTime!='' ">
+            JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+        </if>
+        <if test="endTime!=null and endTime!='' ">
+            AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+        </if>
+        and (AJXH,FYDM) in (select AJXH,FYDM from PUB_LA_AY where AY like '111307%')
+    </select>
+    <select id="getAy" resultMap="KvModel">
+        select C.DMMS as name,count(A.AJXH) as value from PUB_AJ_JB A,PUB_LA_AY B,PUB_AYDMB C where
+        <choose>
+            <!--滨海的pgsql要手动转换日期并加上fydm-->
+            <!--<when test="fydm in ('120242 22A','120204 223','120205 224','120206 225','120241 229')">-->
+            <when test="fydm == '120242 22A' ">
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> to_timestamp(#{beginTime},'yyyy-MM-DD')
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> to_timestamp(#{endTime},'yyyy-MM-DD')
+                </if>
+                and  A.AJXH=B.AJXH AND A.FYDM=B.FYDM AND B.AY LIKE '111307%' AND B.FYDM=C.FYDM AND B.AY=C.DMBH
+            </when>
+            <otherwise>
+                <if test="beginTime!=null and beginTime!='' ">
+                    JARQ <![CDATA[>=]]> #{beginTime}
+                </if>
+                <if test="endTime!=null and endTime!='' ">
+                    AND JARQ <![CDATA[<]]> #{endTime}
+                </if>
+                and  A.AJXH=B.AJXH AND B.AY LIKE '111307%' AND B.AY=C.DMBH
+            </otherwise>
+        </choose>
+        group by C.DMMS
+    </select>
+
+    <select id="getBgDwBH" resultMap="KvModel" parameterType="list">
+        select B.DMMS as name,count(B.DMMS) as value from DSR_DW A, PUB_DMB B
+        where
+        <foreach collection="dsrList" item="K2vModel" index="index" open="(" separator="or" close=")">
+            (A.AJXH=#{K2vModel.value1} AND A.DSRBH=#{K2vModel.value2} AND A.FYDM=#{K2vModel.name})
+        </foreach>
+        AND B.LBBH='FBS0025-97' AND A.FYDM=B.FYDM AND A.FRXZ=B.DMBH
+        group by B.DMMS
+    </select>
+
+    <select id="getBgDw" resultMap="KvModel" parameterType="list">
+        select B.DMMS as name,count(B.DMMS) as value from DSR_DW A, PUB_DMB B
+        where
+        <foreach collection="dsrList" item="K2vModel" index="index" open="(" separator="or" close=")">
+            (A.AJXH=#{K2vModel.value1} AND A.DSRBH=#{K2vModel.value2})
+        </foreach>
+        AND B.LBBH='FBS0025-97' AND A.FRXZ=B.DMBH
+        group by B.DMMS
+    </select>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.LhjfMapper">
+
+    <resultMap id="ForDmmsModel" type="com.software.model.ForDmmsModel">
+        <result column="AJXZ" jdbcType="VARCHAR" property="ajxz"></result>
+        <result column="SPCX" jdbcType="VARCHAR" property="spcx"></result>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+        <result column="SPCXDZ" jdbcType="VARCHAR" property="spcxdz"></result>
+        <result column="value" jdbcType="INTEGER" property="value"></result>
+    </resultMap>
+    <resultMap id="ResultMapWithBlobs" type="com.software.model.ResultMapWithBlobs">
+        <result column="SJXX" jdbcType="LONGNVARCHAR" property="name" typeHandler="com.software.customTypeHandler.StringCustomTypeHandler"></result>
+    </resultMap>
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="BgrxxModel" type="com.software.model.BgrxxModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"/>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"/>
+        <result column="AH" jdbcType="VARCHAR" property="ah"/>
+        <result column="CSNYR" jdbcType="TIMESTAMP" property="csnyr"/>
+        <result column="SFZHM" jdbcType="INTEGER" property="sfzhm"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+    </resultMap>
+    <select id="getAjCount" resultType="Integer">
+        select count(*) from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200')
+    </select>
+    <select id="getBgrxb" resultMap="KvModel">
+        select D.XB name,count(D.XB) value from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and P.AJXH=D.AJXH  and P.AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200')
+        group by D.XB
+    </select>
+    <select id="getBgrAge" resultMap="BgrxxModel">
+        select P.AJXH,D.CSNYR,D.SFZHM ,P.LARQ,P.AJMC from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and LARQ is not null  and P.AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200')
+        and P.AJXH=D.AJXH
+    </select>
+    <select id="getBgrWhcd" resultMap="KvModel">
+        select pd.DMMS name,count(pd.DMMS) value from PUB_DMB pd
+        join (select D.WHCD,P.AH  from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and  P.AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200')
+        and P.AJXH=D.AJXH and D.SF!=null ) T on T.WHCD=pd.DMBH
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZL='WHCD' and pxt.SZB='DSR_GR'
+        group by pd.DMMS
+    </select>
+
+    <select id="getBgrsf" resultMap="KvModel">
+        select pd.DMMS name,count(pd.DMMS) value from PUB_DMB pd
+        join (select D.SF,P.AH  from PUB_AJ_JB P,DSR_GR D where JARQ<![CDATA[>=]]> #{beginTime} and JARQ<![CDATA[<=]]> #{endTime}
+        and  P.AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200')
+        and P.AJXH=D.AJXH and D.SF!=null ) T on T.SF=pd.DMBH
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZL='SF' and pxt.SZB='DSR_GR'
+        group by pd.DMMS
+    </select>
+    <!--判决结果-->
+    <select id="getLhjfPjjg" resultMap="KvModel">
+        select JAFS name,count(JAFS) value  from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200') group by JAFS
+    </select>
+    <select id="getForDmms" resultMap="ForDmmsModel">
+        select AJXZ,SPCX,SPCXDZ,JAFS name,COUNT(*) value from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY ='1132010200') group by AJXZ,SPCX,JAFS,SPCXDZ
+    </select>
+    <select id="getSjxx2016" resultMap="ResultMapWithBlobs">
+        select SJXX2016 SJXX from PUB_XTGL_XXXGL where SZB= #{szb} and SZL= #{szl}
+    </select>
+    <select id="getSjxx" resultMap="ResultMapWithBlobs">
+        select SJXX from PUB_XTGL_XXXGL where SZB= #{szb} and SZL= #{szl}
+    </select>
+    <select id="getSjxx2016List" resultMap="ResultMapWithBlobs">
+        select SJXX2016 SJXX from PUB_XTGL_XXXGL where SZB= #{szb} and SZL= #{szl}
+    </select>
+    <select id="getSjxxList" resultMap="ResultMapWithBlobs">
+        select SJXX from PUB_XTGL_XXXGL where SZB= #{szb} and SZL= #{szl}
+    </select>
+    <select id="getDmms" resultType="String">
+        select DMMS from PUB_DMB where LBBH= #{lbbh} and DMBH= #{dmbh}
+    </select>
+
+</mapper>

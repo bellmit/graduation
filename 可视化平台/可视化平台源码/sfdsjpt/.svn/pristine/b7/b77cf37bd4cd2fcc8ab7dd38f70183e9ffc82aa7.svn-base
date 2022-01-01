@@ -1,0 +1,15 @@
+package com.software.Service;
+
+import com.software.model.K2vModel;
+import com.software.model.KvModel;
+
+import java.util.List;
+
+//未成年人犯罪service
+public interface MinorFzService {
+    //
+    List<KvModel> getMinorZmfb(String beginTime,String endTime);
+    //返回的是最近三年的
+    List<K2vModel> getMinorYearAjCount();
+
+}

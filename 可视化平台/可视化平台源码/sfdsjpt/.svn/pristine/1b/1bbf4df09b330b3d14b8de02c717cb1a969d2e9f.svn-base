@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.WxjszMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="BgrxxModel" type="com.software.model.BgrxxModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"/>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"/>
+        <result column="AH" jdbcType="VARCHAR" property="ah"/>
+        <result column="CSNYR" jdbcType="TIMESTAMP" property="csnyr"/>
+        <result column="SFZHM" jdbcType="INTEGER" property="sfzhm"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+    </resultMap>
+
+
+</mapper>

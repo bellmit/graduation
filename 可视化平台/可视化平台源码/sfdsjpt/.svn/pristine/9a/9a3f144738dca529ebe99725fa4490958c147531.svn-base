@@ -1,0 +1,158 @@
+package com.software.service.impl;
+
+import com.software.model.BgrxxModel;
+import com.software.service.AjService;
+import com.software.datasource.DataSourceEnum;
+import com.software.datasource.DataSourceRouter;
+import com.software.mapper.AjMapper;
+import com.software.model.KvModel;
+import com.software.utils.AgeUtils;
+import com.software.utils.DateUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+@Service
+public class AjServiceImpl implements AjService {
+
+    @Override
+    public List<KvModel> getAjCount(AjMapper ajMapper) {
+
+        int year= DateUtils.getCurYear();
+        //不统计当年的
+        year=year-1;
+        List<KvModel> list=new ArrayList<>();
+        for(int i=year-4;i<=year;i++){
+            KvModel kvModel=new KvModel();
+            kvModel.setName(i +"年");
+            Date last=DateUtils.getYearLast(i);
+            Date first=DateUtils.getYearFirst(i);
+            String lastDay=DateUtils.formatDate(last);
+            String firstDay=DateUtils.formatDate(first);
+            kvModel.setValue(ajMapper.getAjCount(firstDay,lastDay));
+            list.add(kvModel);
+        }
+        return list;
+    }
+    @Override
+    public List<KvModel> getAreaDistribution(String beginTime,String endTime,String fydm,AjMapper ajMapper) {
+        List<KvModel> kvModels = new ArrayList<>();
+        ExecutorService executors = Executors.newFixedThreadPool(10);
+        List<String> fydms = DataSourceEnum.getSubFydm(fydm);
+        for (String dm : fydms) {
+            executors.execute(() -> {
+                KvModel k = new KvModel();
+                DataSourceRouter.routerTo(dm);
+                int ajs = ajMapper.getAjCount(beginTime, endTime);
+                k.setName(DataSourceEnum.getFydqByFydm(dm));
+                k.setValue(ajs);
+                kvModels.add(k);
+                System.out.println();
+            });
+        }
+        try {
+            executors.shutdown();
+            executors.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException ignored) {
+
+        }
+        return kvModels;
+    }
+    @Override
+    public List<KvModel> getBgrxb(String beginTime, String endTime, AjMapper ajMapper) {
+        List<KvModel> kvModels= ajMapper.getBgrxb(beginTime,endTime);
+        kvModels=kvModels.stream().filter(k-> "1".equals(k.getName())|| "2".equals(k.getName()))
+                .collect(Collectors.toList());
+        boolean h1=false;
+        boolean h2=false;
+        for (KvModel t:kvModels){
+            if ("1".equals(t.getName())){
+                t.setName("男性");
+                h1=true;
+            }else if("2".equals(t.getName())){
+                t.setName("女性");
+                h2=true;
+            }
+        }
+        if (!h1){
+            KvModel k1=new KvModel();
+            k1.setName("男性");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }else if(!h2){
+            KvModel k1=new KvModel();
+            k1.setName("女性");
+            k1.setValue(0);
+            kvModels.add(k1);
+        }
+        return kvModels;
+    }
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime, AjMapper ajMapper) {
+        return ajMapper.getBgrsf(beginTime,endTime);
+    }
+    @Override
+    public List<KvModel> getBgrWhcd(String beginTime, String endTime, AjMapper ajMapper) {
+        return ajMapper.getBgrWhcd(beginTime,endTime);
+    }
+    @Override
+    public List<KvModel> getBrgage(String beginTime, String endTime,AjMapper ajMapper){
+        List<BgrxxModel> bgrxxModels=ajMapper.getBgrAge(beginTime,endTime);
+        List<KvModel> kvModels=new ArrayList<>();
+        KvModel kvModel1=new KvModel("已满14岁不满18岁",0);
+        KvModel kvModel2=new KvModel("已满18岁不满25岁",0);
+        KvModel kvModel3=new KvModel("已满25岁不满39岁",0);
+        KvModel kvModel4=new KvModel("已满39岁不满49岁",0);
+        KvModel kvModel5=new KvModel("已满49岁不满59岁",0);
+        KvModel kvModel6=new KvModel("59岁以上",0);
+        kvModels.add(kvModel1);
+        kvModels.add(kvModel2);
+        kvModels.add(kvModel3);
+        kvModels.add(kvModel4);
+        kvModels.add(kvModel5);
+        kvModels.add(kvModel6);
+        int[][] ages=new int[][]{{14,18}, {18,25}, {25,39},{39,49}, {49,59}, {59,200}};
+        for (BgrxxModel bgrxxModel:bgrxxModels){
+            int age=0;
+            if (bgrxxModel.getLarq()==null){
+                continue;
+            }
+            if (bgrxxModel.getCsnyr()!=null) {
+                age = DateUtils.getDiffYear(bgrxxModel.getCsnyr(),bgrxxModel.getLarq());
+            }else{
+                //如果是合法的身份证号
+                if (!"".equals(AgeUtils.ze(bgrxxModel.getSfzhm()))){
+                    //获取身份证号的年份
+                    String[] res= AgeUtils.ze(bgrxxModel.getSfzhm()).split(":");
+                    if (res.length>=2){
+                        int year=Integer.parseInt(res[0]);
+                        int larqYear=DateUtils.getYear(bgrxxModel.getLarq());
+                        age=larqYear-year;
+                    }
+                }
+            }
+            if (age<14) {
+                continue;
+            }
+            for(int i=0;i<ages.length;i++){
+                if (age>=ages[i][0]&&age<ages[i][1]){
+                    kvModels.get(i).setValue(kvModels.get(i).getValue()+1);
+                    break;
+                }
+            }
+        }
+        return kvModels;
+    }
+
+    @Override
+    public List<KvModel> getYqtxlx(String beginTime, String endTime,AjMapper ajMapper) {
+        return null;
+    }
+
+
+}

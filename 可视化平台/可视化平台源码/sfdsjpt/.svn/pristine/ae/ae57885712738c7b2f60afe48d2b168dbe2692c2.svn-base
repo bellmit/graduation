@@ -1,0 +1,96 @@
+package com.software.controller;
+
+import com.software.service.AjService;
+import com.software.service.XykzpService;
+import com.software.model.KvModel;
+import com.software.utils.ResultModel;
+import com.software.utils.ResultModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * 信用卡诈骗罪接口
+ */
+@RestController
+@RequestMapping("/xykzp")
+public class XykzpController {
+    @Autowired
+    XykzpService xykzpService;
+    @Autowired
+    AjService ajService;
+
+    /**
+     * 各年案件量(近五年)
+     */
+    @RequestMapping("/getAjCount")
+    public ResultModel getAjCount(HttpServletRequest request){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        try{
+            return ResultModelUtil.success(ajService.getAjCount("信用卡诈骗"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 各年案件量(近五年)
+     */
+    @RequestMapping("/getAjMonthCount")
+    public ResultModel getAjMonthCount(HttpServletRequest request){
+        // 处理请求数据，beginTime,EndTime需要从session中获取
+        // 目前写死获取近五年
+        try{
+            return ResultModelUtil.success(xykzpService.getAjMonthCount());
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+    /**
+     * 案件地域分布（天津地区）
+     */
+    @RequestMapping("/getAreaDistribution")
+    public ResultModel getAreaDistribution(HttpServletRequest request){
+        String fydm= (String) request.getSession().getAttribute("fydm");
+        try{
+            return ResultModelUtil.success(ajService.getAreaDistribution("2021-01-01","2021-06-22",fydm,"信用卡诈骗"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/getBgrWhcd")
+    public ResultModel getBgrWhcd(HttpServletRequest request) {
+        List<KvModel> kvModels=ajService.getBgrWhcd("2021-01-01","2021-06-22","信用卡诈骗");
+        return ResultModelUtil.success(kvModels);
+    }
+    @RequestMapping("/getBgrsf")
+    public ResultModel getBgrsf(HttpServletRequest request) {
+        List<KvModel> kvModels=ajService.getBgrsf("2021-06-01","2021-06-22","信用卡诈骗");
+        return ResultModelUtil.success(kvModels);
+    }
+    @RequestMapping("/getBgrxb")
+    public ResultModel getBgrxb(HttpServletRequest request) {
+        List<KvModel> kvModels=ajService.getBgrxb("2021-01-01","2021-06-22","信用卡诈骗");
+        return ResultModelUtil.success(kvModels);
+    }
+    @RequestMapping("/getBgrAge")
+    public ResultModel getBgrAge(HttpServletRequest request) {
+        List<KvModel> kvModels=ajService.getBrgage("2021-01-01","2021-06-22","信用卡诈骗");
+        return ResultModelUtil.success(kvModels);
+    }
+    /**
+     * 有期徒刑量刑
+     */
+    @RequestMapping("/getYqtxlx")
+    public ResultModel getYqtxlx(HttpServletRequest request){
+        try{
+            return ResultModelUtil.success(ajService.getYqtxlx("2021-01-01","2021-06-22","信用卡诈骗"));
+        }catch (Exception e){
+            return ResultModelUtil.failed(e.getMessage());
+        }
+    }
+}

@@ -1,0 +1,30 @@
+package com.software.mapper;
+
+import com.software.entity.PubSpry;
+import com.software.entity.PubSpryExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface PubSpryMapper {
+    int countByExample(PubSpryExample example);
+
+    int deleteByExample(PubSpryExample example);
+
+    int deleteByPrimaryKey(@Param("ajxh") Integer ajxh, @Param("sprybh") Integer sprybh);
+
+    int insert(PubSpry record);
+
+    int insertSelective(PubSpry record);
+
+    List<PubSpry> selectByExample(PubSpryExample example);
+
+    PubSpry selectByPrimaryKey(@Param("ajxh") Integer ajxh, @Param("sprybh") Integer sprybh);
+
+    int updateByExampleSelective(@Param("record") PubSpry record, @Param("example") PubSpryExample example);
+
+    int updateByExample(@Param("record") PubSpry record, @Param("example") PubSpryExample example);
+
+    int updateByPrimaryKeySelective(PubSpry record);
+
+    int updateByPrimaryKey(PubSpry record);
+}

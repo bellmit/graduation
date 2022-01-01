@@ -1,0 +1,94 @@
+<!--
+ 描述: 案件审结情况饼图
+-->
+
+<template>
+  <div class="container" style="height: 500px;">
+    <!--    图表显示-->
+    <div class="mychart" ref="pieAndRing">
+      <!--      饼图需要向里面传递数据-->
+    </div>
+    <!--    文字描述-->
+    <div class='describe'>
+      <div class='title'>{{descriptionTitle}}</div>
+      <ul style="margin-right: 40px">
+        <li v-for="(item,index) in description">
+          （{{index+1}}）{{item}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import { getPieAndRing } from '@/assets/js/utils'
+export default {
+  props:[
+    'api',
+  ],
+  name: "pieAndRing",
+  data() {
+    return {
+      // 异步获取需要的格式
+      pieData:[
+        {value: 13, name: '酒驾'},
+        {value: 77, name: '其他'},
+      ],
+      ringData:[
+        {value: 75, name: '湖南'},
+        {value: 28, name: '河北'},
+        {value: 23, name: '广东'},
+        {value: 18, name: '四川'}
+      ],
+      descriptionTitle:'描述标题',
+      description:["2015年危险驾驶罪刑事一审较之2014年同比上升48.9","2016年危险驾驶罪刑事一审较之2015年同比上升25.9"]
+    }
+  },
+  mounted() {
+    let that=this;
+    this.axios.get(this.api).then(function (response){
+      if (response.data.code==0){
+
+        // getBar(this.title,this.xData,this.yData,this.$refs.chart_bp);
+        that.description=response.data.description;
+        that.descriptionTitle=response.data.title;
+      } else{
+        //
+      }
+    }).catch(function (error){
+      //
+    });
+    getPieAndRing(this.ringData,this.pieData,this.$refs.pieAndRing);
+  },
+  methods: {
+
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.mychart{
+  width: 67%;
+  height:400px;
+  float: left;
+  margin-top: 40px
+}
+.describe{
+  .title{
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #489de2;
+    line-height: 30px;
+  }
+  width: 33%;
+  float: left;
+  margin-top: 100px;
+  padding-bottom: 25%;
+  font-size: 16px;
+  color: #00c2ff;
+  line-height: 26px;
+}
+</style>

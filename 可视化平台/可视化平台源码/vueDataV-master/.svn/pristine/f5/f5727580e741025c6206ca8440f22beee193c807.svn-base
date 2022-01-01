@@ -1,0 +1,89 @@
+<!--
+ 描述: 案件审结情况之案件量柱状图
+ 作者: Jack Chen
+ 日期: 2020-04-30
+-->
+<template>
+  <div class="container" style="height: 500px;">
+    <div class="mychart" ref="chart_bp"></div>
+    <div class='describe'>
+      <ul>
+        <li v-for="item in description">
+          {{item}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import { getBar } from '@/assets/js/utils'
+export default {
+  name: "bar",
+  props:[
+      'chartApi',
+      'describeApi',
+  ],
+  data() {
+    return {
+        title:"",
+        xData:['80-120mg/100ml','120-160mg/100ml','160-200mg/100ml','200-240mg/100ml','240-280mg/100ml','280-320mg/100ml'],
+        yData:[60000, 50000, 40000,30000,20000,10000,10000],
+        description:["2015年危险驾驶罪刑事一审较之2014年同比上升48.9","2016年危险驾驶罪刑事一审较之2015年同比上升25.9"]
+    }
+  },
+  mounted() {
+    let that=this;
+    this.axios.get(this.chartApi).then(function (response){
+      if (response.data.code==0){
+        let xData=[];
+        let yData=[];
+        let data=response.data.data;
+        for (let i=0;i<data.length;i++){
+          xData.push(data[i].name);
+          yData.push(data[i].value);
+        }
+        getBar("各年案件量",xData,yData,that.$refs.chart_bp);
+      } else{
+        // 失败
+      }
+    }).catch(function (error){
+      //
+    });
+    // axios.get(this.describeApi).then(function (response) {
+    //   if (response.data.code==0){
+    //     // getBar(this.title,this.xData,this.yData,this.$refs.chart_bp);
+    //   } else{
+    //     //
+    //   }
+    // }).catch(function () {
+    //
+    // })
+    getBar(this.title,this.xData,this.yData,this.$refs.chart_bp);
+  },
+  methods: {
+
+  },
+  beforeDestroy() {
+
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.mychart{
+  width: 67%;
+  height:460px;
+  margin-top: 40px;
+  float: left
+}
+.describe{
+  width: 33%;
+  float: left;
+  margin-top: 100px;
+  padding-bottom: 25%;
+  font-size: 16px;
+  color: #00c2ff;
+  line-height: 26px;
+}
+</style>

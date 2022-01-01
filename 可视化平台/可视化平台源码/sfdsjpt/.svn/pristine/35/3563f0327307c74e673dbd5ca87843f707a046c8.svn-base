@@ -1,0 +1,35 @@
+package com.software.service.impl;
+
+import com.software.service.WxjszService;
+import com.software.mapper.AjMapper;
+import com.software.mapper.WxjszMapper;
+import com.software.model.KvModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class WxjszServiceImpl implements WxjszService {
+    @Autowired
+    WxjszMapper wxjszMapper;
+    @Autowired
+    AjMapper ajMapper;
+
+    @Override
+    public List<KvModel> getBehaviorProportion() {
+        return null;
+    }
+
+
+
+    @Override
+    public List<KvModel> getTimeOfSeizure() {
+        return null;
+    }
+
+    @Override
+    public List<KvModel> getTypeOfVehicle() {
+        return null;
+    }
+}

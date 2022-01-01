@@ -1,0 +1,134 @@
+package com.software.service.impl;
+
+import com.software.model.KvModel;
+import com.software.service.AjDescriptionService;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class AjDescServiceImpl implements AjDescriptionService {
+    public List<String> getAjCountDesc(List<KvModel> kvModels){
+        List<String> res=new ArrayList<>();
+        int len=kvModels.size();
+        String curYear="",preYear="";
+        int curCount=0,preCount=0;
+        for(int i=1;i<len;i++) {
+            StringBuffer desc=new StringBuffer("");
+            KvModel curDate = kvModels.get(i);
+            KvModel preDate = kvModels.get(i - 1);
+            curYear = curDate.getName();
+            preYear = preDate.getName();
+            curCount = curDate.getValue();
+            preCount = preDate.getValue();
+            double d=Math.abs(curCount-preCount)/(double)preCount;
+            String flag="";
+            if (curCount>=preCount){
+                flag="上升";
+            }else{
+                flag="下降";
+            }
+            desc.append(curYear).append("年比").append(preYear).append("年").append(flag).append(d);
+            res.add(desc.toString());
+        }
+        return res;
+    }
+
+    public List<String> getAreaDistributionDesc(List<KvModel> kvModels){
+
+        List<String> res=new ArrayList<>();
+        int len=kvModels.size();
+        String curArea="";
+        int curCount=0;
+        for(int i=0;i<len;i++) {
+            StringBuffer desc=new StringBuffer("");
+            KvModel curData = kvModels.get(i);
+            curArea = curData.getName();
+            curCount = curData.getValue();
+            desc.append(curArea).append(":").append(curCount);
+            res.add(desc.toString());
+        }
+        return res;
+    }
+
+    public List<String> getBgrxbDesc(List<KvModel> kvModels){
+
+        List<String> res=new ArrayList<>();
+        int boyCount=0,girlCount=0;
+
+        for (KvModel kvModel:kvModels){
+            if (kvModel.getName().equals("男")){
+                boyCount=kvModel.getValue();
+            }else if (kvModel.getName().equals("女")){
+                girlCount=kvModel.getValue();
+            }
+        }
+        if (boyCount>girlCount){
+            res.add("男性被告人多余女性被告人");
+        }else if (boyCount<girlCount){
+            res.add("女性被告人多余男性被告人");
+        }else{
+            res.add("男女被告人人数相等");
+        }
+        return res;
+    }
+
+    public List<String> getBgrsfDesc(List<KvModel> kvModels){
+        List<String> res=new ArrayList<>();
+        int len=kvModels.size();
+        String curSf="";
+        int curCount=0;
+        int sum=0,max=0;
+
+        for(int i=0;i<len;i++) {
+         //   StringBuffer desc=new StringBuffer("");
+            KvModel curData = kvModels.get(i);
+            curCount = curData.getValue();
+            max=Math.max(max,curCount);
+            if (curCount==max){
+                curSf=curData.getName();
+            }
+            sum+=curCount;
+        }
+        double bl=(double) curCount/(double)sum;
+        res.add("被告人主要身份为"+curSf+";占比为"+bl);
+        return res;
+    }
+
+    public List<String> getBgrWhcdDesc(List<KvModel> kvModels){
+        List<String> res=new ArrayList<>();
+        int len=kvModels.size();
+        String curWhcd="";
+        int curCount=0;
+        int sum=0,max=0;
+
+        for(int i=0;i<len;i++) {
+            //   StringBuffer desc=new StringBuffer("");
+            KvModel curData = kvModels.get(i);
+            curCount = curData.getValue();
+            max=Math.max(max,curCount);
+            if (curCount==max){
+                curWhcd=curData.getName();
+            }
+            sum+=curCount;
+        }
+        double bl=(double) curCount/(double)sum;
+        res.add("被告人主要文化程度为"+curWhcd+";占比为"+bl);
+        return res;
+    }
+
+    public List<String> getBrgageDesc(List<KvModel> kvModels){
+
+        return null;
+    }
+
+    /**
+     * 有期徒刑量刑
+     */
+    public List<String> getYqtxlxDesc(List<KvModel> kvModels){
+
+        return null;
+    }
+
+}

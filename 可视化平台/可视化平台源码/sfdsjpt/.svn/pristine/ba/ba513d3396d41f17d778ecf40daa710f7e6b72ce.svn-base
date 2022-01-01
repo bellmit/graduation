@@ -1,0 +1,21 @@
+package com.software.service.impl;
+
+import com.software.model.KvModel;
+import com.software.service.XykzpDescService;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class XykzpDescServiceImpl implements XykzpDescService {
+
+    /**
+     * 当年月案件量
+     * @return
+     */
+    @Override
+    public List<String> getAjMonthCount(List<KvModel> kvModels) {
+        return null;
+    }
+}

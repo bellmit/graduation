@@ -1,0 +1,10 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface LhjfService extends CommonService{
+
+    List<KvModel> getLhjfPjjg(String beginTime,String endTime,String fydm);
+}

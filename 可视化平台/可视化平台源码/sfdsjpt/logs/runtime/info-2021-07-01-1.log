@@ -1,0 +1,76 @@
+[14:16:45:732] [INFO] - org.springframework.boot.StartupInfoLogger.logStarting(StartupInfoLogger.java:48) - Starting SfdsjptApplication on DESKTOP-9CFA43G with PID 6376 (D:\sfdsjpt\target\classes started by Lenovo in D:\sfdsjpt)
+[14:16:45:795] [INFO] - org.springframework.boot.SpringApplication.logStartupProfileInfo(SpringApplication.java:661) - No active profile set, falling back to default profiles: default
+[14:16:45:935] [INFO] - org.springframework.context.support.AbstractApplicationContext.prepareRefresh(AbstractApplicationContext.java:581) - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1362a359: startup date [Thu Jul 01 14:16:45 CST 2021]; root of context hierarchy
+[14:16:46:029] [INFO] - org.hibernate.validator.internal.util.Version.<clinit>(Version.java:30) - HV000001: Hibernate Validator 5.2.4.Final
+[14:16:47:513] [INFO] - org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization(PostProcessorRegistrationDelegate.java:328) - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$90dcba27] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+[14:16:48:060] [INFO] - org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.initialize(TomcatEmbeddedServletContainer.java:87) - Tomcat initialized with port(s): 8082 (http)
+[14:16:48:075] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Starting service Tomcat
+[14:16:48:075] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Starting Servlet Engine: Apache Tomcat/8.5.5
+[14:16:48:169] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Initializing Spring embedded WebApplicationContext
+[14:16:48:169] [INFO] - org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.prepareEmbeddedWebApplicationContext(EmbeddedWebApplicationContext.java:276) - Root WebApplicationContext: initialization completed in 2234 ms
+[14:16:48:294] [INFO] - org.springframework.boot.web.servlet.ServletRegistrationBean.onStartup(ServletRegistrationBean.java:190) - Mapping servlet: 'dispatcherServlet' to [/]
+[14:16:48:294] [INFO] - org.springframework.boot.web.servlet.AbstractFilterRegistrationBean.configure(AbstractFilterRegistrationBean.java:258) - Mapping filter: 'characterEncodingFilter' to: [/*]
+[14:16:48:294] [INFO] - org.springframework.boot.web.servlet.AbstractFilterRegistrationBean.configure(AbstractFilterRegistrationBean.java:258) - Mapping filter: 'corsFilter' to: [/*]
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/login],methods=[GET]}" onto public com.software.utils.ResultModel com.software.controller.LoginController.login(javax.servlet.http.HttpServletRequest,java.lang.String,java.lang.String,java.lang.String)
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getAjCount]}" onto public com.software.utils.ResultModel com.software.controller.TestController.count()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getMinorBgrxb]}" onto public java.util.List<com.software.model.KvModel> com.software.controller.TestController.getMinorBgrxb()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getYwtpm]}" onto public com.software.utils.ResultModel com.software.controller.TestController.wytpm()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getBgrAge]}" onto public com.software.utils.ResultModel com.software.controller.TestController.glBrgage()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getMinorWlaj]}" onto public java.util.List<com.software.model.KvModel> com.software.controller.TestController.getMinorWlaj()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getMinorZmfb]}" onto public java.util.List<com.software.model.KvModel> com.software.controller.TestController.getMinorZmfb()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getMinorAjCount]}" onto public java.util.List<com.software.model.KvModel> com.software.controller.TestController.getMinorAjCount()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getBgrsf]}" onto public com.software.utils.ResultModel com.software.controller.TestController.bgrsf()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getGlzm]}" onto public com.software.utils.ResultModel com.software.controller.TestController.glzm()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getAjxxIntime]}" onto public com.software.utils.ResultModel com.software.controller.TestController.ajxxIntime()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/getBgrxb]}" onto public com.software.utils.ResultModel com.software.controller.TestController.bgrxb()
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/test],methods=[GET]}" onto public com.software.model.AjjbModel com.software.controller.TestController.wsCount(java.lang.String)
+[14:16:48:935] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/wxjsz/getAccusedFeature]}" onto public com.software.utils.ResultModel com.software.controller.WxjszController.getAccusedFeature()
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/wxjsz/getBehaviorProportion]}" onto public com.software.utils.ResultModel com.software.controller.WxjszController.getBehaviorProportion()
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/wxjsz/getAjCount]}" onto public com.software.utils.ResultModel com.software.controller.WxjszController.getAjCount()
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/wxjsz/getVol]}" onto public com.software.utils.ResultModel com.software.controller.WxjszController.getVol()
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/wxjsz/getTimeOfSeizure]}" onto public com.software.utils.ResultModel com.software.controller.WxjszController.getTimeOfSeizure()
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/wxjsz/getTypeOfVehicle]}" onto public com.software.utils.ResultModel com.software.controller.WxjszController.getTypeOfVehicle()
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+[14:16:48:950] [INFO] - org.springframework.web.servlet.handler.AbstractHandlerMethodMapping$MappingRegistry.register(AbstractHandlerMethodMapping.java:543) - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+[14:16:49:013] [INFO] - org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache(RequestMappingHandlerAdapter.java:534) - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1362a359: startup date [Thu Jul 01 14:16:45 CST 2021]; root of context hierarchy
+[14:16:49:403] [INFO] - org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer(OptionalLiveReloadServer.java:58) - LiveReload server is running on port 35729
+[14:16:49:466] [INFO] - org.springframework.jmx.export.MBeanExporter.afterSingletonsInstantiated(MBeanExporter.java:431) - Registering beans for JMX exposure on startup
+[14:16:49:497] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Initializing ProtocolHandler ["http-nio-8082"]
+[14:16:49:513] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Starting ProtocolHandler [http-nio-8082]
+[14:16:49:591] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Using a shared selector for servlet write/read
+[14:16:49:606] [INFO] - org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer.start(TomcatEmbeddedServletContainer.java:185) - Tomcat started on port(s): 8082 (http)
+[14:16:49:622] [INFO] - org.springframework.boot.StartupInfoLogger.logStarted(StartupInfoLogger.java:57) - Started SfdsjptApplication in 4.327 seconds (JVM running for 6.33)
+[14:17:01:474] [INFO] - org.apache.juli.logging.DirectJDKLog.log(DirectJDKLog.java:179) - Initializing Spring FrameworkServlet 'dispatcherServlet'
+[14:17:01:474] [INFO] - org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:489) - FrameworkServlet 'dispatcherServlet': initialization started
+[14:17:01:490] [INFO] - org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:508) - FrameworkServlet 'dispatcherServlet': initialization completed in 16 ms
+[14:17:01:527] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:01:546] [INFO] - com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:110) - tjhqfy - Starting...
+[14:17:01:639] [INFO] - com.zaxxer.hikari.pool.PoolBase.getAndSetNetworkTimeout(PoolBase.java:523) - tjhqfy - Driver does not support get/set network timeout for connections. (com.sybase.jdbc3.jdbc.SybConnection.getNetworkTimeout()I)
+[14:17:01:651] [INFO] - com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:123) - tjhqfy - Start completed.
+[14:17:01:972] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:01:969] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:01:977] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:17:01:977] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:17:01:978] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:01:978] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:01:981] [INFO] - com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:110) - tjgy - Starting...
+[14:17:01:989] [INFO] - com.zaxxer.hikari.pool.PoolBase.getAndSetNetworkTimeout(PoolBase.java:523) - tjgy - Driver does not support get/set network timeout for connections. (com.sybase.jdbc3.jdbc.SybConnection.getNetworkTimeout()I)
+[14:17:01:993] [INFO] - com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:123) - tjgy - Start completed.
+[14:17:10:194] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:10:194] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:10:195] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:17:10:195] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:17:10:200] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:10:201] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:17:10:201] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:18:42:323] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:18:42:326] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:18:42:329] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:18:42:331] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:18:42:336] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:18:42:341] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:20:03:320] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:20:03:323] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:20:03:324] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjhqfy
+[14:20:32:267] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy
+[14:20:32:270] [INFO] - com.software.datasource.DataSourceRouter.routerTo(DataSourceRouter.java:27) - 切换到数据库：Tjgy

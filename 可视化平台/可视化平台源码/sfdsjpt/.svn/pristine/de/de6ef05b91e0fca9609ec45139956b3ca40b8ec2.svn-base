@@ -1,0 +1,44 @@
+package com.software.mapper;
+
+import com.software.entity.PubAjJb;
+import com.software.entity.PubAjJbExample;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+@Mapper
+public interface PubAjJbMapper {
+    int countByExample(PubAjJbExample example);
+
+    int deleteByExample(PubAjJbExample example);
+
+    int deleteByPrimaryKey(Integer ajxh);
+
+    int insert(PubAjJb record);
+
+    int insertSelective(PubAjJb record);
+
+    List<PubAjJb> selectByExampleWithBLOBs(PubAjJbExample example);
+
+    List<PubAjJb> selectByExample(PubAjJbExample example);
+
+    PubAjJb selectByPrimaryKey(Integer ajxh);
+
+    int updateByExampleSelective(@Param("record") PubAjJb record, @Param("example") PubAjJbExample example);
+
+    int updateByExampleWithBLOBs(@Param("record") PubAjJb record, @Param("example") PubAjJbExample example);
+
+    int updateByExample(@Param("record") PubAjJb record, @Param("example") PubAjJbExample example);
+
+    int updateByPrimaryKeySelective(PubAjJb record);
+
+    int updateByPrimaryKeyWithBLOBs(PubAjJb record);
+
+    int updateByPrimaryKey(PubAjJb record);
+
+    /*AjjbModel selectByAjxh(@Param("fydm") String fydm, @Param("ajxh") Integer ajxh);
+
+    List<YwtpmModel> getYwtsj();*/
+
+}

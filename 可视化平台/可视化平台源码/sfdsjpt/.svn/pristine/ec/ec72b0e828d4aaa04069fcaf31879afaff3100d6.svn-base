@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.software.mapper.PubAydmbMapper" >
+  <resultMap id="BaseResultMap" type="com.software.entity.PubAydmb" >
+    <id column="BBH" property="bbh" jdbcType="CHAR" />
+    <id column="DMBH" property="dmbh" jdbcType="CHAR" />
+    <result column="DMMS" property="dmms" jdbcType="VARCHAR" />
+    <result column="AYDM_4" property="aydm4" jdbcType="VARCHAR" />
+    <result column="AYDM_5" property="aydm5" jdbcType="INTEGER" />
+    <result column="SFSX" property="sfsx" jdbcType="CHAR" />
+    <result column="AYLB" property="aylb" jdbcType="INTEGER" />
+    <result column="TXH" property="txh" jdbcType="VARCHAR" />
+    <result column="KXH" property="kxh" jdbcType="VARCHAR" />
+    <result column="BZ1" property="bz1" jdbcType="VARCHAR" />
+    <result column="BZ2" property="bz2" jdbcType="VARCHAR" />
+    <result column="AYDM_8" property="aydm8" jdbcType="INTEGER" />
+    <result column="AYDM_11" property="aydm11" jdbcType="INTEGER" />
+    <result column="XGSJ" property="xgsj" jdbcType="TIMESTAMP" />
+    <result column="AYMC" property="aymc" jdbcType="VARCHAR" />
+    <result column="BZ" property="bz" jdbcType="VARCHAR" />
+    <result column="DQBS" property="dqbs" jdbcType="VARCHAR" />
+    <result column="SJDM" property="sjdm" jdbcType="VARCHAR" />
+    <result column="XSYS" property="xsys" jdbcType="DOUBLE" />
+    <result column="MSYS" property="msys" jdbcType="DOUBLE" />
+    <result column="MSXESS" property="msxess" jdbcType="DOUBLE" />
+    <result column="MSTB" property="mstb" jdbcType="DOUBLE" />
+    <result column="XSES" property="xses" jdbcType="DOUBLE" />
+    <result column="MSES" property="mses" jdbcType="DOUBLE" />
+    <result column="JB" property="jb" jdbcType="INTEGER" />
+    <result column="XZYS" property="xzys" jdbcType="DOUBLE" />
+    <result column="XZES" property="xzes" jdbcType="DOUBLE" />
+    <result column="XZSS" property="xzss" jdbcType="DOUBLE" />
+    <result column="MSSS" property="msss" jdbcType="DOUBLE" />
+    <result column="XSSS" property="xsss" jdbcType="DOUBLE" />
+    <result column="XSSX" property="xssx" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    BBH, DMBH, DMMS, AYDM_4, AYDM_5, SFSX, AYLB, TXH, KXH, BZ1, BZ2, AYDM_8, AYDM_11, 
+    XGSJ, AYMC, BZ, DQBS, SJDM, XSYS, MSYS, MSXESS, MSTB, XSES, MSES, JB, XZYS, XZES, 
+    XZSS, MSSS, XSSS, XSSX
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.software.entity.PubAydmbExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PUB_AYDMB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from PUB_AYDMB
+    where BBH = #{bbh,jdbcType=CHAR}
+      and DMBH = #{dmbh,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from PUB_AYDMB
+    where BBH = #{bbh,jdbcType=CHAR}
+      and DMBH = #{dmbh,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.software.entity.PubAydmbExample" >
+    delete from PUB_AYDMB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.software.entity.PubAydmb" >
+    insert into PUB_AYDMB (BBH, DMBH, DMMS, AYDM_4, 
+      AYDM_5, SFSX, AYLB, TXH, 
+      KXH, BZ1, BZ2, AYDM_8, 
+      AYDM_11, XGSJ, AYMC, 
+      BZ, DQBS, SJDM, XSYS, 
+      MSYS, MSXESS, MSTB, XSES, 
+      MSES, JB, XZYS, XZES, 
+      XZSS, MSSS, XSSS, XSSX
+      )
+    values (#{bbh,jdbcType=CHAR}, #{dmbh,jdbcType=CHAR}, #{dmms,jdbcType=VARCHAR}, #{aydm4,jdbcType=VARCHAR}, 
+      #{aydm5,jdbcType=INTEGER}, #{sfsx,jdbcType=CHAR}, #{aylb,jdbcType=INTEGER}, #{txh,jdbcType=VARCHAR}, 
+      #{kxh,jdbcType=VARCHAR}, #{bz1,jdbcType=VARCHAR}, #{bz2,jdbcType=VARCHAR}, #{aydm8,jdbcType=INTEGER}, 
+      #{aydm11,jdbcType=INTEGER}, #{xgsj,jdbcType=TIMESTAMP}, #{aymc,jdbcType=VARCHAR}, 
+      #{bz,jdbcType=VARCHAR}, #{dqbs,jdbcType=VARCHAR}, #{sjdm,jdbcType=VARCHAR}, #{xsys,jdbcType=DOUBLE}, 
+      #{msys,jdbcType=DOUBLE}, #{msxess,jdbcType=DOUBLE}, #{mstb,jdbcType=DOUBLE}, #{xses,jdbcType=DOUBLE}, 
+      #{mses,jdbcType=DOUBLE}, #{jb,jdbcType=INTEGER}, #{xzys,jdbcType=DOUBLE}, #{xzes,jdbcType=DOUBLE}, 
+      #{xzss,jdbcType=DOUBLE}, #{msss,jdbcType=DOUBLE}, #{xsss,jdbcType=DOUBLE}, #{xssx,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.software.entity.PubAydmb" >
+    insert into PUB_AYDMB
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bbh != null" >
+        BBH,
+      </if>
+      <if test="dmbh != null" >
+        DMBH,
+      </if>
+      <if test="dmms != null" >
+        DMMS,
+      </if>
+      <if test="aydm4 != null" >
+        AYDM_4,
+      </if>
+      <if test="aydm5 != null" >
+        AYDM_5,
+      </if>
+      <if test="sfsx != null" >
+        SFSX,
+      </if>
+      <if test="aylb != null" >
+        AYLB,
+      </if>
+      <if test="txh != null" >
+        TXH,
+      </if>
+      <if test="kxh != null" >
+        KXH,
+      </if>
+      <if test="bz1 != null" >
+        BZ1,
+      </if>
+      <if test="bz2 != null" >
+        BZ2,
+      </if>
+      <if test="aydm8 != null" >
+        AYDM_8,
+      </if>
+      <if test="aydm11 != null" >
+        AYDM_11,
+      </if>
+      <if test="xgsj != null" >
+        XGSJ,
+      </if>
+      <if test="aymc != null" >
+        AYMC,
+      </if>
+      <if test="bz != null" >
+        BZ,
+      </if>
+      <if test="dqbs != null" >
+        DQBS,
+      </if>
+      <if test="sjdm != null" >
+        SJDM,
+      </if>
+      <if test="xsys != null" >
+        XSYS,
+      </if>
+      <if test="msys != null" >
+        MSYS,
+      </if>
+      <if test="msxess != null" >
+        MSXESS,
+      </if>
+      <if test="mstb != null" >
+        MSTB,
+      </if>
+      <if test="xses != null" >
+        XSES,
+      </if>
+      <if test="mses != null" >
+        MSES,
+      </if>
+      <if test="jb != null" >
+        JB,
+      </if>
+      <if test="xzys != null" >
+        XZYS,
+      </if>
+      <if test="xzes != null" >
+        XZES,
+      </if>
+      <if test="xzss != null" >
+        XZSS,
+      </if>
+      <if test="msss != null" >
+        MSSS,
+      </if>
+      <if test="xsss != null" >
+        XSSS,
+      </if>
+      <if test="xssx != null" >
+        XSSX,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bbh != null" >
+        #{bbh,jdbcType=CHAR},
+      </if>
+      <if test="dmbh != null" >
+        #{dmbh,jdbcType=CHAR},
+      </if>
+      <if test="dmms != null" >
+        #{dmms,jdbcType=VARCHAR},
+      </if>
+      <if test="aydm4 != null" >
+        #{aydm4,jdbcType=VARCHAR},
+      </if>
+      <if test="aydm5 != null" >
+        #{aydm5,jdbcType=INTEGER},
+      </if>
+      <if test="sfsx != null" >
+        #{sfsx,jdbcType=CHAR},
+      </if>
+      <if test="aylb != null" >
+        #{aylb,jdbcType=INTEGER},
+      </if>
+      <if test="txh != null" >
+        #{txh,jdbcType=VARCHAR},
+      </if>
+      <if test="kxh != null" >
+        #{kxh,jdbcType=VARCHAR},
+      </if>
+      <if test="bz1 != null" >
+        #{bz1,jdbcType=VARCHAR},
+      </if>
+      <if test="bz2 != null" >
+        #{bz2,jdbcType=VARCHAR},
+      </if>
+      <if test="aydm8 != null" >
+        #{aydm8,jdbcType=INTEGER},
+      </if>
+      <if test="aydm11 != null" >
+        #{aydm11,jdbcType=INTEGER},
+      </if>
+      <if test="xgsj != null" >
+        #{xgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aymc != null" >
+        #{aymc,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="dqbs != null" >
+        #{dqbs,jdbcType=VARCHAR},
+      </if>
+      <if test="sjdm != null" >
+        #{sjdm,jdbcType=VARCHAR},
+      </if>
+      <if test="xsys != null" >
+        #{xsys,jdbcType=DOUBLE},
+      </if>
+      <if test="msys != null" >
+        #{msys,jdbcType=DOUBLE},
+      </if>
+      <if test="msxess != null" >
+        #{msxess,jdbcType=DOUBLE},
+      </if>
+      <if test="mstb != null" >
+        #{mstb,jdbcType=DOUBLE},
+      </if>
+      <if test="xses != null" >
+        #{xses,jdbcType=DOUBLE},
+      </if>
+      <if test="mses != null" >
+        #{mses,jdbcType=DOUBLE},
+      </if>
+      <if test="jb != null" >
+        #{jb,jdbcType=INTEGER},
+      </if>
+      <if test="xzys != null" >
+        #{xzys,jdbcType=DOUBLE},
+      </if>
+      <if test="xzes != null" >
+        #{xzes,jdbcType=DOUBLE},
+      </if>
+      <if test="xzss != null" >
+        #{xzss,jdbcType=DOUBLE},
+      </if>
+      <if test="msss != null" >
+        #{msss,jdbcType=DOUBLE},
+      </if>
+      <if test="xsss != null" >
+        #{xsss,jdbcType=DOUBLE},
+      </if>
+      <if test="xssx != null" >
+        #{xssx,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.software.entity.PubAydmbExample" resultType="java.lang.Integer" >
+    select count(*) from PUB_AYDMB
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PUB_AYDMB
+    <set >
+      <if test="record.bbh != null" >
+        BBH = #{record.bbh,jdbcType=CHAR},
+      </if>
+      <if test="record.dmbh != null" >
+        DMBH = #{record.dmbh,jdbcType=CHAR},
+      </if>
+      <if test="record.dmms != null" >
+        DMMS = #{record.dmms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aydm4 != null" >
+        AYDM_4 = #{record.aydm4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aydm5 != null" >
+        AYDM_5 = #{record.aydm5,jdbcType=INTEGER},
+      </if>
+      <if test="record.sfsx != null" >
+        SFSX = #{record.sfsx,jdbcType=CHAR},
+      </if>
+      <if test="record.aylb != null" >
+        AYLB = #{record.aylb,jdbcType=INTEGER},
+      </if>
+      <if test="record.txh != null" >
+        TXH = #{record.txh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kxh != null" >
+        KXH = #{record.kxh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bz1 != null" >
+        BZ1 = #{record.bz1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bz2 != null" >
+        BZ2 = #{record.bz2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aydm8 != null" >
+        AYDM_8 = #{record.aydm8,jdbcType=INTEGER},
+      </if>
+      <if test="record.aydm11 != null" >
+        AYDM_11 = #{record.aydm11,jdbcType=INTEGER},
+      </if>
+      <if test="record.xgsj != null" >
+        XGSJ = #{record.xgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.aymc != null" >
+        AYMC = #{record.aymc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bz != null" >
+        BZ = #{record.bz,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dqbs != null" >
+        DQBS = #{record.dqbs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sjdm != null" >
+        SJDM = #{record.sjdm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xsys != null" >
+        XSYS = #{record.xsys,jdbcType=DOUBLE},
+      </if>
+      <if test="record.msys != null" >
+        MSYS = #{record.msys,jdbcType=DOUBLE},
+      </if>
+      <if test="record.msxess != null" >
+        MSXESS = #{record.msxess,jdbcType=DOUBLE},
+      </if>
+      <if test="record.mstb != null" >
+        MSTB = #{record.mstb,jdbcType=DOUBLE},
+      </if>
+      <if test="record.xses != null" >
+        XSES = #{record.xses,jdbcType=DOUBLE},
+      </if>
+      <if test="record.mses != null" >
+        MSES = #{record.mses,jdbcType=DOUBLE},
+      </if>
+      <if test="record.jb != null" >
+        JB = #{record.jb,jdbcType=INTEGER},
+      </if>
+      <if test="record.xzys != null" >
+        XZYS = #{record.xzys,jdbcType=DOUBLE},
+      </if>
+      <if test="record.xzes != null" >
+        XZES = #{record.xzes,jdbcType=DOUBLE},
+      </if>
+      <if test="record.xzss != null" >
+        XZSS = #{record.xzss,jdbcType=DOUBLE},
+      </if>
+      <if test="record.msss != null" >
+        MSSS = #{record.msss,jdbcType=DOUBLE},
+      </if>
+      <if test="record.xsss != null" >
+        XSSS = #{record.xsss,jdbcType=DOUBLE},
+      </if>
+      <if test="record.xssx != null" >
+        XSSX = #{record.xssx,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PUB_AYDMB
+    set BBH = #{record.bbh,jdbcType=CHAR},
+      DMBH = #{record.dmbh,jdbcType=CHAR},
+      DMMS = #{record.dmms,jdbcType=VARCHAR},
+      AYDM_4 = #{record.aydm4,jdbcType=VARCHAR},
+      AYDM_5 = #{record.aydm5,jdbcType=INTEGER},
+      SFSX = #{record.sfsx,jdbcType=CHAR},
+      AYLB = #{record.aylb,jdbcType=INTEGER},
+      TXH = #{record.txh,jdbcType=VARCHAR},
+      KXH = #{record.kxh,jdbcType=VARCHAR},
+      BZ1 = #{record.bz1,jdbcType=VARCHAR},
+      BZ2 = #{record.bz2,jdbcType=VARCHAR},
+      AYDM_8 = #{record.aydm8,jdbcType=INTEGER},
+      AYDM_11 = #{record.aydm11,jdbcType=INTEGER},
+      XGSJ = #{record.xgsj,jdbcType=TIMESTAMP},
+      AYMC = #{record.aymc,jdbcType=VARCHAR},
+      BZ = #{record.bz,jdbcType=VARCHAR},
+      DQBS = #{record.dqbs,jdbcType=VARCHAR},
+      SJDM = #{record.sjdm,jdbcType=VARCHAR},
+      XSYS = #{record.xsys,jdbcType=DOUBLE},
+      MSYS = #{record.msys,jdbcType=DOUBLE},
+      MSXESS = #{record.msxess,jdbcType=DOUBLE},
+      MSTB = #{record.mstb,jdbcType=DOUBLE},
+      XSES = #{record.xses,jdbcType=DOUBLE},
+      MSES = #{record.mses,jdbcType=DOUBLE},
+      JB = #{record.jb,jdbcType=INTEGER},
+      XZYS = #{record.xzys,jdbcType=DOUBLE},
+      XZES = #{record.xzes,jdbcType=DOUBLE},
+      XZSS = #{record.xzss,jdbcType=DOUBLE},
+      MSSS = #{record.msss,jdbcType=DOUBLE},
+      XSSS = #{record.xsss,jdbcType=DOUBLE},
+      XSSX = #{record.xssx,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.software.entity.PubAydmb" >
+    update PUB_AYDMB
+    <set >
+      <if test="dmms != null" >
+        DMMS = #{dmms,jdbcType=VARCHAR},
+      </if>
+      <if test="aydm4 != null" >
+        AYDM_4 = #{aydm4,jdbcType=VARCHAR},
+      </if>
+      <if test="aydm5 != null" >
+        AYDM_5 = #{aydm5,jdbcType=INTEGER},
+      </if>
+      <if test="sfsx != null" >
+        SFSX = #{sfsx,jdbcType=CHAR},
+      </if>
+      <if test="aylb != null" >
+        AYLB = #{aylb,jdbcType=INTEGER},
+      </if>
+      <if test="txh != null" >
+        TXH = #{txh,jdbcType=VARCHAR},
+      </if>
+      <if test="kxh != null" >
+        KXH = #{kxh,jdbcType=VARCHAR},
+      </if>
+      <if test="bz1 != null" >
+        BZ1 = #{bz1,jdbcType=VARCHAR},
+      </if>
+      <if test="bz2 != null" >
+        BZ2 = #{bz2,jdbcType=VARCHAR},
+      </if>
+      <if test="aydm8 != null" >
+        AYDM_8 = #{aydm8,jdbcType=INTEGER},
+      </if>
+      <if test="aydm11 != null" >
+        AYDM_11 = #{aydm11,jdbcType=INTEGER},
+      </if>
+      <if test="xgsj != null" >
+        XGSJ = #{xgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="aymc != null" >
+        AYMC = #{aymc,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null" >
+        BZ = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="dqbs != null" >
+        DQBS = #{dqbs,jdbcType=VARCHAR},
+      </if>
+      <if test="sjdm != null" >
+        SJDM = #{sjdm,jdbcType=VARCHAR},
+      </if>
+      <if test="xsys != null" >
+        XSYS = #{xsys,jdbcType=DOUBLE},
+      </if>
+      <if test="msys != null" >
+        MSYS = #{msys,jdbcType=DOUBLE},
+      </if>
+      <if test="msxess != null" >
+        MSXESS = #{msxess,jdbcType=DOUBLE},
+      </if>
+      <if test="mstb != null" >
+        MSTB = #{mstb,jdbcType=DOUBLE},
+      </if>
+      <if test="xses != null" >
+        XSES = #{xses,jdbcType=DOUBLE},
+      </if>
+      <if test="mses != null" >
+        MSES = #{mses,jdbcType=DOUBLE},
+      </if>
+      <if test="jb != null" >
+        JB = #{jb,jdbcType=INTEGER},
+      </if>
+      <if test="xzys != null" >
+        XZYS = #{xzys,jdbcType=DOUBLE},
+      </if>
+      <if test="xzes != null" >
+        XZES = #{xzes,jdbcType=DOUBLE},
+      </if>
+      <if test="xzss != null" >
+        XZSS = #{xzss,jdbcType=DOUBLE},
+      </if>
+      <if test="msss != null" >
+        MSSS = #{msss,jdbcType=DOUBLE},
+      </if>
+      <if test="xsss != null" >
+        XSSS = #{xsss,jdbcType=DOUBLE},
+      </if>
+      <if test="xssx != null" >
+        XSSX = #{xssx,jdbcType=INTEGER},
+      </if>
+    </set>
+    where BBH = #{bbh,jdbcType=CHAR}
+      and DMBH = #{dmbh,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.software.entity.PubAydmb" >
+    update PUB_AYDMB
+    set DMMS = #{dmms,jdbcType=VARCHAR},
+      AYDM_4 = #{aydm4,jdbcType=VARCHAR},
+      AYDM_5 = #{aydm5,jdbcType=INTEGER},
+      SFSX = #{sfsx,jdbcType=CHAR},
+      AYLB = #{aylb,jdbcType=INTEGER},
+      TXH = #{txh,jdbcType=VARCHAR},
+      KXH = #{kxh,jdbcType=VARCHAR},
+      BZ1 = #{bz1,jdbcType=VARCHAR},
+      BZ2 = #{bz2,jdbcType=VARCHAR},
+      AYDM_8 = #{aydm8,jdbcType=INTEGER},
+      AYDM_11 = #{aydm11,jdbcType=INTEGER},
+      XGSJ = #{xgsj,jdbcType=TIMESTAMP},
+      AYMC = #{aymc,jdbcType=VARCHAR},
+      BZ = #{bz,jdbcType=VARCHAR},
+      DQBS = #{dqbs,jdbcType=VARCHAR},
+      SJDM = #{sjdm,jdbcType=VARCHAR},
+      XSYS = #{xsys,jdbcType=DOUBLE},
+      MSYS = #{msys,jdbcType=DOUBLE},
+      MSXESS = #{msxess,jdbcType=DOUBLE},
+      MSTB = #{mstb,jdbcType=DOUBLE},
+      XSES = #{xses,jdbcType=DOUBLE},
+      MSES = #{mses,jdbcType=DOUBLE},
+      JB = #{jb,jdbcType=INTEGER},
+      XZYS = #{xzys,jdbcType=DOUBLE},
+      XZES = #{xzes,jdbcType=DOUBLE},
+      XZSS = #{xzss,jdbcType=DOUBLE},
+      MSSS = #{msss,jdbcType=DOUBLE},
+      XSSS = #{xsss,jdbcType=DOUBLE},
+      XSSX = #{xssx,jdbcType=INTEGER}
+    where BBH = #{bbh,jdbcType=CHAR}
+      and DMBH = #{dmbh,jdbcType=CHAR}
+  </update>
+</mapper>

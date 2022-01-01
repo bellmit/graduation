@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.software.mapper.WxjszMapper">
+    <resultMap id="KvModel" type="com.software.model.KvModel">
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="INTEGER" property="value"/>
+    </resultMap>
+    <resultMap id="BgrxxModel" type="com.software.model.BgrxxModel">
+        <result column="AJXH" jdbcType="VARCHAR" property="ajxh"/>
+        <result column="AJMC" jdbcType="VARCHAR" property="ajmc"/>
+        <result column="AH" jdbcType="VARCHAR" property="ah"/>
+        <result column="CSNYR" jdbcType="TIMESTAMP" property="csnyr"/>
+        <result column="SFZHM" jdbcType="INTEGER" property="sfzhm"/>
+        <result column="LARQ" jdbcType="TIMESTAMP" property="larq"/>
+    </resultMap>
+    <select id="getAjCount" resultType="Integer">
+        select count(*) from PUB_AJ_JB where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime} and LARQ is not null
+        and AJXH in (select AJXH from PUB_LA_AY where AY ='1112380000')
+    </select>
+    <select id="getBgrxb" resultMap="KvModel">
+        select D.XB name,count(D.XB) value from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and P.AJXH=D.AJXH  and P.AJXH in (select AJXH from PUB_LA_AY where AY ='1112380000')
+        group by D.XB
+    </select>
+    <select id="getBgrAge" resultMap="BgrxxModel">
+        select P.AJXH,D.CSNYR,D.SFZHM ,P.LARQ,P.AJMC from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and LARQ is not null  and P.AJXH in (select AJXH from PUB_LA_AY where AY ='1112380000')
+        and P.AJXH=D.AJXH
+    </select>
+    <select id="getBgrWhcd" resultMap="KvModel">
+        select pd.DMMS name,count(pd.DMMS) value from PUB_DMB pd
+        join (select D.WHCD,P.AH  from PUB_AJ_JB P,DSR_GR D where JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+              and  P.AJXH in (select AJXH from PUB_LA_AY where AY ='1112380000')
+              and P.AJXH=D.AJXH and D.SF!=null ) T on T.WHCD=pd.DMBH
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZL='WHCD' and pxt.SZB='DSR_GR'
+        group by pd.DMMS
+    </select>
+
+    <select id="getBgrsf" resultMap="KvModel">
+        select pd.DMMS name,count(pd.DMMS) value from PUB_DMB pd
+        join (select D.SF,P.AH  from PUB_AJ_JB P,DSR_GR D where JARQ<![CDATA[>=]]> #{beginTime} and JARQ<![CDATA[<=]]> #{endTime}
+              and  P.AJXH in (select AJXH from PUB_LA_AY where AY ='1112380000')
+              and P.AJXH=D.AJXH and D.SF!=null ) T on T.SF=pd.DMBH
+        join PUB_XTGL_XXXGL pxt on pd.LBBH=cast(pxt.SJXX as varchar(15))
+        where pxt.SZL='SF' and pxt.SZB='DSR_GR'
+        group by pd.DMMS
+    </select>
+    <select id="getTypeOfVehicle" resultType="com.software.model.KvModel">
+        select  DSR_BGFJ_WS.CLLX name,count(*) value
+        from PUB_AJ_JB
+        join DSR_BGFJ_WS on PUB_AJ_JB.AJXH=DSR_BGFJ_WS.AJXH
+        where
+        JARQ <![CDATA[>=]]> #{beginTime} and JARQ <![CDATA[<=]]> #{endTime}
+        and PUB_AJ_JB.LARQ is not null
+        and PUB_AJ_JB.AJXH in (select AJXH from PUB_LA_AY where AY ='1112380000')
+        group by DSR_BGFJ_WS.CLLX
+    </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+package com.software.service;
+
+import com.software.model.KvModel;
+
+import java.util.List;
+
+public interface WxjszService {
+
+    /**
+     * 危险驾驶罪中行为整体分布比
+     */
+    List<KvModel> getBehaviorProportion();
+
+    /**
+     * 查获时间
+     */
+    List<KvModel> getTimeOfSeizure();
+
+    /**
+     * 机动车类型
+     */
+    List<KvModel> getTypeOfVehicle();
+
+}

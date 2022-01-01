@@ -1,0 +1,27 @@
+package com.software.entity;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.sql.Clob;
+@Data
+public class PubXtglXxxgl implements Serializable {
+    private Integer xxxbh;
+
+    private Integer fybh;
+
+    private String name;
+
+    private String szb;
+
+    private String szl;
+
+    private String datatype;
+
+    private String xxxjc;
+
+    private String sjxx;
+
+    private String sjxx2016;
+
+}

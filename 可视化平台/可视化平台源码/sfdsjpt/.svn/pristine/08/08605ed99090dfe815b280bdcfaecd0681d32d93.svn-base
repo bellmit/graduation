@@ -1,0 +1,38 @@
+package com.software.mapper;
+
+import com.software.entity.PubXtglXxxgl;
+import com.software.entity.PubXtglXxxglExample;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+@Mapper
+public interface PubXtglXxxglMapper {
+    int countByExample(PubXtglXxxglExample example);
+
+    int deleteByExample(PubXtglXxxglExample example);
+
+    int deleteByPrimaryKey(Integer xxxbh);
+
+    int insert(PubXtglXxxgl record);
+
+    int insertSelective(PubXtglXxxgl record);
+
+    List<PubXtglXxxgl> selectByExampleWithBLOBs(PubXtglXxxglExample example);
+
+    List<PubXtglXxxgl> selectByExample(PubXtglXxxglExample example);
+
+    PubXtglXxxgl selectByPrimaryKey(Integer xxxbh);
+
+    int updateByExampleSelective(@Param("record") PubXtglXxxgl record, @Param("example") PubXtglXxxglExample example);
+
+    int updateByExampleWithBLOBs(@Param("record") PubXtglXxxgl record, @Param("example") PubXtglXxxglExample example);
+
+    int updateByExample(@Param("record") PubXtglXxxgl record, @Param("example") PubXtglXxxglExample example);
+
+    int updateByPrimaryKeySelective(PubXtglXxxgl record);
+
+    int updateByPrimaryKeyWithBLOBs(PubXtglXxxgl record);
+
+    int updateByPrimaryKey(PubXtglXxxgl record);
+}

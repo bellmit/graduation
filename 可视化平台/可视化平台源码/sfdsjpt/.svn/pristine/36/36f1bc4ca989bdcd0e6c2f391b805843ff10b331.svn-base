@@ -1,0 +1,24 @@
+package com.software.service.impl;
+
+import com.software.service.XykzpService;
+import com.software.mapper.XykzpMapper;
+import com.software.model.KvModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class XykzpServiceImpl implements XykzpService {
+    @Autowired
+    XykzpMapper xykzpMapper;
+
+    /**
+     * 当年月案件量
+     * @return
+     */
+    @Override
+    public List<KvModel> getAjMonthCount() {
+        return null;
+    }
+}

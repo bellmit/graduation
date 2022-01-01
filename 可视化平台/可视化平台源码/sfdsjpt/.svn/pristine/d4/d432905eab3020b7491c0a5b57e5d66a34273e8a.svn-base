@@ -1,0 +1,58 @@
+package com.software.service.impl;
+
+import com.software.service.AjService;
+import com.software.service.WxjszService;
+import com.software.mapper.WxjszMapper;
+import com.software.model.KvModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class WxjszServiceImpl implements WxjszService {
+    @Autowired
+    WxjszMapper wxjszMapper;
+
+    @Autowired
+    AjService ajService;
+    @Override
+    public List<KvModel> getAjCount(String fydm) {
+        return ajService.getAjCount(wxjszMapper,fydm);
+    }
+
+    @Override
+    public List<KvModel> getAreaDistribution(String beginTime, String endTime, String fydm) {
+        return ajService.getAreaDistribution(beginTime,endTime,fydm,wxjszMapper);
+    }
+
+    @Override
+    public List<KvModel> getBgrxb(String beginTime, String endTime, String fydm) {
+        return ajService.getBgrxb(beginTime,endTime,wxjszMapper,fydm);
+    }
+
+    @Override
+    public List<KvModel> getBgrsf(String beginTime, String endTime, String fydm) {
+        return ajService.getBgrsf(beginTime,endTime,wxjszMapper,fydm);
+    }
+
+    @Override
+    public List<KvModel> getBgrWhcd(String beginTime, String endTime, String fydm) {
+        return ajService.getBgrWhcd(beginTime,endTime,wxjszMapper,fydm);
+    }
+
+    @Override
+    public List<KvModel> getBrgage(String beginTime, String endTime, String fydm) {
+        return ajService.getBrgage(beginTime,endTime,wxjszMapper,fydm);
+    }
+
+    @Override
+    public List<KvModel> getYqtxlx(String beginTime, String endTime, String fydm) {
+        return ajService.getYqtxlx(beginTime,endTime,wxjszMapper,fydm);
+    }
+
+    @Override
+    public List<KvModel> getTypeOfVehicle(String beginTime, String endTime, String fydm) {
+        return wxjszMapper.getTypeOfVehicle(beginTime,endTime,fydm);
+    }
+}
